@@ -4,11 +4,11 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 
 public abstract class Ventana extends JFrame {
 	
@@ -25,10 +25,13 @@ public abstract class Ventana extends JFrame {
 		this.altura = altura;
 		this.icono = icono;
 		
-		UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
 		SwingUtilities.updateComponentTreeUI(this);
 		
+		if(icono != null) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(icono));
+		}
+		
 		setLayout(new FlowLayout());
 		setSize(anchura, altura);
 		setTitle(titulo);
@@ -41,11 +44,11 @@ public abstract class Ventana extends JFrame {
 			setResizable(false);
 		}
 		
-		add(getContenido().getContentPane());
+		setContentPane(getContenido());
 		setLocationRelativeTo(null);
 	}
 	
-	public abstract JFrame getContenido();
+	public abstract JPanel getContenido();
 
 	public String getTitulo() {
 		return titulo;
@@ -63,5 +66,10 @@ public abstract class Ventana extends JFrame {
 		return true;
 	}
 
+	
+	public static void main(String[] args) {
+	
+		
+	}
 	
 }
