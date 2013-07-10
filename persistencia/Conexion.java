@@ -27,15 +27,16 @@ public class Conexion {
 	private static Conexion instancia;
 
 	public static synchronized Conexion getInstancia()
-			throws ClassNotFoundException, SQLException, JDOMException, IOException {
+			throws ClassNotFoundException, SQLException, JDOMException,
+			IOException {
 		return instancia == null ? instancia = new Conexion() : instancia;
 	}
 
-	public Conexion() throws ClassNotFoundException, SQLException, JDOMException, IOException {
+	public Conexion() throws ClassNotFoundException, SQLException,
+			JDOMException, IOException {
 		GestorXml gestorXml = new GestorXml();
 		Class.forName(gestorXml.getClaseDriver());
-		conexion = DriverManager
-				.getConnection(gestorXml.getDirecciónBD());
+		conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
 		consulta = conexion.createStatement();
 		pacientes = new ArrayList<Paciente>();
 	}
@@ -56,7 +57,6 @@ public class Conexion {
 	}
 
 	public ArrayList<Paciente> getPacientes() throws SQLException {
-
 		resultado = consulta.executeQuery("select * from pacientes");
 		while (resultado.next()) {
 			pacientes.add(new Paciente(resultado.getInt("id"), resultado
@@ -70,67 +70,98 @@ public class Conexion {
 		}
 		return pacientes;
 	}
-	
-	public void modificarPaciente(int id, int posicion, String valor) throws SQLException {
-			switch(posicion) {
-			
-			case 0:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set nombre = ? where id = ?");
+
+	public void modificarPaciente(int id, int posicion, String valor)
+			throws SQLException {
+		switch (posicion) {
+
+		case 0:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set nombre = ? where id = ?");
 			break;
-			
-			case 1:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set apellido = ? where id = ?");
+
+		case 1:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set apellido = ? where id = ?");
 			break;
-			
-			case 2:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set telefono = ? where id = ?");
+
+		case 2:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set telefono = ? where id = ?");
 			break;
-			
-			case 3:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set direccion = ? where id = ?");
+
+		case 3:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set direccion = ? where id = ?");
 			break;
-			
-			case 4:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set cedula = ? where id = ?");
+
+		case 4:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set cedula = ? where id = ?");
 			break;
-			
-			case 5:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set fecha_nacimiento = ? where id = ?");
+
+		case 5:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set fecha_nacimiento = ? where id = ?");
 			break;
-			
-			case 6:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set fumador = ? where id = ?");
+
+		case 6:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set fumador = ? where id = ?");
 			break;
-			
-			case 7:
-				enunciado = conexion.prepareStatement("UDPATE pacientes set foto = ? where id = ?");
+
+		case 7:
+			enunciado = conexion
+					.prepareStatement("UDPATE pacientes set foto = ? where id = ?");
 			break;
-			
-			case 8:
-				enunciado = conexion.prepareStatement("UPDATE pacientes set alergias = ? where id = ?");
+
+		case 8:
+			enunciado = conexion
+					.prepareStatement("UPDATE pacientes set alergias = ? where id = ?");
 			break;
-			}
-			enunciado.setString(1, valor);
-			enunciado.setInt(2, id);
-			enunciado.execute();
-	}
-	
-	public void eliminarPaciente(int id) throws SQLException {
-		enunciado = conexion.prepareStatement("DELETE from pacientes where id = " + id);
+		}
+		enunciado.setString(1, valor);
+		enunciado.setInt(2, id);
 		enunciado.execute();
 	}
 
-	/*
-	 * public ArrayList<Usuario> getUsuario() throws SQLException {
-	 * 
-	 * resultado = consulta.executeQuery("select * from usuarios");
-	 * while(resultado.next()) { usuarios.add(new
-	 * Usuario(resultado.getInt("id"), resultado.getString("nombre"),
-	 * resultado.getString("apellido"), resultado.getString("usuario"),
-	 * resultado.getString("rol"))); }
-	 * 
-	 * 
-	 * return usuarios; }
-	 */
+	public void eliminarPaciente(int id) throws SQLException {
+		consulta.executeQuery("DELETE from pacientes where id = " + id);
+	}
+	
+	public void agregarUsuario(Usuario usuario) throws SQLException {
+		enunciado = conexion.prepareStatement("INSERT into usuarios (cod_empleado, nombre, apellido" +
+				"rol, direccion, cedula, especialidad, telefonos) values (?, ?, ?, ?, ?, ?, ?, ?)");
+		enunciado.setString(1, usuario.getCod_empleado());
+		enunciado.setString(2, usuario.getNombre());
+		enunciado.setString(3, usuario.getApellido());
+		enunciado.setString(4, usuario.getRol());
+		enunciado.setString(5, usuario.getDireccion());
+		enunciado.setString(6, usuario.getCedula());
+		enunciado.setString(7, usuario.getEspecialidad());
+		enunciado.setString(8, usuario.getTelefonos());
+		enunciado.execute();
+	}
+	
+	public void eliminarUsuario(int id) throws SQLException {
+		consulta.executeQuery("DELETE from usuario where id = " + id);
+	}
 
+	public ArrayList<Usuario> getUsuario() throws SQLException {
+	 resultado = consulta.executeQuery("select * from usuarios");
+	  while(resultado.next()) { 
+		  usuarios.add(new Usuario(resultado.getInt("id"), resultado.getString("cod_empleado"), 
+		  resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("rol"),
+		  resultado.getString("direccion"), resultado.getString("cedula"), resultado.getString("especialidad"),
+		  resultado.getString("telefonos"))); 
+	  }
+	  return usuarios;
+	}
+	
+	public void modificarUsuario(int id, int posicion, String valor) {
+			switch(posicion) {
+			case 0:
+			break;
+			}
+	}
 }
