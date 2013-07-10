@@ -2,6 +2,7 @@ package com.efrain.gestorpacientes.entidades;
 
 public class Paciente {
 
+	private int id;
 	private String nombre;
 	private String apellido;
 	private String telefono;
@@ -11,6 +12,22 @@ public class Paciente {
 	private String fumador;
 	private String alergias;
 	private String foto;
+
+	public Paciente(int id, String nombre, String apellido, String telefono,
+			String direccion, String cedula, String fecha_nacimiento,
+			String fumador, String foto, String alergias) {
+
+		this.setId(id);
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.fecha_nacimiento = fecha_nacimiento;
+		this.fumador = fumador;
+		this.alergias = alergias;
+		this.foto = foto;
+	}
 
 	public Paciente(String nombre, String apellido, String telefono,
 			String direccion, String cedula, String fecha_nacimiento,
@@ -97,6 +114,14 @@ public class Paciente {
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

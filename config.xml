@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base-de-datos>
+	<gestor>mysql</gestor>
+	<clase-driver>com.mysql.jdbc.Driver</clase-driver>
+	<ubicación>localhost</ubicación>
+	<nombre>gpacientes</nombre>
+	<usuario>root</usuario>
+	<contraseña>itla</contraseña>
+</base-de-datos>
