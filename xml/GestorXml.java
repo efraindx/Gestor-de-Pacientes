@@ -16,7 +16,7 @@ public class GestorXml {
 	
 	public GestorXml() throws JDOMException, IOException{
 		constructor = new SAXBuilder();
-		documento = constructor.build(new File("config.xml"));
+		documento = constructor.build(new File("C:\\Users\\Efrain\\Dropbox\\workspace\\Gestor de Pacientes\\src\\com\\efrain\\gestorpacientes\\config.xml"));
 		raíz = documento.getRootElement();
 	}
 	

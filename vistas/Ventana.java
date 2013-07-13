@@ -29,7 +29,7 @@ public abstract class Ventana extends JFrame {
 		SwingUtilities.updateComponentTreeUI(this);
 		
 		if(icono != null) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(icono));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(icono)));
 		}
 		
 		setLayout(new FlowLayout());

@@ -18,9 +18,8 @@ public class ModeloPersonas {
 		return instancia == null ? instancia = new ModeloPersonas() : instancia;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ModeloPersonas() throws ClassNotFoundException, SQLException, JDOMException, IOException {
-		personas = Conexion.getInstancia().mostrar(); 
+		personas = Conexion.getInstancia().getPersonas();
 	}
 
 	public ArrayList<Persona> getPersonas() {

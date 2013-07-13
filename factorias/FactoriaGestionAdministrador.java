@@ -14,7 +14,7 @@ public class FactoriaGestionAdministrador extends Conexion implements
 
 	public FactoriaGestionAdministrador() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
-		
+
 	}
 
 	@Override
@@ -36,8 +36,7 @@ public class FactoriaGestionAdministrador extends Conexion implements
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Agregando en Administradores "
-				+ tabla);
+		System.out.println("Agregando en Administradores " + tabla);
 
 	}
 

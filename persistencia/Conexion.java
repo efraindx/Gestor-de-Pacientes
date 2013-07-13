@@ -1,6 +1,7 @@
 package com.efrain.gestorpacientes.persistencia;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,8 +11,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
+
 import com.efrain.gestorpacientes.factorias.FactoriaGestion;
 import com.efrain.gestorpacientes.xml.GestorXml;
+import com.efrain.gestorpacientes.entidades.Persona;
 
 public class Conexion {
 
@@ -21,6 +24,7 @@ public class Conexion {
 	protected Statement consulta;
 	private static Conexion instancia;
 	private FactoriaGestion factoria;
+	private ArrayList<Persona> personas;
 
 	public static synchronized Conexion getInstancia()
 			throws ClassNotFoundException, SQLException, JDOMException,
@@ -34,6 +38,7 @@ public class Conexion {
 		Class.forName(gestorXml.getClaseDriver());
 		conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
 		consulta = conexion.createStatement();
+		personas = new ArrayList<Persona>();
 	}
 
 	public void agregar(Object persona, String tabla) {
@@ -49,8 +54,21 @@ public class Conexion {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public ArrayList mostrar() {
+	public ArrayList mostrar() throws SQLException {
 		return factoria.mostrar();
+	}
+
+	public ArrayList<Persona> getPersonas() throws SQLException {
+		resultado = consulta
+				.executeQuery("SELECT persona_id AS id, tipo AS rol, nombre, apellido, usuario, "
+						+ "contraseña FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
+		while (resultado.next()) {
+			personas.add(new Persona(resultado.getInt("id"), resultado
+					.getString("rol"), resultado.getString("nombre"), resultado
+					.getString("apellido"), resultado.getString("usuario"),
+					resultado.getString("contraseña")));
+		}
+		return personas;
 	}
 
 	/*
@@ -84,7 +102,7 @@ public class Conexion {
 	 * paciente.getFumador()); enunciado.setString(8, paciente.getAlergias());
 	 * enunciado.setString(9, paciente.getFoto()); enunciado.execute(); }
 	 * 
-	 * public ArrayList<Paciente> getPacientes() throws SQLException { resultado
+	 * public ArrayList<Persona> getPacientes() throws SQLException { resultado
 	 * = consulta.executeQuery("select * from pacientes"); while
 	 * (resultado.next()) { pacientes.add(new Paciente(resultado.getInt("id"),
 	 * resultado .getString("nombre"), resultado.getString("apellido"),
@@ -92,7 +110,8 @@ public class Conexion {
 	 * resultado .getString("cedula"), resultado .getString("fecha_nacimiento"),
 	 * resultado .getString("fumador"), resultado.getString("foto"),
 	 * resultado.getString("alergias"))); } return pacientes; }
-	 * 
+	 */
+	/*
 	 * public void modificarPaciente(int id, int posicion, String valor) throws
 	 * SQLException { switch (posicion) {
 	 * 
@@ -165,7 +184,7 @@ public class Conexion {
 	 * public void modificarUsuario(int id, int posicion, String valor) {
 	 * switch(posicion) { case 0: break; } }
 	 */
-	
+
 	public FactoriaGestion getFactoria() {
 		return factoria;
 	}
