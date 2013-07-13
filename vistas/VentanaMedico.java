@@ -1,12 +1,17 @@
 package com.efrain.gestorpacientes.vistas;
 
-import java.awt.FlowLayout;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class VentanaMedico extends Ventana {
+
+	private static final long serialVersionUID = 1L;
+	private static VentanaMedico instancia;
+	
+	public static synchronized VentanaMedico getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		return instancia == null ? instancia = new VentanaMedico() : instancia;
+	}
 
 	public VentanaMedico() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		this.anchura = 400;
@@ -17,28 +22,13 @@ public class VentanaMedico extends Ventana {
 	
 	@Override
 	public JPanel getContenido() {
-		JPanel pnlPrincipal = new JPanel(new FlowLayout());
+		JPanel pnlPrincipal = new JPanel();
 		JLabel lblTitulo = new JLabel("Ventana Medico");
 		pnlPrincipal.add(lblTitulo);
 		return pnlPrincipal;
 	}
 	
-	public static void main(String[] args) {
-		try {
-			new VentanaMedico().setVisible(true);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		new VentanaMedico().setVisible(true);
 	}
-
 }

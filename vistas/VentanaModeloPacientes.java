@@ -61,7 +61,7 @@ public class VentanaModeloPacientes extends Ventana {
 	public JPanel getContenido() {
 		
 		JPanel pnlPrincipal = new JPanel(new FlowLayout());
-
+		
 		JLabel lblTitulo = new JLabel("Mantenimiento de Pacientes");
 		lblTitulo.setFont(new Font("Monotype Coursiva", Font.BOLD + Font.ITALIC, 16));
 		JLabel lblNombre = new JLabel("Nombre:");
@@ -134,10 +134,6 @@ public class VentanaModeloPacientes extends Ventana {
 						txtCedula.getText().equals("") || (String)comboDia.getSelectedIndex()) {
 					
 				}*/
-				
-				
-				
-				
 				
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();

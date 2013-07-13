@@ -1,5 +1,5 @@
 package com.efrain.gestorpacientes.entidades;
 
 public enum Rol {
-	ADMINITRADOR, MÉDICO, ASISTENTE
+	ADMINISTRADOR, MEDICO, ASISTENTE
 }

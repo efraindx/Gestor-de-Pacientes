@@ -3,29 +3,38 @@ package com.efrain.gestorpacientes.entidades;
 public class Usuario {
 
 	private int id;
+	private String cod_empleado;
 	private String nombre;
 	private String apellido;
-	private String usuario;
-	private String contraseña;
 	private String rol;
+	private String direccion;
+	private String cedula;
+	private String especialidad;
+	private String telefonos;
 
-	public Usuario(int id, String nombre, String apellido, String usuario,
-			String contraseña, String rol) {
+	public Usuario(int id, String cod_empleado, String nombre, String apellido,
+			String rol, String direccion, String cedula, String especialidad, 
+			String telefonos) {
 		this.id = id;
+		this.cod_empleado = cod_empleado;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.usuario = usuario;
-		this.contraseña = contraseña;
 		this.rol = rol;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.especialidad = especialidad;
+		this.telefonos = telefonos;
 	}
 
-	public Usuario(String nombre, String apellido, String usuario,
-			String contraseña, String rol) {
+	public Usuario(String nombre, String apellido, String rol, String direccion,
+			String cedula, String especialidad, String telefonos) {
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.usuario = usuario;
-		this.contraseña = contraseña;
 		this.rol = rol;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.especialidad = especialidad;
+		this.telefonos = telefonos;
 	}
 
 	public int getId() {
@@ -59,21 +68,44 @@ public class Usuario {
 	public void setRol(String rol) {
 		this.rol = rol;
 	}
-	
-	public String getUsuario() {
-		return usuario;
+
+	public String getCod_empleado() {
+		return cod_empleado;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setCod_empleado(String cod_empleado) {
+		this.cod_empleado = cod_empleado;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getDireccion() {
+		return direccion;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+
+	public String getEspecialidad() {
+		return especialidad;
+	}
+
+	public void setEspecialidad(String especialidad) {
+		this.especialidad = especialidad;
+	}
+
+	public String getTelefonos() {
+		return telefonos;
+	}
+
+	public void setTelefonos(String telefonos) {
+		this.telefonos = telefonos;
+	}
 }

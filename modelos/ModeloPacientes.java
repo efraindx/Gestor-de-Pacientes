@@ -1,6 +1,7 @@
 package com.efrain.gestorpacientes.modelos;
 
 import java.io.IOException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -10,7 +11,6 @@ import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.entidades.Paciente;
 import com.efrain.gestorpacientes.persistencia.Conexion;
-
 public class ModeloPacientes extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
@@ -145,4 +145,5 @@ public class ModeloPacientes extends AbstractTableModel {
 	public boolean isCellEditable(int arg0, int arg1) {
 		return true;
 	}
+
 }

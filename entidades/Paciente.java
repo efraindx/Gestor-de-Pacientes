@@ -12,6 +12,8 @@ public class Paciente {
 	private String fumador;
 	private String alergias;
 	private String foto;
+	
+	
 
 	public Paciente(int id, String nombre, String apellido, String telefono,
 			String direccion, String cedula, String fecha_nacimiento,

@@ -2,7 +2,6 @@ package com.efrain.gestorpacientes.persistencia;
 
 import java.io.IOException;
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,13 +12,14 @@ import java.util.ArrayList;
 import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.entidades.Paciente;
+import com.efrain.gestorpacientes.entidades.Persona;
 import com.efrain.gestorpacientes.entidades.Usuario;
 import com.efrain.gestorpacientes.xml.GestorXml;
 
 public class Conexion {
 
 	private ArrayList<Paciente> pacientes;
-	private ArrayList<Usuario> usuarios;
+	private ArrayList<Persona> personas;
 	private ResultSet resultado;
 	private PreparedStatement enunciado;
 	private Connection conexion;
@@ -39,6 +39,7 @@ public class Conexion {
 		conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
 		consulta = conexion.createStatement();
 		pacientes = new ArrayList<Paciente>();
+		personas = new ArrayList<Persona>();
 	}
 
 	public void agregarPaciente(Paciente paciente) throws SQLException {
@@ -128,10 +129,11 @@ public class Conexion {
 	public void eliminarPaciente(int id) throws SQLException {
 		consulta.executeQuery("DELETE from pacientes where id = " + id);
 	}
-	
+
 	public void agregarUsuario(Usuario usuario) throws SQLException {
-		enunciado = conexion.prepareStatement("INSERT into usuarios (cod_empleado, nombre, apellido" +
-				"rol, direccion, cedula, especialidad, telefonos) values (?, ?, ?, ?, ?, ?, ?, ?)");
+		enunciado = conexion
+				.prepareStatement("INSERT into usuarios (cod_empleado, nombre, apellido"
+						+ "rol, direccion, cedula, especialidad, telefonos) values (?, ?, ?, ?, ?, ?, ?, ?)");
 		enunciado.setString(1, usuario.getCod_empleado());
 		enunciado.setString(2, usuario.getNombre());
 		enunciado.setString(3, usuario.getApellido());
@@ -142,26 +144,28 @@ public class Conexion {
 		enunciado.setString(8, usuario.getTelefonos());
 		enunciado.execute();
 	}
-	
+
 	public void eliminarUsuario(int id) throws SQLException {
 		consulta.executeQuery("DELETE from usuario where id = " + id);
 	}
 
-	public ArrayList<Usuario> getUsuario() throws SQLException {
-	 resultado = consulta.executeQuery("select * from usuarios");
-	  while(resultado.next()) { 
-		  usuarios.add(new Usuario(resultado.getInt("id"), resultado.getString("cod_empleado"), 
-		  resultado.getString("nombre"), resultado.getString("apellido"), resultado.getString("rol"),
-		  resultado.getString("direccion"), resultado.getString("cedula"), resultado.getString("especialidad"),
-		  resultado.getString("telefonos"))); 
-	  }
-	  return usuarios;
+	public ArrayList<Persona> getPersonas() throws SQLException {
+		resultado = consulta
+				.executeQuery("SELECT persona_id AS id, tipo AS rol, nombre, apellido, usuario, "
+						+ "contraseña FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
+		while (resultado.next()) {
+			personas.add(new Persona(resultado.getInt("id"), resultado
+					.getString("rol"), resultado.getString("nombre"), resultado
+					.getString("apellido"), resultado.getString("usuario"),
+					resultado.getString("contraseña")));
+		}
+		return personas;
 	}
-	
+
 	public void modificarUsuario(int id, int posicion, String valor) {
-			switch(posicion) {
-			case 0:
+		switch (posicion) {
+		case 0:
 			break;
-			}
+		}
 	}
 }
