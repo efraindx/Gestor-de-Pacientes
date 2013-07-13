@@ -1,4 +1,4 @@
-package entidades;
+package com.efrain.gestorpacientes.entidades;
 
 public class Paciente  {
 

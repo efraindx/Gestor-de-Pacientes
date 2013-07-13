@@ -1,4 +1,4 @@
-package vistas;
+package com.efrain.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -28,11 +28,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import Factorias.FactoriaGestion;
-import Factorias.FactoriaGestionMedico;
-import entidades.Persona;
-import enums.Fumador;
-import modelos.ModeloPacientes;
+import com.efrain.gestorpacientes.factorias.FactoriaGestion;
+import com.efrain.gestorpacientes.factorias.FactoriaGestionMedico;
+import com.efrain.gestorpacientes.entidades.Persona;
+import com.efrain.gestorpacientes.enums.Fumador;
+import com.efrain.gestorpacientes.modelos.ModeloPacientes;
 
 public class VentanaModeloPacientes extends Ventana {
 

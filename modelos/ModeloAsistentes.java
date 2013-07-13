@@ -1,5 +1,4 @@
-package modelos;
-
+package com.efrain.gestorpacientes.modelos;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,13 +8,9 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import Factorias.FactoriaGestionAsistente;
-import Factorias.FactoriaGestionMedico;
-import entidades.Asistente;
-import entidades.Paciente;
-import persistencia.Conexion;
-
-
+import com.efrain.gestorpacientes.factorias.FactoriaGestionAsistente;
+import com.efrain.gestorpacientes.entidades.Asistente;
+import com.efrain.gestorpacientes.persistencia.Conexion;
 
 		public class ModeloAsistentes extends AbstractTableModel {
 

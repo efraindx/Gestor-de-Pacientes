@@ -1,4 +1,4 @@
-package modelos;
+package com.efrain.gestorpacientes.modelos;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,11 +8,8 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import entidades.Administrador;
-import entidades.Paciente;
-import persistencia.Conexion;
-
-
+import com.efrain.gestorpacientes.entidades.Administrador;
+import com.efrain.gestorpacientes.persistencia.Conexion;
 
 	public class ModeloAdministradores extends AbstractTableModel {
 
@@ -21,8 +18,7 @@ import persistencia.Conexion;
 		private ArrayList<Administrador> administradores;
 		private String[] encabezados = { "Nombre", "Apellido", "Teléfono",
 				"Dirección", "Cédula", "Especialidad", "CodigodeEmpleado"};
-		
-
+	
 		public static synchronized ModeloAdministradores getInstancia()
 				throws ClassNotFoundException, SQLException, JDOMException, IOException {
 			return instancia == null ? instancia = new ModeloAdministradores()

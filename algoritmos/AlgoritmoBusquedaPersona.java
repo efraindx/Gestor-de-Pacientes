@@ -21,7 +21,7 @@ public class AlgoritmoBusquedaPersona implements AlgoritmoBusqueda {
 	@Override
 	public Object buscar(Persona persona) {
 		for(Persona p: personas) {
-			if(p.getUsuario().equals(persona.getUsuario()) & p.getContraseña().equals(persona.getContraseña())) {
+			if(p.getUsuario().equals(persona.getUsuario()) & p.getContrase().equals(persona.getContrase())) {
 				retorno = persona;
 				persona.setRol(p.getRol());
 			}

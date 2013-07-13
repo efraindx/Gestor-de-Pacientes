@@ -1,9 +1,4 @@
-import javax.swing.UnsupportedLookAndFeelException;
-
-import vistas.VentanaModeloPacientes;
-
-
-
+package com.efrain.gestorpacientes;
 
 public class Sistema {
 	

@@ -1,4 +1,4 @@
-package entidades;
+package com.efrain.gestorpacientes.entidades;
 
 public class Medico  {
 
@@ -14,15 +14,24 @@ public class Medico  {
 	public Medico(int id, String nombre, String apellido, String telefono,
 			String direccion, String cedula, String especialidad,
 			String codigoEmpleado) {
-		
-
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.especialidad = especialidad;
 	}
 
 	public Medico(String nombre, String apellido, String telefono,
 			String direccion, String cedula, String especialidad,
 			String codigoEmpleado) {
-		
-
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.especialidad = especialidad;
 	}
 	
 	public Medico() {

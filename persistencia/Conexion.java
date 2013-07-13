@@ -35,14 +35,6 @@ public class Conexion {
 		consulta = conexion.createStatement();
 	}
 
-	public FactoriaGestion getFactoria() {
-		return factoria;
-	}
-
-	public void setFactoria(FactoriaGestion factoria) {
-		this.factoria = factoria;
-	}
-
 	public void agregar(Object persona, String tabla) {
 		factoria.agregar(persona, tabla);
 	}
@@ -172,5 +164,13 @@ public class Conexion {
 	 * public void modificarUsuario(int id, int posicion, String valor) {
 	 * switch(posicion) { case 0: break; } }
 	 */
+	
+	public FactoriaGestion getFactoria() {
+		return factoria;
+	}
+
+	public void setFactoria(FactoriaGestion factoria) {
+		this.factoria = factoria;
+	}
 
 }

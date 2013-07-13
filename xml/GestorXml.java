@@ -1,6 +1,4 @@
-package xml;
-
-
+package com.efrain.gestorpacientes.xml;
 
 import java.io.File;
 import java.io.IOException;

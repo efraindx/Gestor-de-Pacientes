@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -67,16 +68,18 @@ public class VentanaLogin extends Ventana {
 		JLabel lblContraseña = new JLabel("Contraseña:");
 
 		JButton botonIniciar = new JButton("Iniciar Sesión");
-		botonIniciar.addActionListener(new ActionListener(){
+		botonIniciar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Persona persona = (Persona)algoritmoB.buscar(new Persona(txtUsuario
-						.getText(), new String(txtContraseña.getPassword())));
-				if(persona != null) {
+				Persona persona = (Persona) algoritmoB.buscar(new Persona(
+						txtUsuario.getText(), new String(txtContraseña
+								.getPassword())));
+				if (persona != null) {
 					String perfil = (String) algoritmoBP.buscar(persona);
-					if(perfil.equals(Rol.ADMINISTRADOR.name())) {
+					if (perfil.equals(Rol.ADMINISTRADOR.name())) {
 						try {
-							VentanaAdministrador.getInstancia().setVisible(true);
+							VentanaAdministrador.getInstancia()
+									.setVisible(true);
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -100,35 +103,39 @@ public class VentanaLogin extends Ventana {
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
-						}	
+						}
 					}
 				} else {
-					JOptionPane.showMessageDialog(VentanaLogin.this, "Usuario o Contraseña inválidos.");
+					JOptionPane.showMessageDialog(VentanaLogin.this,
+							"Usuario o Contraseña inválidos.");
 				}
 			}
 		});
 		JButton botonCancelar = new JButton("Cancelar");
-		botonCancelar.addActionListener(new ActionListener(){
+		botonCancelar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int respuesta = JOptionPane.showConfirmDialog(null, "Está seguro ?");
-				if(respuesta == JOptionPane.YES_OPTION) {
+				int respuesta = JOptionPane.showConfirmDialog(null,
+						"Está seguro ?");
+				if (respuesta == JOptionPane.YES_OPTION) {
 					VentanaLogin.this.dispose();
 				}
 			}
 		});
 
 		txtUsuario = new JTextField(10);
-		txtUsuario.addActionListener(new ActionListener(){
+		txtUsuario.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Persona persona = (Persona)algoritmoB.buscar(new Persona(txtUsuario
-						.getText(), new String(txtContraseña.getPassword())));
-				if(persona != null) {
+				Persona persona = (Persona) algoritmoB.buscar(new Persona(
+						txtUsuario.getText(), new String(txtContraseña
+								.getPassword())));
+				if (persona != null) {
 					String perfil = (String) algoritmoBP.buscar(persona);
-					if(perfil.equals(Rol.ADMINISTRADOR.name())) {
+					if (perfil.equals(Rol.ADMINISTRADOR.name())) {
 						try {
-							VentanaAdministrador.getInstancia().setVisible(true);
+							VentanaAdministrador.getInstancia()
+									.setVisible(true);
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -152,10 +159,11 @@ public class VentanaLogin extends Ventana {
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
-						}	
+						}
 					}
 				} else {
-					JOptionPane.showMessageDialog(VentanaLogin.this, "Usuario o Contraseña inválidos.");
+					JOptionPane.showMessageDialog(VentanaLogin.this,
+							"Usuario o Contraseña inválidos.");
 				}
 			}
 		});
@@ -163,13 +171,15 @@ public class VentanaLogin extends Ventana {
 		txtContraseña.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Persona persona = (Persona)algoritmoB.buscar(new Persona(txtUsuario
-						.getText(), new String(txtContraseña.getPassword())));
-				if(persona != null) {
+				Persona persona = (Persona) algoritmoB.buscar(new Persona(
+						txtUsuario.getText(), new String(txtContraseña
+								.getPassword())));
+				if (persona != null) {
 					String perfil = (String) algoritmoBP.buscar(persona);
-					if(perfil.equals(Rol.ADMINISTRADOR.name())) {
+					if (perfil.equals(Rol.ADMINISTRADOR.name())) {
 						try {
-							VentanaAdministrador.getInstancia().setVisible(true);
+							VentanaAdministrador.getInstancia()
+									.setVisible(true);
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -193,16 +203,17 @@ public class VentanaLogin extends Ventana {
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
-						}	
+						}
 					}
 				} else {
-					JOptionPane.showMessageDialog(VentanaLogin.this, "Usuario o Contraseña inválidos.");
+					JOptionPane.showMessageDialog(VentanaLogin.this,
+							"Usuario o Contraseña inválidos.");
 				}
 			}
 		});
 		JTextField enlace = new JTextField("No puedes iniciar sesión?", 15);
 		enlace.setEditable(false);
-		
+
 		enlace.setBorder(new MatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0)));
 		enlace.setForeground(Color.blue);
 		enlace.setBackground(new Color(0, 0, 0, 0));
@@ -228,85 +239,12 @@ public class VentanaLogin extends Ventana {
 		panel.add(pnlInferior);
 		panel.add(enlace);
 		panel.setPreferredSize(new Dimension(anchura, altura));
-		
+
 		return panel;
 	}
 
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
-=======
-	public class VentanaLogin extends Ventana {
-		
-		private static final long serialVersionUID = 1L;
-		private static VentanaLogin instancia;
-		
-		public static synchronized VentanaLogin getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-			return instancia == null ? instancia = new VentanaLogin() : instancia;
-		}
-		
-		public VentanaLogin() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-			this.icono = "imágenes/iconoLogin.png";
-			this.anchura = 540;
-			this.altura = 300;
-			this.titulo = "Bievenid@";
-			prepararVentana(titulo, anchura, altura, icono);
-		}
-		
-		@Override
-		public JPanel getContenido() {
-			
-			JPanel pnlPrincipal = new JPanel();
-			pnlPrincipal.setLayout(new FlowLayout());
-			pnlPrincipal.setSize(anchura, altura);
-			JPanel pnlGrid = new JPanel(new GridLayout(3, 2));
-			JPanel pnlInferior = new JPanel(new FlowLayout());
-			pnlInferior.setPreferredSize(new Dimension(400, 50));
-			JPanel pnlPrueba = new JPanel(new FlowLayout());
-			pnlPrueba.setPreferredSize(new Dimension(400, 25));
-			
-			JLabel lblTitulo = new JLabel(new ImageIcon("imágenes/login.png"));
-			JLabel lblUsuario = new JLabel("Usuario:");
-			JLabel lblContraseña = new JLabel("Contraseña:");
-			
-			JButton botonIniciar = new JButton("Iniciar Sesión");
-			JButton botonCancelar = new JButton("Cancelar");
-			
-			JTextField txtUsuario = new JTextField(10);
-			JTextField txtContraseña = new JTextField(10);
-			JTextField enlace = new JTextField("Olvidaste la contraseña?");
-			enlace.setEditable(false);
-			enlace.setBorder(new MatteBorder(0,0,1,0,new Color(0,0,0,0)));
-			enlace.setForeground(Color.blue);
-			enlace.setBackground(new Color(0,0,0,0));
-			enlace.setCursor( new Cursor(Cursor.HAND_CURSOR) );
-			enlace.addMouseListener(new MouseAdapter(){
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					JOptionPane.showMessageDialog(null, "ASDgasd");
-				}
-			});
-			
-			pnlInferior.add(botonIniciar);
-			pnlInferior.add(botonCancelar);
-		
-		    pnlGrid.add(lblUsuario);
-		    pnlGrid.add(txtUsuario);
-		    pnlGrid.add(lblContraseña);
-		    pnlGrid.add(txtContraseña);
-		    
-		    pnlPrincipal.add(lblTitulo);
-		    pnlPrincipal.add(pnlPrueba);
-			pnlPrincipal.add(pnlGrid);
-			pnlPrincipal.add(pnlInferior);
-			pnlPrincipal.add(enlace);
-			pnlPrincipal.setPreferredSize(new Dimension(anchura, altura));
-			return pnlPrincipal;
-		}
-		
-		@Override
-		public boolean esDisponibleCambiarTamaño() {
-			return true;
-		}
->>>>>>> 8a8cbd05a7de0f1736321ee904dd58dfb002602c
 	}
+}
