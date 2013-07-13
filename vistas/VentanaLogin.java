@@ -23,7 +23,7 @@ import javax.swing.border.MatteBorder;
 import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusqueda;
 import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPerfil;
 import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.entidades.Rol;
+import com.efrain.gestorpacientes.enums.Rol;
 
 public class VentanaLogin extends Ventana {
 

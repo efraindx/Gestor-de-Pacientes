@@ -1,6 +1,7 @@
 package com.efrain.gestorpacientes.modelos;
 
 import java.io.IOException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -8,9 +9,9 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.factorias.FactoriaGestionAsistente;
 import com.efrain.gestorpacientes.entidades.Asistente;
 import com.efrain.gestorpacientes.persistencia.Conexion;
+import com.efrain.gestorpacientes.factorias.FactoriaGestionAsistente;
 
 		public class ModeloAsistentes extends AbstractTableModel {
 
@@ -28,7 +29,7 @@ import com.efrain.gestorpacientes.persistencia.Conexion;
 
 			public ModeloAsistentes() throws ClassNotFoundException, SQLException,
 			JDOMException, IOException {
-		Conexion.getInstancia().setFactoria(new FactoriaGestionAsistente());
+			Conexion.getInstancia().setFactoria(new FactoriaGestionAsistente());
 	}
 
 			@Override

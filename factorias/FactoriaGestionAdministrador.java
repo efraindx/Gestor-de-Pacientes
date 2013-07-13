@@ -3,6 +3,7 @@ package com.efrain.gestorpacientes.factorias;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import org.jdom2.JDOMException;
 import com.efrain.gestorpacientes.persistencia.Conexion;
 import com.efrain.gestorpacientes.entidades.Administrador;
@@ -13,7 +14,7 @@ public class FactoriaGestionAdministrador extends Conexion implements
 
 	public FactoriaGestionAdministrador() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
-
+		
 	}
 
 	@Override

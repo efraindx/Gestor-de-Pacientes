@@ -10,6 +10,7 @@ import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.factorias.FactoriaGestionMedico;
 import com.efrain.gestorpacientes.entidades.Medico;
+
 import com.efrain.gestorpacientes.persistencia.Conexion;
 
 public class ModeloMedico extends AbstractTableModel {

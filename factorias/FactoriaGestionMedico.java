@@ -3,9 +3,11 @@ package com.efrain.gestorpacientes.factorias;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.persistencia.Conexion;
+import com.efrain.gestorpacientes.factorias.FactoriaGestion;
 import com.efrain.gestorpacientes.entidades.Medico;
 
 public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
@@ -36,8 +38,7 @@ public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Agregando en Medicos "
-				+ tabla);
+		System.out.println("Agregando en Medicos " + tabla);
 	}
 
 	@Override

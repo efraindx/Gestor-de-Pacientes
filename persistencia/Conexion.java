@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import org.jdom2.JDOMException;
 import com.efrain.gestorpacientes.factorias.FactoriaGestion;
 import com.efrain.gestorpacientes.xml.GestorXml;

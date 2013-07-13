@@ -10,6 +10,7 @@ import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.factorias.FactoriaGestion;
 import com.efrain.gestorpacientes.entidades.Paciente;
+
 import com.efrain.gestorpacientes.persistencia.Conexion;
 
 public class ModeloPacientes extends AbstractTableModel {
