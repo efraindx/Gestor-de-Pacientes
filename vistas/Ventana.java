@@ -9,7 +9,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-
 public abstract class Ventana extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
@@ -65,6 +64,12 @@ public abstract class Ventana extends JFrame {
 	
 	public boolean esDisponibleCambiarTamaño() {
 		return true;
+	}
+
+	
+	public static void main(String[] args) {
+	
+		
 	}
 	
 }

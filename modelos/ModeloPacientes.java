@@ -1,7 +1,8 @@
-package com.efrain.gestorpacientes.modelos;
+package modelos;
+
+
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -9,8 +10,10 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Paciente;
-import com.efrain.gestorpacientes.persistencia.Conexion;
+import Factorias.FactoriaGestion;
+import entidades.Paciente;
+import persistencia.Conexion;
+
 public class ModeloPacientes extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
@@ -19,16 +22,17 @@ public class ModeloPacientes extends AbstractTableModel {
 	private String[] encabezados = { "Nombre", "Apellido", "Teléfono",
 			"Dirección", "Cédula", "Fec. Nac.", "Fumador", "Foto", "Alergias" };
 
+	private FactoriaGestion factoria;
 	public static synchronized ModeloPacientes getInstancia()
 			throws ClassNotFoundException, SQLException, JDOMException, IOException {
 		return instancia == null ? instancia = new ModeloPacientes()
 				: instancia;
 	}
-
+/*
 	public ModeloPacientes() throws ClassNotFoundException, SQLException, JDOMException, IOException {
 		pacientes = Conexion.getInstancia().getPacientes();
 	}
-
+*/
 	@Override
 	public int getColumnCount() {
 		return encabezados.length;
@@ -42,11 +46,11 @@ public class ModeloPacientes extends AbstractTableModel {
 	public void eliminarPaciente(int posicion) {
 		
 	}
-	
+	/*
 	public void agregarPaciente(Paciente paciente) throws ClassNotFoundException, SQLException, JDOMException, IOException {
 		Conexion.getInstancia().agregarPaciente(paciente);
 		fireTableDataChanged();
-	}
+	}*/
 
 	@Override
 	public Object getValueAt(int fila, int columna) {
@@ -146,4 +150,26 @@ public class ModeloPacientes extends AbstractTableModel {
 		return true;
 	}
 
+	public FactoriaGestion getFactoria() {
+		return factoria;
+	}
+
+	public void setFactoria(FactoriaGestion factoria) {
+		this.factoria = factoria;
+		try {
+			Conexion.getInstancia().setFactoria(factoria);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

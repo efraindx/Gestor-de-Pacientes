@@ -23,9 +23,9 @@ public class CorreoElectronico {
 	}
 	
 	public void setSession() {
-		sesion = Session.getInstance(props, new Authenticador(){
+	//	sesion = Session.getInstance(props, new Authenticador(){
 			
-		});
+	//	});
 	}
 
 }

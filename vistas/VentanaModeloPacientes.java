@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -27,15 +28,18 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Fumador;
-import com.efrain.gestorpacientes.modelos.ModeloPacientes;
+import Factorias.FactoriaGestion;
+import Factorias.FactoriaGestionMedico;
+import entidades.Persona;
+import enums.Fumador;
+import modelos.ModeloPacientes;
 
 public class VentanaModeloPacientes extends Ventana {
 
 	private static final long serialVersionUID = 1L;
-	private String[] meses = { "Mes", "Enero", "Febrero", "Marzo", "Abril", "Mayo",
-			"Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre",
-			"Diciembre" };
+	private String[] meses = { "Mes", "Enero", "Febrero", "Marzo", "Abril",
+			"Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+			"Noviembre", "Diciembre" };
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtTelefono;
@@ -47,10 +51,12 @@ public class VentanaModeloPacientes extends Ventana {
 	private JTable tablaPacientes = null;
 	private String imagen = null;
 	private JComboBox<String> comboDia;
-	private JComboBox<String>comboMes;
+	private JComboBox<String> comboMes;
 	private JComboBox<String> comboAño;
 
-	public VentanaModeloPacientes() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public VentanaModeloPacientes() throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException {
 		this.anchura = 660;
 		this.altura = 540;
 		this.titulo = "Pacientes";
@@ -59,28 +65,29 @@ public class VentanaModeloPacientes extends Ventana {
 
 	@Override
 	public JPanel getContenido() {
-		
+
 		JPanel pnlPrincipal = new JPanel(new FlowLayout());
-		
+
 		JLabel lblTitulo = new JLabel("Mantenimiento de Pacientes");
-		lblTitulo.setFont(new Font("Monotype Coursiva", Font.BOLD + Font.ITALIC, 16));
+		lblTitulo.setFont(new Font("Monotype Coursiva",
+				Font.BOLD + Font.ITALIC, 16));
 		JLabel lblNombre = new JLabel("Nombre:");
 		JLabel lblApellido = new JLabel("Apellido:");
 		JLabel lblTelefono = new JLabel("Teléfono:");
 		JLabel lblDireccion = new JLabel("Dirección:");
 		JLabel lblIntermedio = new JLabel();
-		lblIntermedio.setPreferredSize(new Dimension(3,3));
+		lblIntermedio.setPreferredSize(new Dimension(3, 3));
 		JLabel lblIntermedio2 = new JLabel();
-		lblIntermedio2.setPreferredSize(new Dimension(3,3));
+		lblIntermedio2.setPreferredSize(new Dimension(3, 3));
 		JLabel lblIntermedio3 = new JLabel();
-		lblIntermedio3.setPreferredSize(new Dimension(270,50));
+		lblIntermedio3.setPreferredSize(new Dimension(270, 50));
 		JLabel lblCedula = new JLabel("Cédula:");
 		JLabel lblFecha_Naci = new JLabel("Fec. Nac.:");
-		//lblFecha_Naci.setPreferredSize(new Dimension(115, 10));
+		// lblFecha_Naci.setPreferredSize(new Dimension(115, 10));
 		JLabel lblFumador = new JLabel("Fumador?");
 		JLabel lblAlergias = new JLabel("Alergias:");
 		JLabel lblFoto = new JLabel("Foto:");
-		
+
 		try {
 			tablaPacientes = new JTable(ModeloPacientes.getInstancia());
 		} catch (ClassNotFoundException e) {
@@ -92,29 +99,30 @@ public class VentanaModeloPacientes extends Ventana {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		tablaPacientes.setPreferredScrollableViewportSize(new Dimension(630, 240));
-		
+		tablaPacientes.setPreferredScrollableViewportSize(new Dimension(630,
+				240));
+
 		txtNombre = new JTextField(10);
 		txtApellido = new JTextField(10);
 		txtTelefono = new JTextField(10);
 		txtCedula = new JTextField(10);
-		
+
 		txtDireccion = new JTextArea(3, 15);
 		txtAlergias = new JTextArea(3, 15);
-		
+
 		comboDia = getComboDia();
 		comboMes = new JComboBox<String>(meses);
 		comboAño = getcomboAño();
-		
+
 		ButtonGroup bg = new ButtonGroup();
 		radioSi = new JRadioButton("Si");
 		radioNo = new JRadioButton("No");
-		radioNo.setPreferredSize(new Dimension(80,50));
+		radioNo.setPreferredSize(new Dimension(80, 50));
 		bg.add(radioSi);
 		bg.add(radioNo);
-		
+
 		JButton btnSeleccionar = new JButton("Seleccionar foto");
-		btnSeleccionar.addActionListener(new ActionListener(){
+		btnSeleccionar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileC = new JFileChooser();
@@ -124,54 +132,74 @@ public class VentanaModeloPacientes extends Ventana {
 			}
 		});
 		btnSeleccionar.setPreferredSize(new Dimension(310, 30));
-		JButton btnAgregar = new JButton("Agregar Paciente"); 
-		btnAgregar.addActionListener(new ActionListener(){
+		JButton btnAgregar = new JButton("Agregar Paciente");
+		btnAgregar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				/*if(txtNombre.getText().equals("") || txtApellido.getText().equals("") || 
-						txtTelefono.getText().equals("") || txtDireccion.getText().equals("") ||
-						txtCedula.getText().equals("") || (String)comboDia.getSelectedIndex()) {
-					
-				}*/
-				
+
+				/*
+				 * if(txtNombre.getText().equals("") ||
+				 * txtApellido.getText().equals("") ||
+				 * txtTelefono.getText().equals("") ||
+				 * txtDireccion.getText().equals("") ||
+				 * txtCedula.getText().equals("") ||
+				 * (String)comboDia.getSelectedIndex()) {
+				 * 
+				 * }
+				 */
+
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
 				String telefono = txtTelefono.getText();
 				String direccion = txtDireccion.getText();
 				String cedula = txtCedula.getText();
-				String dia = (String)comboDia.getSelectedItem();
+				String dia = (String) comboDia.getSelectedItem();
 				String mes = (String) comboMes.getSelectedItem();
 				String year = (String) comboAño.getSelectedItem();
 				String fecha_nacimiento = dia + "/" + mes + "/" + year;
-				
+
 				String fumador = null;
-				if(radioSi.isSelected()) {
+				if (radioSi.isSelected()) {
 					fumador = Fumador.SI.name();
 				} else if (radioNo.isSelected()) {
 					fumador = Fumador.NO.name();
 				}
-				
+
 				String alergias = txtAlergias.getText();
-				
-				
+
 			}
 		});
 		JButton btnModificar = new JButton("Modificar Paciente");
 		btnModificar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(tablaPacientes.getSelectedRow() != -1) {
-					
+				if (tablaPacientes.getSelectedRow() != -1) {
+					try {
+						ModeloPacientes.getInstancia().setFactoria(new  FactoriaGestionMedico());
+							
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JDOMException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Tiene que seleccionar un Paciente");
+					JOptionPane.showMessageDialog(null,
+							"Tiene que seleccionar un Paciente");
 				}
 			}
 		});
 		JButton btnEliminar = new JButton("Eliminar Paciente");
-		
+
 		JPanel pnlGrid = new JPanel(new GridLayout(2, 5));
-		pnlGrid.setPreferredSize(new Dimension(new Dimension(600,50)));
+		pnlGrid.setPreferredSize(new Dimension(new Dimension(600, 50)));
 		pnlGrid.add(lblNombre);
 		pnlGrid.add(txtNombre);
 		pnlGrid.add(lblIntermedio);
@@ -182,11 +210,10 @@ public class VentanaModeloPacientes extends Ventana {
 		pnlGrid.add(lblIntermedio2);
 		pnlGrid.add(lblCedula);
 		pnlGrid.add(txtCedula);
-		
-		
+
 		pnlPrincipal.add(lblTitulo);
 		pnlPrincipal.add(pnlGrid);
-		
+
 		pnlPrincipal.add(lblDireccion);
 		pnlPrincipal.add(new JScrollPane(txtDireccion));
 		pnlPrincipal.add(lblAlergias);
@@ -209,27 +236,26 @@ public class VentanaModeloPacientes extends Ventana {
 	private JComboBox<String> getComboDia() {
 		comboDia = new JComboBox<String>();
 		comboDia.addItem("Dia");
-		for(int i = 1; i <= 31; i++) {
+		for (int i = 1; i <= 31; i++) {
 			comboDia.addItem(Integer.toString(i));
-		} 
+		}
 		return comboDia;
 	}
-	
+
 	private JComboBox<String> getcomboAño() {
 		comboAño = new JComboBox<String>();
 		comboAño.addItem("Año");
-		for(int i = 2013; i >= 1990; i--) {
+		for (int i = 2013; i >= 1990; i--) {
 			comboAño.addItem(Integer.toString(i));
 		}
 		return comboAño;
 	}
-	
+
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
 	}
 
-	
 	public static void main(String[] args) {
 		try {
 			new VentanaModeloPacientes().setVisible(true);
@@ -237,8 +263,6 @@ public class VentanaModeloPacientes extends Ventana {
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
 	}
 }
