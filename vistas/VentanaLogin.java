@@ -41,6 +41,15 @@ public class VentanaLogin extends Ventana {
 		return instancia == null ? instancia = new VentanaLogin(algoritmo)
 				: instancia;
 	}
+	
+	public VentanaLogin() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		this.algoritmoBP = new AlgoritmoBusquedaPerfil();
+		this.icono = "imágenes/iconoLogin.png";
+		this.anchura = 520;
+		this.altura = 300;
+		this.titulo = "ControlSoft v2.0";
+		prepararVentana(titulo, anchura, altura, icono);
+	}
 
 	public VentanaLogin(AlgoritmoBusqueda algoritmo)
 			throws ClassNotFoundException, InstantiationException,
@@ -63,7 +72,7 @@ public class VentanaLogin extends Ventana {
 		JPanel pnlPrueba = new JPanel(new FlowLayout());
 		pnlPrueba.setPreferredSize(new Dimension(400, 25));
 
-		JLabel lblTitulo = new JLabel(new ImageIcon("imágenes/login.png"));
+		JLabel lblTitulo = new JLabel(new ImageIcon("./com/efrain/gestorpacientes/imágenes/login.png"));
 		JLabel lblUsuario = new JLabel("Usuario:");
 		JLabel lblContraseña = new JLabel("Contraseña:");
 
@@ -246,5 +255,15 @@ public class VentanaLogin extends Ventana {
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			new VentanaLogin().setVisible(true);
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
