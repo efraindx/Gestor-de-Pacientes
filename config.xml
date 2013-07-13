@@ -5,5 +5,5 @@
 	<ubicación>localhost</ubicación>
 	<nombre>gpacientes</nombre>
 	<usuario>root</usuario>
-	<contraseña>itla</contraseña>
+	<contraseña></contraseña>
 </base-de-datos>
