@@ -48,7 +48,7 @@ public class VentanaLogin extends Ventana {
 		this.algoritmoB = algoritmo;
 		this.algoritmoBP = new AlgoritmoBusquedaPerfil();
 		this.icono = "imágenes/iconoLogin.png";
-		this.anchura = 540;
+		this.anchura = 520;
 		this.altura = 300;
 		this.titulo = "ControlSoft v2.0";
 		prepararVentana(titulo, anchura, altura, icono);
@@ -68,9 +68,98 @@ public class VentanaLogin extends Ventana {
 		JLabel lblContraseña = new JLabel("Contraseña:");
 
 		JButton botonIniciar = new JButton("Iniciar Sesión");
+		botonIniciar.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Persona persona = (Persona)algoritmoB.buscar(new Persona(txtUsuario
+						.getText(), new String(txtContraseña.getPassword())));
+				if(persona != null) {
+					String perfil = (String) algoritmoBP.buscar(persona);
+					if(perfil.equals(Rol.ADMINISTRADOR.name())) {
+						try {
+							VentanaAdministrador.getInstancia().setVisible(true);
+						} catch (ClassNotFoundException
+								| InstantiationException
+								| IllegalAccessException
+								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						}
+					} else if (perfil.equals(Rol.MEDICO.name())) {
+						try {
+							VentanaMedico.getInstancia().setVisible(true);
+						} catch (ClassNotFoundException
+								| InstantiationException
+								| IllegalAccessException
+								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+						try {
+							VentanaAsistente.getInstancia().setVisible(true);
+						} catch (ClassNotFoundException
+								| InstantiationException
+								| IllegalAccessException
+								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						}	
+					}
+				} else {
+					JOptionPane.showMessageDialog(VentanaLogin.this, "Usuario o Contraseña inválidos.");
+				}
+			}
+		});
 		JButton botonCancelar = new JButton("Cancelar");
+		botonCancelar.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int respuesta = JOptionPane.showConfirmDialog(null, "Está seguro ?");
+				if(respuesta == JOptionPane.YES_OPTION) {
+					VentanaLogin.this.dispose();
+				}
+			}
+		});
 
 		txtUsuario = new JTextField(10);
+		txtUsuario.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Persona persona = (Persona)algoritmoB.buscar(new Persona(txtUsuario
+						.getText(), new String(txtContraseña.getPassword())));
+				if(persona != null) {
+					String perfil = (String) algoritmoBP.buscar(persona);
+					if(perfil.equals(Rol.ADMINISTRADOR.name())) {
+						try {
+							VentanaAdministrador.getInstancia().setVisible(true);
+						} catch (ClassNotFoundException
+								| InstantiationException
+								| IllegalAccessException
+								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						}
+					} else if (perfil.equals(Rol.MEDICO.name())) {
+						try {
+							VentanaMedico.getInstancia().setVisible(true);
+						} catch (ClassNotFoundException
+								| InstantiationException
+								| IllegalAccessException
+								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+						try {
+							VentanaAsistente.getInstancia().setVisible(true);
+						} catch (ClassNotFoundException
+								| InstantiationException
+								| IllegalAccessException
+								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						}	
+					}
+				} else {
+					JOptionPane.showMessageDialog(VentanaLogin.this, "Usuario o Contraseña inválidos.");
+				}
+			}
+		});
 		txtContraseña = new JPasswordField(10);
 		txtContraseña.addActionListener(new ActionListener() {
 			@Override
@@ -112,8 +201,9 @@ public class VentanaLogin extends Ventana {
 				}
 			}
 		});
-		JTextField enlace = new JTextField("No puedes iniciar sesión?");
+		JTextField enlace = new JTextField("No puedes iniciar sesión?", 15);
 		enlace.setEditable(false);
+		
 		enlace.setBorder(new MatteBorder(0, 0, 1, 0, new Color(0, 0, 0, 0)));
 		enlace.setForeground(Color.blue);
 		enlace.setBackground(new Color(0, 0, 0, 0));
@@ -145,6 +235,6 @@ public class VentanaLogin extends Ventana {
 
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
-		return true;
+		return false;
 	}
 }
