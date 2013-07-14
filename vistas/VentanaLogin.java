@@ -256,21 +256,6 @@ public class VentanaLogin extends Ventana {
 	}
 
 	public static void main(String[] args) {
-		try {	
-			new VentanaLogin(new AlgoritmoBusquedaPersona()).setVisible(true);
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 }

@@ -2,6 +2,8 @@ package com.efrain.gestorpacientes.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -16,7 +18,10 @@ public class GestorXml {
 	
 	public GestorXml() throws JDOMException, IOException{
 		constructor = new SAXBuilder();
-		documento = constructor.build(new File("C:\\Users\\Efrain\\Dropbox\\workspace\\Gestor de Pacientes\\src\\com\\efrain\\gestorpacientes\\config.xml"));
+		
+		documento = constructor.build(new File("src/com/efrain/gestorpacientes/config.xml"));
+		
+		
 		raíz = documento.getRootElement();
 	}
 	

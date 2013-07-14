@@ -1,5 +1,15 @@
 package com.efrain.gestorpacientes;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.swing.UnsupportedLookAndFeelException;
+
+import org.jdom2.JDOMException;
+
+import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPersona;
+import com.efrain.gestorpacientes.vistas.VentanaLogin;
+
 public class Sistema {
 	
 	private static Sistema instancia;
@@ -15,25 +25,23 @@ public class Sistema {
 	}
 
 	
-	public static void main(String[] args) {/*
-		VentanaModeloPacientes vm;
-		try {
-			vm =new VentanaModeloPacientes();
-			vm.setVisible(true);
-			
-		} catch (ClassNotFoundException e) {
+	public static void main(String[] args) {
+	try {	
+			new VentanaLogin(new AlgoritmoBusquedaPersona()).setVisible(true);
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		Sistema.getInstancia();
 		Sistema st = new Sistema();
