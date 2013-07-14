@@ -1,4 +1,6 @@
-package com.efrain.gestorpacientes.vistas;
+package vistas;
+
+
 
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -17,7 +19,6 @@ public abstract class Ventana extends JFrame {
 	protected int anchura;
 	protected int altura;
 	protected String icono;
-	protected JPanel panel;
 
 	public final void prepararVentana(String titulo, int anchura, int altura, String icono) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		
@@ -65,6 +66,12 @@ public abstract class Ventana extends JFrame {
 	
 	public boolean esDisponibleCambiarTamaño() {
 		return true;
+	}
+
+	
+	public static void main(String[] args) {
+	
+		
 	}
 	
 }
