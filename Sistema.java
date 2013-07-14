@@ -1,6 +1,3 @@
-import javax.swing.UnsupportedLookAndFeelException;
-
-import vistas.VentanaModeloPacientes;
 
 
 
