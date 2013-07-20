@@ -295,4 +295,11 @@ public class VentanaLogin extends Ventana {
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
 	}
+<<<<<<< HEAD
+=======
+
+	public static void main(String[] args) {
+		
+	}
+>>>>>>> cbf5ac6365fb12c22636c0fdeb0abcfb001b716f
 }
