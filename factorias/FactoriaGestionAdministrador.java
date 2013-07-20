@@ -18,14 +18,12 @@ public class FactoriaGestionAdministrador extends Conexion implements
 	}
 
 	@Override
-	public void agregar(Object persona, String tabla) {
+	public void agregar(Object persona) {
 		Administrador administrador = (Administrador) persona;
 		try {
 			enunciado = conexion
-					.prepareStatement("insert into "
-							+ tabla
-							+ "(nombre, apellido, telefono, direccion, codigodeempleado, cedula)"
-							+ " values (?,?,?,?,?,?)");
+					.prepareStatement("insert into administradores(nombre, apellido, telefono, direccion, "
+							+ "codigodeempleado, cedula) values (?,?,?,?,?,?)");
 			enunciado.setString(1, administrador.getNombre());
 			enunciado.setString(2, administrador.getApellido());
 			enunciado.setString(3, administrador.getTelefono());
@@ -36,24 +34,22 @@ public class FactoriaGestionAdministrador extends Conexion implements
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Agregando en Administradores " + tabla);
-
 	}
 
 	@Override
-	public void eliminar() {
+	public void eliminar(int fila) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void modificiar() {
+	public void modificar(int id, int atributo, String valor) {
 
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ArrayList mostrar() {
+	public ArrayList getDatos() {
 		try {
 			resultado = consulta.executeQuery("select * from administradores");
 			while (resultado.next()) {

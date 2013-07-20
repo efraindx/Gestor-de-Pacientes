@@ -1,43 +1,28 @@
 package com.efrain.gestorpacientes;
 
-public class Sistema {
-	
-	private static Sistema instancia;
-	private int numero;
-	
-	private static synchronized Sistema getInstancia() {
-		return instancia == null ? instancia = new Sistema() : instancia;
-	}
-	
-	public Sistema() {
-		System.out.println("hollla  "+ numero++);
-		numero += numero;
-	}
+import java.io.IOException;
+import java.sql.SQLException;
 
-	
-	public static void main(String[] args) {/*
-		VentanaModeloPacientes vm;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import org.jdom2.JDOMException;
+
+import com.efrain.gestorpacientes.vistas.VentanaLogin;
+import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPersona;
+
+public class Sistema {
+	public static void main(String[] args) {
 		try {
-			vm =new VentanaModeloPacientes();
-			vm.setVisible(true);
+			VentanaLogin.getInstancia(new AlgoritmoBusquedaPersona()).setVisible(true);
 			
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+		} catch (JDOMException e) {
 			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
-		
-		Sistema.getInstancia();
-		Sistema st = new Sistema();
-	
-		
+		}
 	}
 }

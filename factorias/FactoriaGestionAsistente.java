@@ -15,17 +15,16 @@ public class FactoriaGestionAsistente extends Conexion implements
 
 	public FactoriaGestionAsistente() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
+		this.asistentes = new ArrayList<Asistente>();
 	}
 
 	@Override
-	public void agregar(Object persona, String tabla) {
+	public void agregar(Object persona) {
 		Asistente asistente = (Asistente) persona;
 		try {
 			enunciado = conexion
-					.prepareStatement("insert into "
-							+ tabla
-							+ "(nombre, apellido, telefono, direccion, codigodeempleado, cedula)"
-							+ " values (?,?,?,?,?,?)");
+					.prepareStatement("insert into asistentes (nombre, apellido, telefono, direccion, codigodeempleado, "
+							+ "cedula) values (?,?,?,?,?,?)");
 			enunciado.setString(1, asistente.getNombre());
 			enunciado.setString(2, asistente.getApellido());
 			enunciado.setString(3, asistente.getTelefono());
@@ -36,26 +35,22 @@ public class FactoriaGestionAsistente extends Conexion implements
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Agregando en Asistentes "
-				+ tabla);
-
 	}
 
 	@Override
-	public void eliminar() {
+	public void eliminar(int fila) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void modificiar() {
-		// TODO Auto-generated method stub
-
+	public void modificar(int id, int atributo, String valor) {
+		
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public ArrayList mostrar() {
+	public ArrayList getDatos() {
 		try {
 			resultado = consulta.executeQuery("select * from asistentes");
 			while (resultado.next()) {

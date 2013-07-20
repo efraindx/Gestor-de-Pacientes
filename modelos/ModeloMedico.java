@@ -27,9 +27,11 @@ public class ModeloMedico extends AbstractTableModel {
 		return instancia == null ? instancia = new ModeloMedico() : instancia;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ModeloMedico() throws ClassNotFoundException, SQLException,
 			JDOMException, IOException {
 		Conexion.getInstancia().setFactoria(new FactoriaGestionMedico());
+		medicos = Conexion.getInstancia().getDatos();
 	}
 
 	@Override
@@ -42,14 +44,15 @@ public class ModeloMedico extends AbstractTableModel {
 		return medicos.size();  
 	}
 
-	public void eliminar() throws ClassNotFoundException, SQLException, JDOMException, IOException {
-		Conexion.getInstancia().eliminar();
+	public void eliminar(int fila) throws ClassNotFoundException, SQLException, JDOMException, IOException {
+		Medico medicoActual = medicos.get(fila);
+		Conexion.getInstancia().eliminar(medicoActual.getId());
 	}
 
-	public void agregar(Object  persona, String tabla)
+	public void agregar(Object  persona)
 			throws ClassNotFoundException, SQLException, JDOMException,
 			IOException {
-		Conexion.getInstancia().agregar(persona, tabla);
+		Conexion.getInstancia().agregar(persona);
 	}
 			
 	@Override

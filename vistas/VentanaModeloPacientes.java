@@ -52,7 +52,7 @@ public class VentanaModeloPacientes extends Ventana {
 
 	public VentanaModeloPacientes() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException {
+			UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
 		this.anchura = 660;
 		this.altura = 540;
 		this.titulo = "Pacientes";
@@ -174,16 +174,12 @@ public class VentanaModeloPacientes extends Ventana {
 						ModeloPacientes.getInstancia().setFactoria(new  FactoriaGestionMedico());
 							
 					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (JDOMException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else {
@@ -253,8 +249,13 @@ public class VentanaModeloPacientes extends Ventana {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new VentanaModeloPacientes().setVisible(true);
+		try { 
+			try {
+				new VentanaModeloPacientes().setVisible(true);
+			} catch (SQLException | JDOMException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();

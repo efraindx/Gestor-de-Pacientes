@@ -41,35 +41,24 @@ public class Conexion {
 		personas = new ArrayList<Persona>();
 	}
 
-	public void agregar(Object persona, String tabla) {
-		factoria.agregar(persona, tabla);
+	public void agregar(Object persona) {
+		factoria.agregar(persona);
 	}
 
-	public void eliminar() {
-		factoria.eliminar();
+	public void eliminar(int id) {
+		factoria.eliminar(id);
 	}
 
-	public void modificiar() {
-		factoria.modificiar();
+	public void modificar(int id, int atributo, Object valor) throws SQLException {
+		factoria.modificar(id, atributo, valor);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public ArrayList mostrar() throws SQLException {
-		return factoria.mostrar();
+	public ArrayList getDatos() throws SQLException {
+		return factoria.getDatos();
 	}
 
-	public ArrayList<Persona> getPersonas() throws SQLException {
-		resultado = consulta
-				.executeQuery("SELECT persona_id AS id, tipo AS rol, nombre, apellido, usuario, "
-						+ "contraseña FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
-		while (resultado.next()) {
-			personas.add(new Persona(resultado.getInt("id"), resultado
-					.getString("rol"), resultado.getString("nombre"), resultado
-					.getString("apellido"), resultado.getString("usuario"),
-					resultado.getString("contraseña")));
-		}
-		return personas;
-	}
+
 
 	/*
 	 * public ArrayList<Administrador> getAdministrador() throws SQLException {
@@ -191,6 +180,19 @@ public class Conexion {
 
 	public void setFactoria(FactoriaGestion factoria) {
 		this.factoria = factoria;
+	}
+
+	public ArrayList<Persona> getPersonas() {
+		return personas;
+	}
+
+	public void setPersonas(ArrayList<Persona> personas) {
+		this.personas = personas;
+	}
+
+	public void modificar(int id, int atributo, String valor) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

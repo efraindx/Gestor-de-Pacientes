@@ -46,10 +46,10 @@ public class ModeloAdministradores extends AbstractTableModel {
 
 	}
 
-	public void agregar(Object persona, String tabla)
+	public void agregar(Object persona)
 			throws ClassNotFoundException, SQLException, JDOMException,
 			IOException {
-		Conexion.getInstancia().agregar(persona, tabla);
+		Conexion.getInstancia().agregar(persona);
 	}
 
 	@Override

@@ -16,18 +16,16 @@ public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
 
 	public FactoriaGestionMedico() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
-
+		
 	}
 
 	@Override
-	public void agregar(Object persona, String tabla) {
+	public void agregar(Object persona) {
 		Medico medico = (Medico) persona;
 		try {
 			enunciado = conexion
-					.prepareStatement("insert into "
-							+ tabla
-							+ "(nombre, apellido, telefono, direccion, codigodeempleado, especialidad)"
-							+ " values (?,?,?,?,?,?)");
+					.prepareStatement("insert into (nombre, apellido, telefono, direccion, codigodeempleado," +
+							" especialidad) values (?,?,?,?,?,?)");
 			enunciado.setString(1, medico.getNombre());
 			enunciado.setString(2, medico.getApellido());
 			enunciado.setString(3, medico.getTelefono());
@@ -38,22 +36,21 @@ public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("Agregando en Medicos " + tabla);
 	}
 
 	@Override
-	public void eliminar() {
+	public void eliminar(int fila) {
 		System.out.println("Eliminando Medico...");
 	}
 
 	@Override
-	public void modificiar() {
+	public void modificar(int id, int atributo, String valor) {
 		System.out.println("Modificando Medico...");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ArrayList mostrar() {
+	public ArrayList getDatos() {
 		try {
 			resultado = consulta.executeQuery("select * from medicos");
 			while (resultado.next()) {
@@ -70,5 +67,4 @@ public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
 		}
 		return medicos;
 	}
-
 }

@@ -2,6 +2,8 @@ package com.efrain.gestorpacientes.vistas;
 
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,8 +11,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.jdom2.JDOMException;
+
 public abstract class Ventana extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
 	protected String titulo;
 	protected int anchura;
@@ -18,37 +22,44 @@ public abstract class Ventana extends JFrame {
 	protected String icono;
 	protected JPanel panel;
 
-	public final void prepararVentana(String titulo, int anchura, int altura, String icono) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		
+	public final void prepararVentana(String titulo, int anchura, int altura,
+			String icono) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException, SQLException, JDOMException,
+			IOException {
+
 		this.titulo = titulo;
 		this.anchura = anchura;
 		this.altura = altura;
 		this.icono = icono;
-		
-		UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
+
+		UIManager
+				.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
 		SwingUtilities.updateComponentTreeUI(this);
-		
-		if(icono != null) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(icono)));
+
+		if (icono != null) {
+			setIconImage(Toolkit.getDefaultToolkit().getImage(
+					getClass().getResource(icono)));
 		}
-		
+
 		setLayout(new FlowLayout());
 		setSize(anchura, altura);
 		setTitle(titulo);
-		
-		if(esSalirAlCerrar()) {
+
+		if (esSalirAlCerrar()) {
 			setDefaultCloseOperation(EXIT_ON_CLOSE);
 		}
-		
-		if(!esDisponibleCambiarTamaño()) {
+
+		if (!esDisponibleCambiarTamaño()) {
 			setResizable(false);
 		}
-		
+
 		setContentPane(getContenido());
 		setLocationRelativeTo(null);
 	}
-	
-	public abstract JPanel getContenido();
+
+	public abstract JPanel getContenido() throws ClassNotFoundException,
+			SQLException, JDOMException, IOException;
 
 	public String getTitulo() {
 		return titulo;
@@ -57,19 +68,12 @@ public abstract class Ventana extends JFrame {
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-	
+
 	public boolean esSalirAlCerrar() {
 		return true;
 	}
-	
+
 	public boolean esDisponibleCambiarTamaño() {
 		return true;
 	}
-
-	
-	public static void main(String[] args) {
-	
-		
-	}
-	
 }

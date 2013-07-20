@@ -29,7 +29,6 @@ import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusqueda;
 import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPerfil;
 import com.efrain.gestorpacientes.entidades.Persona;
 import com.efrain.gestorpacientes.enums.Rol;
-import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPersona;
 
 public class VentanaLogin extends Ventana {
 
@@ -41,16 +40,22 @@ public class VentanaLogin extends Ventana {
 	private AlgoritmoBusquedaPerfil algoritmoBP;
 
 	public static synchronized VentanaLogin getInstancia(
-			AlgoritmoBusqueda algoritmo) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException {
-		return instancia == null ? instancia = new VentanaLogin(algoritmo)
-				: instancia;
+			AlgoritmoBusqueda algoritmo) {
+		try {
+			return instancia == null ? instancia = new VentanaLogin(algoritmo)
+					: instancia;
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException
+				| SQLException | JDOMException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return instancia;
 	}
 
 	public VentanaLogin(AlgoritmoBusqueda algoritmo)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
+			IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
 		this.algoritmoB = algoritmo;
 		this.algoritmoBP = new AlgoritmoBusquedaPerfil();
 		this.icono = "/com/efrain/gestorpacientes/imágenes/iconoLogin.png";
@@ -92,6 +97,12 @@ public class VentanaLogin extends Ventana {
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} catch (JDOMException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
@@ -100,6 +111,12 @@ public class VentanaLogin extends Ventana {
 								| InstantiationException
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} catch (JDOMException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
 					} else {
@@ -148,6 +165,12 @@ public class VentanaLogin extends Ventana {
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} catch (JDOMException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
@@ -156,6 +179,12 @@ public class VentanaLogin extends Ventana {
 								| InstantiationException
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} catch (JDOMException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
 					} else {
@@ -192,6 +221,12 @@ public class VentanaLogin extends Ventana {
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} catch (JDOMException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
@@ -200,6 +235,12 @@ public class VentanaLogin extends Ventana {
 								| InstantiationException
 								| IllegalAccessException
 								| UnsupportedLookAndFeelException e1) {
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						} catch (JDOMException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
 					} else {
@@ -253,24 +294,5 @@ public class VentanaLogin extends Ventana {
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
-	}
-
-	public static void main(String[] args) {
-		try {	
-			new VentanaLogin(new AlgoritmoBusquedaPersona()).setVisible(true);
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

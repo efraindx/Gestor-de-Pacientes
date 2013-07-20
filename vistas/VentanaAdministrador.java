@@ -1,10 +1,14 @@
 package com.efrain.gestorpacientes.vistas;
 
 import java.awt.FlowLayout;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import org.jdom2.JDOMException;
 
 public class VentanaAdministrador extends Ventana {
 
@@ -13,14 +17,14 @@ public class VentanaAdministrador extends Ventana {
 
 	public static synchronized VentanaAdministrador getInstancia()
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException {
+			IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
 		return (VentanaAdministrador) (instancia == null ? instancia = new VentanaAdministrador()
 				: instancia);
 	}
 
 	public VentanaAdministrador() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException {
+			UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
 		this.titulo = "Adminitrador";
 		prepararVentana(titulo, 500, 500, null);
 	}
