@@ -14,7 +14,6 @@ import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.factorias.FactoriaGestion;
 import com.efrain.gestorpacientes.xml.GestorXml;
-import com.efrain.gestorpacientes.entidades.Persona;
 
 public class Conexion {
 
@@ -22,9 +21,8 @@ public class Conexion {
 	protected PreparedStatement enunciado;
 	protected Connection conexion;
 	protected Statement consulta;
-	private static Conexion instancia;
-	private FactoriaGestion factoria;
-	private ArrayList<Persona> personas;
+	protected static Conexion instancia;
+	protected FactoriaGestion factoria;
 
 	public static synchronized Conexion getInstancia()
 			throws ClassNotFoundException, SQLException, JDOMException,
@@ -32,13 +30,11 @@ public class Conexion {
 		return instancia == null ? instancia = new Conexion() : instancia;
 	}
 
-	public Conexion() throws JDOMException, IOException, SQLException,
-			ClassNotFoundException {
+	private Conexion() throws ClassNotFoundException, JDOMException, IOException, SQLException {
 		GestorXml gestorXml = new GestorXml();
 		Class.forName(gestorXml.getClaseDriver());
 		conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
 		consulta = conexion.createStatement();
-		personas = new ArrayList<Persona>();
 	}
 
 	public void agregar(Object persona) {
@@ -49,7 +45,8 @@ public class Conexion {
 		factoria.eliminar(id);
 	}
 
-	public void modificar(int id, int atributo, Object valor) throws SQLException {
+	public void modificar(int id, int atributo, Object valor)
+			throws SQLException {
 		factoria.modificar(id, atributo, valor);
 	}
 
@@ -57,20 +54,17 @@ public class Conexion {
 	public ArrayList getDatos() throws SQLException {
 		return factoria.getDatos();
 	}
-
-
+	
+	public ArrayList<String> getRoles() throws SQLException {
+		ArrayList<String> retorno = new ArrayList<String>();
+		resultado = consulta.executeQuery("SELECT tipo FROM tipos_personas");
+		while(resultado.next()) {
+			retorno.add(resultado.getString("tipo"));
+		}
+		return retorno;
+	}
 
 	/*
-	 * public ArrayList<Administrador> getAdministrador() throws SQLException {
-	 * resultado = consulta.executeQuery("select * from administradores"); while
-	 * (resultado.next()) { administrador.add(new
-	 * Administrador(resultado.getInt("id"), resultado.getString("nombre"),
-	 * resultado .getString("apellido"), resultado .getString("telefono"),
-	 * resultado .getString("direccion"), resultado .getString("cedula"),
-	 * resultado .getString("codigodeEmpleado")
-	 * 
-	 * )); } return administrador; }
-	 * 
 	 * public ArrayList<Asistente> getAsistente() throws SQLException {
 	 * resultado = consulta.executeQuery("select * from asistentes"); while
 	 * (resultado.next()) { asistente.add(new Asistente(resultado.getInt("id"),
@@ -141,38 +135,15 @@ public class Conexion {
 	 * public void eliminarPaciente(int id) throws SQLException {
 	 * consulta.executeQuery("DELETE from pacientes where id = " + id); }
 	 * 
-	 * public FactoriaGestion getFactoria() { return factoria; }
-	 * 
-	 * public void setFactoria(FactoriaGestion factoria) { this.factoria =
-	 * factoria; }
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * /*
-	 * 
-	 * 
-	 * /* public void agregarUsuario(Usuario usuario) throws SQLException {
-	 * enunciado = conexion.prepareStatement(
-	 * "INSERT into usuarios (cod_empleado, nombre, apellido" +
-	 * "rol, direccion, cedula, especialidad, telefonos) values (?, ?, ?, ?, ?, ?, ?, ?)"
-	 * ); enunciado.setString(1, usuario.getCod_empleado());
-	 * enunciado.setString(2, usuario.getNombre()); enunciado.setString(3,
-	 * usuario.getApellido()); enunciado.setString(4, usuario.getRol());
-	 * enunciado.setString(5, usuario.getDireccion()); enunciado.setString(6,
-	 * usuario.getCedula()); enunciado.setString(7, usuario.getEspecialidad());
-	 * enunciado.setString(8, usuario.getTelefonos()); enunciado.execute(); }
-	 * 
-	 * public void eliminarUsuario(int id) throws SQLException {
-	 * consulta.executeQuery("DELETE from usuario where id = " + id); }
-	 * 
-	 * 
-	 * 
-	 * public void modificarUsuario(int id, int posicion, String valor) {
-	 * switch(posicion) { case 0: break; } }
 	 */
+	
+	public Connection getConexion() {
+		return conexion;
+	}
+
+	public void setConexion(Connection conexion) {
+		this.conexion = conexion;
+	}
 
 	public FactoriaGestion getFactoria() {
 		return factoria;
@@ -182,17 +153,32 @@ public class Conexion {
 		this.factoria = factoria;
 	}
 
-	public ArrayList<Persona> getPersonas() {
-		return personas;
+	public ResultSet getResultado() {
+		return resultado;
 	}
 
-	public void setPersonas(ArrayList<Persona> personas) {
-		this.personas = personas;
+	public void setResultado(ResultSet resultado) {
+		this.resultado = resultado;
 	}
 
-	public void modificar(int id, int atributo, String valor) {
-		// TODO Auto-generated method stub
-		
+	public PreparedStatement getEnunciado() {
+		return enunciado;
+	}
+
+	public void setEnunciado(PreparedStatement enunciado) {
+		this.enunciado = enunciado;
+	}
+
+	public Statement getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Statement consulta) {
+		this.consulta = consulta;
+	}
+	
+	public Connection getConnection() {
+		return conexion;
 	}
 
 }

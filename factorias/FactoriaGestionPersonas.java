@@ -6,23 +6,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
-
-import com.efrain.gestorpacientes.persistencia.Conexion;
 import com.efrain.gestorpacientes.entidades.Persona;
 
-public class FactoriaGestionPersonas extends Conexion implements
-		FactoriaGestion {
+public class FactoriaGestionPersonas extends FactoriaGestion {
 
-	private ArrayList<Persona> personas;
+	private ArrayList<Persona> usuarios;
 
 	public FactoriaGestionPersonas() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
-		this.personas = new ArrayList<Persona>();
+		iniciarComponentes();
 	}
 
-	public void agregar(Object persona) {
+	public void agregar(Object usuario) {
 		int tipoPersonaId = 0;
-		Persona personaActual = (Persona) persona;
+		Persona personaActual = (Persona) usuario;
 
 		switch (personaActual.getRol()) {
 		case "ADMINISTRADOR":
@@ -54,60 +51,78 @@ public class FactoriaGestionPersonas extends Conexion implements
 
 	@Override
 	public void eliminar(int id) {
-			try {
-			consulta.executeQuery("DELETE from personas where id = " + id);
-			} catch (SQLException e) {
-				e.printStackTrace();
+		try {
+			enunciado = conexion
+					.prepareStatement("DELETE from personas where persona_id = ?");
+			enunciado.setInt(1, id);
+			enunciado.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void modificar(int id, int atributo, Object valor)
+			throws SQLException {
+
+		switch (atributo) {
+		case 3:
+			enunciado = conexion
+					.prepareStatement("UPDATE personas set nombre_persona = ? where persona_id = ?");
+			enunciado.setInt(1, (int) valor);
+			break;
+
+		case 4:
+			enunciado = conexion
+					.prepareStatement("UPDATE personas set apellido_persona = ? where persona_id = ?");
+			enunciado.setString(1, (String) valor);
+			break;
+
+		case 5:
+			switch ((String) valor) {
+			case "ADMINISTRADOR":
+				valor = 1;
+				break;
+
+			case "ASISTENTE":
+				valor = 2;
+				break;
+
+			case "MEDICO":
+				valor = 3;
+				break;
 			}
+			enunciado = conexion
+					.prepareStatement("UPDATE personas set tipo_persona_id = ? where persona_id = ?");
+			enunciado.setInt(1, (int)valor);
+			break;
+
+		case 6:
+			enunciado = conexion
+					.prepareStatement("UPDATE personas set usuario_persona = ? where persona_id = ?");
+			enunciado.setString(1, (String) valor);
+			break;
+
+		case 7:
+			enunciado = conexion
+					.prepareStatement("UPDATE personas set contraseña_persona = ? where persona_id = ?");
+			enunciado.setString(1, (String) valor);
+			break;
+
+		}
+		enunciado.setInt(2, id);
+		enunciado.execute();
 	}
 
 	@Override
-	public void modificar(int id, int atributo, Object valor) throws SQLException {
-			
-			switch(atributo) {
-			case 0: 
-				enunciado = conexion
-				.prepareStatement("UPDATE personas set tipo_persona_id = ? where id = ?"); 
-				enunciado.setInt(1, (int)valor);
-			break;
-			  
-			case 1: 
-				enunciado = conexion
-				.prepareStatement("UPDATE personas set nombre_persona = ? where id = ?");
-				enunciado.setString(1, (String)valor);
-			break;
-			  
-			case 2: 
-				enunciado = conexion
-				.prepareStatement("UPDATE personas set apellido_persona = ? where id = ?");
-				enunciado.setString(1, (String)valor);
-			break;
-			  
-			case 3: 
-				 	enunciado = conexion
-				 	.prepareStatement("UPDATE personas set usuario_persona = ? where id = ?");
-				 	enunciado.setString(1, (String)valor);
-			break;
-			 
-			case 7: 
-					enunciado = conexion
-					.prepareStatement("UDPATE pacientes set contraseña_persona = ? where id = ?"); 
-					enunciado.setString(1, (String)valor);
-			break;
-			
-			} 
-			enunciado.setInt(2, id);
-			enunciado.execute(); 
-	}
-
-	@Override
-	public ArrayList<?> getDatos() {
+	public ArrayList<Persona> getDatos() {
+		usuarios = new ArrayList<Persona>();
 		try {
 			resultado = consulta
-					.executeQuery("SELECT persona_id AS id, tipo_persona_id AS rol, nombre_persona as nombre, apellido_persona as apellido, "
-							+ "usuario_persona as usuario, contraseña_persona as contraseña FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
+					.executeQuery("SELECT persona_id AS id, tipo AS rol, nombre_persona AS nombre, apellido_persona AS apellido, "
+							+ "usuario_persona AS usuario, contraseña_persona AS contraseña FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
 			while (resultado.next()) {
-				personas.add(new Persona(resultado.getInt("id"), resultado
+				usuarios.add(new Persona(resultado.getInt("id"), resultado
 						.getString("rol"), resultado.getString("nombre"),
 						resultado.getString("apellido"), resultado
 								.getString("usuario"), resultado
@@ -116,15 +131,6 @@ public class FactoriaGestionPersonas extends Conexion implements
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return personas;
+		return usuarios;
 	}
-
-	public ArrayList<Persona> getPersonas() {
-		return personas;
-	}
-
-	public void setPersonas(ArrayList<Persona> personas) {
-		this.personas = personas;
-	}
-
 }

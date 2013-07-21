@@ -5,11 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
-import com.efrain.gestorpacientes.persistencia.Conexion;
 import com.efrain.gestorpacientes.entidades.Administrador;
 
-public class FactoriaGestionAdministrador extends Conexion implements
-		FactoriaGestion {
+public class FactoriaGestionAdministrador extends FactoriaGestion {
 	private ArrayList<Administrador> administradores;
 
 	public FactoriaGestionAdministrador() throws JDOMException, IOException,
@@ -42,11 +40,6 @@ public class FactoriaGestionAdministrador extends Conexion implements
 
 	}
 
-	@Override
-	public void modificar(int id, int atributo, String valor) {
-
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ArrayList getDatos() {
@@ -65,6 +58,11 @@ public class FactoriaGestionAdministrador extends Conexion implements
 			e.printStackTrace();
 		}
 		return administradores;
+	}
+
+	@Override
+	public void modificar(int id, int atributo, Object valor)
+			throws SQLException {
 	}
 
 }

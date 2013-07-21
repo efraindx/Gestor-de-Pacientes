@@ -6,11 +6,10 @@ import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.persistencia.Conexion;
 import com.efrain.gestorpacientes.factorias.FactoriaGestion;
 import com.efrain.gestorpacientes.entidades.Medico;
 
-public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
+public class FactoriaGestionMedico extends FactoriaGestion {
 
 	private ArrayList<Medico> medicos;
 
@@ -42,12 +41,7 @@ public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
 	public void eliminar(int fila) {
 		System.out.println("Eliminando Medico...");
 	}
-
-	@Override
-	public void modificar(int id, int atributo, String valor) {
-		System.out.println("Modificando Medico...");
-	}
-
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ArrayList getDatos() {
@@ -66,5 +60,12 @@ public class FactoriaGestionMedico extends Conexion implements FactoriaGestion {
 			e.printStackTrace();
 		}
 		return medicos;
+	}
+
+	@Override
+	public void modificar(int id, int atributo, Object valor)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 }

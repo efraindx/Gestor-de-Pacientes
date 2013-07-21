@@ -41,5 +41,9 @@ public class VentanaAdministrador extends Ventana {
 	public boolean esSalirAlCerrar() {
 		return false;
 	}
+	
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+		new VentanaAdministrador().setVisible(true);
+	}
 
 }
