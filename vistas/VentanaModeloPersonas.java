@@ -1,8 +1,12 @@
 package com.efrain.gestorpacientes.vistas;
 
+import java.awt.Color;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.FocusManager;
 
 import org.jdom2.JDOMException;
 
@@ -35,6 +40,7 @@ public class VentanaModeloPersonas extends Ventana {
 	private ArrayList<Persona> personas;
 	private JTable tablaUsuarios;
 	private JTextField txtUsuario;
+	private JTextField txtCorreo;
 	private JPasswordField txtContrase;
 	private ModeloPersonas modeloUsuarios;
 	private static VentanaModeloPersonas instancia;
@@ -62,12 +68,31 @@ public class VentanaModeloPersonas extends Ventana {
 		JLabel lblTitulo = new JLabel("Mantenimiento de Usuarios");
 		lblTitulo.setFont(new Font("Monotype Coursiva",
 				Font.BOLD + Font.ITALIC, 16));
-		JLabel lblPersona = new JLabel("Persona:");
+		JLabel lblPersona = new JLabel("        Persona:");
 		JLabel lblRol = new JLabel("    Rol:");
-		JLabel lblUsuario = new JLabel("*Usuario:");
+		JLabel lblUsuario = new JLabel("       *Usuario:");
 		JLabel lblContrase = new JLabel("   *Contraseña:");
 		JLabel lblBlanco = new JLabel();
 		lblBlanco.setPreferredSize(new Dimension(70, 10));
+		JLabel lblCorreo = new JLabel("Correo Electrónico:");
+		JLabel lblBlanco2 = new JLabel();
+		lblBlanco2.setPreferredSize(new Dimension(70,20));
+		
+		txtCorreo = new JTextField(18){
+			
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				if(getText().isEmpty() && !(FocusManager.getCurrentKeyboardFocusManager().getFocusOwner() == this)){
+			        Graphics2D g2 = (Graphics2D)g.create();
+			        g2.setBackground(Color.gray);
+			        g2.setFont(getFont().deriveFont(Font.ITALIC));
+			        g2.drawString("ejemplo@[gmail|hotmail].com", 10, 15); 
+			        g2.dispose();
+			    }
+			}
+		};
+		
 
 		txtUsuario = new JTextField(10);
 		txtContrase = new JPasswordField();
@@ -93,7 +118,16 @@ public class VentanaModeloPersonas extends Ventana {
 					Persona objeto = new Persona(rol, nombre, apellido,
 							usuario, contrase);
 					try {
-						modeloUsuarios.agregar(objeto);
+						if("".equals(txtCorreo.getText())) {
+						int resp = JOptionPane.showConfirmDialog(null, "ATENCION:Está a punto de registrar un" +
+								" usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente" +
+								" enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
+							if(resp == JOptionPane.YES_OPTION)
+								modeloUsuarios.agregar(objeto);
+						} else {
+							modeloUsuarios.agregar(objeto);
+						}
+						
 					} catch (ClassNotFoundException | SQLException
 							| JDOMException | IOException e) {
 						e.printStackTrace();
@@ -129,7 +163,8 @@ public class VentanaModeloPersonas extends Ventana {
 				}
 			}
 		});
-
+		
+		
 		iniciarComboUsuarios();
 		iniciarComboRoles();
 
@@ -146,8 +181,11 @@ public class VentanaModeloPersonas extends Ventana {
 		panel.add(lblTitulo);
 		panel.add(pnlGrid);
 		panel.add(lblBlanco);
+		panel.add(lblCorreo);
+		panel.add(txtCorreo);
 		panel.add(btnAgregar);
 		panel.add(btnEliminar);
+		panel.add(lblBlanco2);
 		panel.add(new JScrollPane(tablaUsuarios));
 		return panel;
 	}
@@ -187,7 +225,6 @@ public class VentanaModeloPersonas extends Ventana {
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException
 				| SQLException | JDOMException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

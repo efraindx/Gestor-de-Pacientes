@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.jdom2.JDOMException;
 
-public class FactoriaGestionPaciente extends FactoriaGestionAdministrador
+public class FactoriaGestionPaciente 
 {
 
 	public FactoriaGestionPaciente() throws JDOMException, IOException,

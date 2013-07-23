@@ -8,7 +8,12 @@ public class Persona {
 	private String apellido;
 	private String usuario;
 	private String contrase;
-
+	private String correo;
+	
+	public Persona(String usuario) {
+		this.usuario = usuario;
+	}
+	
 	public Persona(String usuario, String contrase) {
 		this.usuario = usuario;
 		this.contrase = contrase;
@@ -22,15 +27,26 @@ public class Persona {
 		this.usuario = usuario;
 		this.contrase = contrase;
 	}
+	
+	public Persona(String rol, String nombre, String apellido, String usuario,
+			String contrase, String correo) {
+		this.rol = rol;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.usuario = usuario;
+		this.contrase = contrase;
+		this.correo = correo;
+	}
 
 	public Persona(int id, String rol, String nombre, String apellido,
-			String usuario, String contrase) {
+			String usuario, String contrase, String correo) {
 		this.id = id;
 		this.rol = rol;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.usuario = usuario;
 		this.contrase = contrase;
+		this.correo = correo;
 	}
 
 	public int getId() {
@@ -79,6 +95,14 @@ public class Persona {
 
 	public void setContrase(String contrase) {
 		this.contrase = contrase;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 
 }

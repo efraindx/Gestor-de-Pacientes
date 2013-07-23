@@ -12,7 +12,12 @@ public class Asistente {
 
 	public Asistente(int id, String nombre, String apellido, String telefono,
 			String direccion, String cedula, String codigoEmpleado) {
-
+		this.id = id;
+		this.nombre = nombre;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.codigoEmpleado = codigoEmpleado;
 	}
 
 	public Asistente(String nombre, String apellido, String telefono,

@@ -69,7 +69,7 @@ public class FactoriaGestionPersonas extends FactoriaGestion {
 		case 3:
 			enunciado = conexion
 					.prepareStatement("UPDATE personas set nombre_persona = ? where persona_id = ?");
-			enunciado.setInt(1, (int) valor);
+			enunciado.setString(1, (String) valor);
 			break;
 
 		case 4:
@@ -94,7 +94,7 @@ public class FactoriaGestionPersonas extends FactoriaGestion {
 			}
 			enunciado = conexion
 					.prepareStatement("UPDATE personas set tipo_persona_id = ? where persona_id = ?");
-			enunciado.setInt(1, (int)valor);
+			enunciado.setInt(1, (int) valor);
 			break;
 
 		case 6:
@@ -108,7 +108,11 @@ public class FactoriaGestionPersonas extends FactoriaGestion {
 					.prepareStatement("UPDATE personas set contraseña_persona = ? where persona_id = ?");
 			enunciado.setString(1, (String) valor);
 			break;
-
+		
+		case 8:
+			enunciado = conexion.prepareStatement("UPDATE personas SET email = ? where persona_id = ?");
+			enunciado.setString(1, (String)valor);
+			break;
 		}
 		enunciado.setInt(2, id);
 		enunciado.execute();
@@ -120,13 +124,14 @@ public class FactoriaGestionPersonas extends FactoriaGestion {
 		try {
 			resultado = consulta
 					.executeQuery("SELECT persona_id AS id, tipo AS rol, nombre_persona AS nombre, apellido_persona AS apellido, "
-							+ "usuario_persona AS usuario, contraseña_persona AS contraseña FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
+							+ "usuario_persona AS usuario, contraseña_persona AS contraseña, email FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
 			while (resultado.next()) {
 				usuarios.add(new Persona(resultado.getInt("id"), resultado
 						.getString("rol"), resultado.getString("nombre"),
 						resultado.getString("apellido"), resultado
 								.getString("usuario"), resultado
-								.getString("contraseña")));
+								.getString("contraseña"), resultado
+								.getString("email")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

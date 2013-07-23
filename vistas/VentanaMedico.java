@@ -2,6 +2,7 @@ package com.efrain.gestorpacientes.vistas;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
@@ -32,26 +35,34 @@ public class VentanaMedico extends Ventana {
 	public VentanaMedico() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		this.anchura = 500;
+		this.anchura = 650;
 		this.altura = 500;
 		this.titulo = "Medico";
+		
 		prepararVentana(titulo, anchura, altura, null);
+		
 	}
 
 	@Override
 	public JPanel getContenido() {
 		this.panel = new JPanel(new BorderLayout());
-		JLabel lblTitulo = new JLabel("Ventana Medico");
-		panel.add(BorderLayout.NORTH, lblTitulo);
+		JLabel lblTitulo = new JLabel(new ImageIcon(getClass().getResource("/com/efrain/gestorpacientes/imágenes/titulo.png")));
+		JPanel pnlCentral = new JPanel(new FlowLayout());
+		pnlCentral.add(lblTitulo);
+		panel.add(BorderLayout.NORTH, pnlCentral);
 		
 		JLabel lblCentral = new JLabel(new ImageIcon(getClass().getResource("/com/efrain/gestorpacientes/imágenes/fondo.png")));
+		
 		panel.add(BorderLayout.CENTER, lblCentral);
 		
 		JToolBar barraIzquierda = new JToolBar();
-		JToolBar barraDerecha = new JToolBar();
-		
+		barraIzquierda.setFloatable(false);
 		barraIzquierda.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		JPanel pnlIz = new JPanel(new GridLayout(4, 1));
+	
+		JToolBar barraDerecha = new JToolBar();
+		barraDerecha.setFloatable(false);
+		
+		JPanel pnlIz = new JPanel(new GridLayout(6, 1));
 		JPanel pnlDerecha = new JPanel(new GridLayout(6,1));
 		
 		JButton btnMPacientes = new JButton("Man. de Pacientes");
@@ -100,6 +111,11 @@ public class VentanaMedico extends Ventana {
 		panel.add(BorderLayout.WEST, barraIzquierda);
 		panel.add(BorderLayout.EAST, barraDerecha);
 		return panel;
+	}
+	
+	@Override
+	public boolean esDisponibleCambiarTamaño() {
+		return false;
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {

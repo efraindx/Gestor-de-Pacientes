@@ -20,7 +20,7 @@ public class ModeloPersonas extends AbstractTableModel {
 	private ArrayList<Persona> personas;
 	private static ModeloPersonas instancia;
 	private String[] encabezados = { "Nombre", "Apellido", "Rol", "Usuario",
-			"Contraseña" };
+			"Contraseña", "E-mail" };
 	private Conexion conexion;
 
 	public static synchronized ModeloPersonas getInstancia()
@@ -34,8 +34,7 @@ public class ModeloPersonas extends AbstractTableModel {
 			JDOMException, IOException {
 		conexion = Conexion.getInstancia();
 		conexion.setFactoria(new FactoriaGestionPersonas());
-		personas = Conexion.getInstancia().getDatos();
-
+		personas = conexion.getDatos();
 	}
 
 	public ArrayList<Persona> getUsuarios() {
@@ -85,6 +84,10 @@ public class ModeloPersonas extends AbstractTableModel {
 
 		case 4:
 			retorno = Encriptadora.desencriptar(personaActual.getContrase());
+			break;
+			
+		case 5:
+			retorno = personaActual.getCorreo();
 			break;
 		}
 		return retorno;
@@ -137,13 +140,18 @@ public class ModeloPersonas extends AbstractTableModel {
 				break;
 
 			case 4:
-				personaActual.setContrase(valor);
+				personaActual.setContrase(Encriptadora.encriptar(valor));
 				conexion.modificar(personaActual.getId(), 7, Encriptadora.encriptar(valor));
+				break;
+				
+			case 5:
+				personaActual.setCorreo(valor);
+				conexion.modificar(personaActual.getId(), 8, valor);
 				break;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	@Override

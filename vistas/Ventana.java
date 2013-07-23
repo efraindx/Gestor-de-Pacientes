@@ -33,10 +33,6 @@ public abstract class Ventana extends JFrame {
 		this.altura = altura;
 		this.icono = icono;
 
-		UIManager
-				.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
-		SwingUtilities.updateComponentTreeUI(this);
-
 		if (icono != null) {
 			setIconImage(Toolkit.getDefaultToolkit().getImage(
 					getClass().getResource(icono)));
@@ -56,6 +52,8 @@ public abstract class Ventana extends JFrame {
 
 		setContentPane(getContenido());
 		setLocationRelativeTo(null);
+		UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	public abstract JPanel getContenido() throws ClassNotFoundException,

@@ -33,7 +33,7 @@ public class Medico  {
 		this.cedula = cedula;
 		this.especialidad = especialidad;
 	}
-	
+
 	public Medico() {
 		
 	}
@@ -101,5 +101,4 @@ public class Medico  {
 	public void setCodigoEmpleado(String codigoEmpleado) {
 		this.codigoEmpleado = codigoEmpleado;
 	}
-
 }

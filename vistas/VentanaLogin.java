@@ -2,6 +2,7 @@ package com.efrain.gestorpacientes.vistas;
 
 import java.awt.Color;
 
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,6 +14,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,6 +23,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.MatteBorder;
 
@@ -29,6 +34,7 @@ import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusqueda;
 import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPerfil;
 import com.efrain.gestorpacientes.entidades.Persona;
 import com.efrain.gestorpacientes.enums.Rol;
+import com.efrain.gestorpacientes.mail.CorreoElectronico;
 
 public class VentanaLogin extends Ventana {
 
@@ -47,7 +53,6 @@ public class VentanaLogin extends Ventana {
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException
 				| SQLException | JDOMException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return instancia;
@@ -92,6 +97,7 @@ public class VentanaLogin extends Ventana {
 						try {
 							VentanaAdministrador.getInstancia()
 									.setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -107,6 +113,7 @@ public class VentanaLogin extends Ventana {
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
 							VentanaMedico.getInstancia().setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -122,6 +129,7 @@ public class VentanaLogin extends Ventana {
 					} else {
 						try {
 							VentanaAsistente.getInstancia().setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -132,6 +140,7 @@ public class VentanaLogin extends Ventana {
 				} else {
 					JOptionPane.showMessageDialog(VentanaLogin.this,
 							"Usuario o Contraseña inválidos.");
+					txtContraseña.setText("");
 				}
 			}
 		});
@@ -160,6 +169,7 @@ public class VentanaLogin extends Ventana {
 						try {
 							VentanaAdministrador.getInstancia()
 									.setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -175,6 +185,7 @@ public class VentanaLogin extends Ventana {
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
 							VentanaMedico.getInstancia().setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -190,6 +201,7 @@ public class VentanaLogin extends Ventana {
 					} else {
 						try {
 							VentanaAsistente.getInstancia().setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -200,6 +212,7 @@ public class VentanaLogin extends Ventana {
 				} else {
 					JOptionPane.showMessageDialog(VentanaLogin.this,
 							"Usuario o Contraseña inválidos.");
+					txtContraseña.setText("");
 				}
 			}
 		});
@@ -216,6 +229,7 @@ public class VentanaLogin extends Ventana {
 						try {
 							VentanaAdministrador.getInstancia()
 									.setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -231,6 +245,7 @@ public class VentanaLogin extends Ventana {
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
 							VentanaMedico.getInstancia().setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -246,6 +261,7 @@ public class VentanaLogin extends Ventana {
 					} else {
 						try {
 							VentanaAsistente.getInstancia().setVisible(true);
+							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
@@ -256,6 +272,7 @@ public class VentanaLogin extends Ventana {
 				} else {
 					JOptionPane.showMessageDialog(VentanaLogin.this,
 							"Usuario o Contraseña inválidos.");
+					txtContraseña.setText("");
 				}
 			}
 		});
@@ -269,7 +286,30 @@ public class VentanaLogin extends Ventana {
 		enlace.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showMessageDialog(null, "ASDgasd");
+				String usuario = JOptionPane.showInputDialog(null, "Indícanos tu usuario del sistema\npara enviarte un correo" +
+						" con tu contraseña\nUsuario:");
+				Persona p = (Persona) algoritmoB.buscar(new Persona(usuario));
+				if(p!= null & !"".equals(p.getCorreo()))	{
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					CorreoElectronico co = new CorreoElectronico();
+					try {
+						co.EnviarCorreo(p);
+					} catch (MessagingException e) {
+						JOptionPane.showMessageDialog(null, "Ha ocurrido un error al enviar el correo, error: " +
+						e.getMessage());
+					}
+					
+					JOptionPane.showMessageDialog(null, "Hemos enviado su contraseña a su correo.");
+				} else {
+					JOptionPane.showMessageDialog(null, "El usuario introducido no tiene correo o no existe.");
+				}
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				
+				
 			}
 		});
 
