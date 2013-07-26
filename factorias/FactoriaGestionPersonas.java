@@ -10,7 +10,7 @@ import com.efrain.gestorpacientes.entidades.Persona;
 
 public class FactoriaGestionPersonas extends FactoriaGestion {
 
-	private ArrayList<Persona> usuarios;
+	private ArrayList<Persona> personas;
 
 	public FactoriaGestionPersonas() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
@@ -120,13 +120,13 @@ public class FactoriaGestionPersonas extends FactoriaGestion {
 
 	@Override
 	public ArrayList<Persona> getDatos() {
-		usuarios = new ArrayList<Persona>();
+		personas = new ArrayList<Persona>();
 		try {
 			resultado = consulta
 					.executeQuery("SELECT persona_id AS id, tipo AS rol, nombre_persona AS nombre, apellido_persona AS apellido, "
 							+ "usuario_persona AS usuario, contraseña_persona AS contraseña, email FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
 			while (resultado.next()) {
-				usuarios.add(new Persona(resultado.getInt("id"), resultado
+				personas.add(new Persona(resultado.getInt("id"), resultado
 						.getString("rol"), resultado.getString("nombre"),
 						resultado.getString("apellido"), resultado
 								.getString("usuario"), resultado
@@ -136,6 +136,6 @@ public class FactoriaGestionPersonas extends FactoriaGestion {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return usuarios;
+		return personas;
 	}
 }

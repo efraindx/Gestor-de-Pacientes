@@ -26,7 +26,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.factorias.FactoriaGestionMedico;
+import com.efrain.gestorpacientes.factorias.FactoriaGestionMedicos;
 import com.efrain.gestorpacientes.enums.Fumador;
 import com.efrain.gestorpacientes.modelos.ModeloPacientes;
 
@@ -171,7 +171,7 @@ public class VentanaModeloPacientes extends Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				if (tablaPacientes.getSelectedRow() != -1) {
 					try {
-						ModeloPacientes.getInstancia().setFactoria(new  FactoriaGestionMedico());
+						ModeloPacientes.getInstancia().setFactoria(new  FactoriaGestionMedicos());
 							
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();

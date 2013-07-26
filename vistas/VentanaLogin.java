@@ -112,7 +112,7 @@ public class VentanaLogin extends Ventana {
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
-							VentanaMedico.getInstancia().setVisible(true);
+							VentanaPrincipal.getInstancia().setVisible(true);
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -184,7 +184,7 @@ public class VentanaLogin extends Ventana {
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
-							VentanaMedico.getInstancia().setVisible(true);
+							VentanaPrincipal.getInstancia().setVisible(true);
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -244,7 +244,7 @@ public class VentanaLogin extends Ventana {
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
-							VentanaMedico.getInstancia().setVisible(true);
+							VentanaPrincipal.getInstancia().setVisible(true);
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException

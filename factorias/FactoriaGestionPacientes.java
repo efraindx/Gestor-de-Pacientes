@@ -5,10 +5,10 @@ import java.sql.SQLException;
 
 import org.jdom2.JDOMException;
 
-public class FactoriaGestionPaciente 
+public class FactoriaGestionPacientes 
 {
 
-	public FactoriaGestionPaciente() throws JDOMException, IOException,
+	public FactoriaGestionPacientes() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
 		super();
 		// TODO Auto-generated constructor stub

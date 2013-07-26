@@ -18,4 +18,8 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 			encriptador.setPassword(key);
 			return encriptador.decrypt(palabra);
 		}
+		
+		public static void main(String[] args) {
+			System.out.println(encriptar("123"));
+		}
 }

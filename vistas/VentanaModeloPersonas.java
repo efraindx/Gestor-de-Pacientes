@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,12 +36,11 @@ public class VentanaModeloPersonas extends Ventana {
 	private static final long serialVersionUID = 1L;
 	private JComboBox<String> comboPersonas;
 	private JComboBox<String> comboRoles;
-	private ArrayList<Persona> personas;
-	private JTable tablaUsuarios;
+	private JTable tblUsuarios;
 	private JTextField txtUsuario;
 	private JTextField txtCorreo;
 	private JPasswordField txtContrase;
-	private ModeloPersonas modeloUsuarios;
+	private ModeloPersonas modelo;
 	private static VentanaModeloPersonas instancia;
 	
 	public static synchronized VentanaModeloPersonas getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
@@ -56,7 +54,7 @@ public class VentanaModeloPersonas extends Ventana {
 		this.titulo = "Usuarios";
 		this.anchura = 600;
 		this.altura = 530;
-		modeloUsuarios = ModeloPersonas.getInstancia();
+		modelo = ModeloPersonas.getInstancia();
 		prepararVentana(titulo, anchura, altura, null);
 	}
 
@@ -79,7 +77,7 @@ public class VentanaModeloPersonas extends Ventana {
 		lblBlanco2.setPreferredSize(new Dimension(70,20));
 		
 		txtCorreo = new JTextField(18){
-			
+			private static final long serialVersionUID = 1L;
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -93,20 +91,15 @@ public class VentanaModeloPersonas extends Ventana {
 			}
 		};
 		
-
+		comboRoles = new JComboBox<String>();
+		
 		txtUsuario = new JTextField(10);
 		txtContrase = new JPasswordField();
-
-		tablaUsuarios = new JTable(ModeloPersonas.getInstancia());
-		tablaUsuarios
-				.setPreferredScrollableViewportSize(new Dimension(550, 350));
-
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.addActionListener(new ActionListener() {
+		txtContrase.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-				if (!"".equals(txtUsuario.getText())) {
+				String contrase = new String(txtContrase.getPassword());
+				if (!"".equals(txtUsuario.getText()) & !"".equals(contrase)) {
 					String persona = comboPersonas.getItemAt(comboPersonas
 							.getSelectedIndex());
 					String nombre = persona.split(" ")[0];
@@ -114,7 +107,7 @@ public class VentanaModeloPersonas extends Ventana {
 					String rol = comboRoles.getItemAt(comboRoles
 							.getSelectedIndex());
 					String usuario = txtUsuario.getText();
-					String contrase = Encriptadora.encriptar(new String(txtContrase.getPassword()));
+					contrase = Encriptadora.encriptar(contrase);
 					Persona objeto = new Persona(rol, nombre, apellido,
 							usuario, contrase);
 					try {
@@ -123,9 +116,51 @@ public class VentanaModeloPersonas extends Ventana {
 								" usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente" +
 								" enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
 							if(resp == JOptionPane.YES_OPTION)
-								modeloUsuarios.agregar(objeto);
+								modelo.agregar(objeto);
 						} else {
-							modeloUsuarios.agregar(objeto);
+							modelo.agregar(objeto);
+						}
+						
+					} catch (ClassNotFoundException | SQLException
+							| JDOMException | IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Los campos con \"*\" son obligatorios.");
+				}
+
+			}
+		});
+
+		tblUsuarios = new JTable(modelo);
+		tblUsuarios
+				.setPreferredScrollableViewportSize(new Dimension(550, 350));
+
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String contrase = new String(txtContrase.getPassword());
+				if (!"".equals(txtUsuario.getText()) & !"".equals(contrase)) {
+					String persona = comboPersonas.getItemAt(comboPersonas
+							.getSelectedIndex());
+					String nombre = persona.split(" ")[0];
+					String apellido = persona.split(" ")[1];
+					String rol = comboRoles.getItemAt(comboRoles
+							.getSelectedIndex());
+					String usuario = txtUsuario.getText();
+					contrase = Encriptadora.encriptar(contrase);
+					Persona objeto = new Persona(rol, nombre, apellido,
+							usuario, contrase);
+					try {
+						if("".equals(txtCorreo.getText())) {
+						int resp = JOptionPane.showConfirmDialog(null, "ATENCION:Está a punto de registrar un" +
+								" usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente" +
+								" enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
+							if(resp == JOptionPane.YES_OPTION)
+								modelo.agregar(objeto);
+						} else {
+							modelo.agregar(objeto);
 						}
 						
 					} catch (ClassNotFoundException | SQLException
@@ -143,14 +178,14 @@ public class VentanaModeloPersonas extends Ventana {
 		btnEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (tablaUsuarios.getSelectedRow() != -1) {
+				if (tblUsuarios.getSelectedRow() != -1) {
 					try {
 						int respuesta = JOptionPane
 								.showConfirmDialog(
 										null,
 										"Está seguro que desea eliminar este usuario?\n\nNOTA: Se eliminará permanentemente.");
 						if (respuesta == JOptionPane.YES_OPTION) {
-							modeloUsuarios.eliminar(tablaUsuarios
+							modelo.eliminar(tblUsuarios
 									.getSelectedRow());
 						}
 					} catch (ClassNotFoundException | SQLException
@@ -164,9 +199,30 @@ public class VentanaModeloPersonas extends Ventana {
 			}
 		});
 		
-		
-		iniciarComboUsuarios();
-		iniciarComboRoles();
+		comboPersonas = getComboUsuarios();
+		comboPersonas.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					comboPersonas = getComboUsuarios();
+				} catch (ClassNotFoundException | SQLException | JDOMException
+						| IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		comboRoles = getComboRoles();
+		comboRoles.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					comboRoles = getComboRoles();
+				} catch (ClassNotFoundException | SQLException | JDOMException
+						| IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		JPanel pnlGrid = new JPanel(new GridLayout(2, 4));
 		pnlGrid.add(lblPersona);
@@ -186,27 +242,18 @@ public class VentanaModeloPersonas extends Ventana {
 		panel.add(btnAgregar);
 		panel.add(btnEliminar);
 		panel.add(lblBlanco2);
-		panel.add(new JScrollPane(tablaUsuarios));
+		panel.add(new JScrollPane(tblUsuarios));
 		return panel;
 	}
 
-	private void iniciarComboUsuarios() throws ClassNotFoundException,
+	public JComboBox<String> getComboUsuarios() throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
-		comboPersonas = new JComboBox<String>();
-		personas = ModeloPersonas.getInstancia().getUsuarios();
-		for (Persona usuario : personas) {
-			comboPersonas.addItem(usuario.getNombre() + " "
-					+ usuario.getApellido());
-		}
+		return modelo.getPersonas();
 	}
 
-	private void iniciarComboRoles() throws ClassNotFoundException,
+	public JComboBox<String> getComboRoles() throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
-		comboRoles = new JComboBox<String>();
-		ArrayList<String> roles = ModeloPersonas.getInstancia().getRoles();
-		for (String rol : roles) {
-			comboRoles.addItem(rol);
-		}
+		return modelo.getRoles();
 	}
 	
 	@Override

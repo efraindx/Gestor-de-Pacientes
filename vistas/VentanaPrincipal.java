@@ -20,19 +20,19 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-public class VentanaMedico extends Ventana {
+public class VentanaPrincipal extends Ventana {
 
 	private static final long serialVersionUID = 1L;
-	private static VentanaMedico instancia;
+	private static VentanaPrincipal instancia;
 	 
-	public static synchronized VentanaMedico getInstancia()
+	public static synchronized VentanaPrincipal getInstancia()
 			throws ClassNotFoundException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException,
 			SQLException, JDOMException, IOException {
-	    return instancia == null ? instancia = new VentanaMedico() : instancia;
+	    return instancia == null ? instancia = new VentanaPrincipal() : instancia;
 	}
 	
-	public VentanaMedico() throws ClassNotFoundException,
+	public VentanaPrincipal() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
 		this.anchura = 650;
@@ -40,7 +40,6 @@ public class VentanaMedico extends Ventana {
 		this.titulo = "Medico";
 		
 		prepararVentana(titulo, anchura, altura, null);
-		
 	}
 
 	@Override
@@ -119,7 +118,7 @@ public class VentanaMedico extends Ventana {
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		new VentanaMedico().setVisible(true);
+		new VentanaPrincipal().setVisible(true);
 	}
 
 }

@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
+
 import org.jdom2.JDOMException;
 
 import com.efrain.gestorpacientes.factorias.FactoriaGestion;
@@ -23,6 +25,7 @@ public class Conexion {
 	protected Statement consulta;
 	protected static Conexion instancia;
 	protected FactoriaGestion factoria;
+	private JComboBox<String> retorno;
 
 	public static synchronized Conexion getInstancia()
 			throws ClassNotFoundException, SQLException, JDOMException,
@@ -30,7 +33,8 @@ public class Conexion {
 		return instancia == null ? instancia = new Conexion() : instancia;
 	}
 
-	private Conexion() throws ClassNotFoundException, JDOMException, IOException, SQLException {
+	private Conexion() throws ClassNotFoundException, JDOMException,
+			IOException, SQLException {
 		GestorXml gestorXml = new GestorXml();
 		Class.forName(gestorXml.getClaseDriver());
 		conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
@@ -54,12 +58,32 @@ public class Conexion {
 	public ArrayList getDatos() throws SQLException {
 		return factoria.getDatos();
 	}
-	
-	public ArrayList<String> getRoles() throws SQLException {
-		ArrayList<String> retorno = new ArrayList<String>();
+
+	public JComboBox<String> getRoles() throws SQLException {
+		retorno = new JComboBox<String>();
 		resultado = consulta.executeQuery("SELECT tipo FROM tipos_personas");
+		while (resultado.next()) {
+			retorno.addItem(resultado.getString("tipo"));
+		}
+		return retorno;
+	}
+
+	public JComboBox<String> getEspecialidades() throws SQLException {
+		retorno = new JComboBox<String>();
+		retorno.addItem("Selecciona");
+		resultado = consulta.executeQuery("SELECT nombre_especialidad AS nombre FROM especialidades");
+		while (resultado.next()) {
+			retorno.addItem(resultado.getString("nombre"));
+		}
+		return retorno;
+	}
+
+	public JComboBox<String> getPersonas() throws SQLException {
+		retorno = new JComboBox<String>();
+		resultado = consulta.executeQuery("SELECT nombre_persona AS nombre, apellido_persona " +
+				"AS apellido FROM personas p JOIN tipos_personas t WHERE p.tipo_persona_id = t.id");
 		while(resultado.next()) {
-			retorno.add(resultado.getString("tipo"));
+			retorno.addItem(resultado.getString("nombre") + " " + resultado.getString("apellido"));
 		}
 		return retorno;
 	}
@@ -134,9 +158,8 @@ public class Conexion {
 	 * 
 	 * public void eliminarPaciente(int id) throws SQLException {
 	 * consulta.executeQuery("DELETE from pacientes where id = " + id); }
-	 * 
 	 */
-	
+
 	public Connection getConexion() {
 		return conexion;
 	}
@@ -176,7 +199,7 @@ public class Conexion {
 	public void setConsulta(Statement consulta) {
 		this.consulta = consulta;
 	}
-	
+
 	public Connection getConnection() {
 		return conexion;
 	}

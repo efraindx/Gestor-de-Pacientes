@@ -1,41 +1,43 @@
 package com.efrain.gestorpacientes.entidades;
 
+import java.util.ArrayList;
+
 public class Medico  {
 
 	private int id;
+	private String codigoEmpleado;
 	private String nombre;
 	private String apellido;
-	private String telefono;
+	private ArrayList<String> telefonos;
 	private String direccion;
 	private String cedula;
 	private String especialidad;
-	private String codigoEmpleado;
-
-	public Medico(int id, String nombre, String apellido, String telefono,
-			String direccion, String cedula, String especialidad,
-			String codigoEmpleado) {
+	
+	public Medico(int id, String nombre, String apellido, ArrayList<String> telefonos,
+			String direccion, String cedula, String especialidad, String codigoEmpleado) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.telefono = telefono;
+		this.telefonos = telefonos;
 		this.direccion = direccion;
 		this.cedula = cedula;
 		this.especialidad = especialidad;
+		this.codigoEmpleado = codigoEmpleado;
 	}
 
-	public Medico(String nombre, String apellido, String telefono,
+	public Medico(String nombre, String apellido, ArrayList<String> telefonos,
 			String direccion, String cedula, String especialidad,
 			String codigoEmpleado) {
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.telefono = telefono;
+		this.telefonos = telefonos;
 		this.direccion = direccion;
 		this.cedula = cedula;
 		this.especialidad = especialidad;
 	}
 
 	public Medico() {
-		
+		//
 	}
 
 	public int getId() {
@@ -62,12 +64,12 @@ public class Medico  {
 		this.apellido = apellido;
 	}
 
-	public String getTelefono() {
-		return telefono;
+	public ArrayList<String> getTelefonos() {
+		return telefonos;
 	}
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+	public void setTelefonos(ArrayList<String> telefonos) {
+		this.telefonos = telefonos;
 	}
 
 	public String getDireccion() {

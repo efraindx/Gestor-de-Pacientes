@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import org.jdom2.JDOMException;
 import com.efrain.gestorpacientes.entidades.Asistente;
 
-public class FactoriaGestionAsistente extends FactoriaGestion {
+public class FactoriaGestionAsistentes extends FactoriaGestion {
 
 	private ArrayList<Asistente> asistentes;
 
-	public FactoriaGestionAsistente() throws JDOMException, IOException,
+	public FactoriaGestionAsistentes() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
 		this.asistentes = new ArrayList<Asistente>();
 	}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
@@ -30,7 +31,7 @@ public class ModeloPersonas extends AbstractTableModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ModeloPersonas() throws ClassNotFoundException, SQLException,
+	private ModeloPersonas() throws ClassNotFoundException, SQLException,
 			JDOMException, IOException {
 		conexion = Conexion.getInstancia();
 		conexion.setFactoria(new FactoriaGestionPersonas());
@@ -93,11 +94,10 @@ public class ModeloPersonas extends AbstractTableModel {
 		return retorno;
 	}
 
-	public void agregar(Object persona) throws ClassNotFoundException,
+	public void agregar(Persona persona) throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
-		Persona personaActual = (Persona) persona;
 		conexion.agregar(persona);
-		personas.add(personaActual);
+		personas.add(persona);
 		fireTableDataChanged();
 	}
 
@@ -159,8 +159,12 @@ public class ModeloPersonas extends AbstractTableModel {
 		return true;
 	}
 
-	public ArrayList<String> getRoles() throws ClassNotFoundException,
+	public JComboBox<String> getRoles() throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
-		return Conexion.getInstancia().getRoles();
+		return conexion.getRoles();
+	}
+	
+	public JComboBox<String> getPersonas() throws SQLException {
+		return conexion.getPersonas();
 	}
 }
