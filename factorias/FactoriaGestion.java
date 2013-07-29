@@ -21,7 +21,7 @@ public abstract class FactoriaGestion {
 	protected Statement consulta;
 	
 	public abstract void agregar(Object persona);
-	public abstract void eliminar(int id); 
+	public abstract void eliminar(int id) throws SQLException; 
 	public abstract void modificar(int id, int atributo, Object valor) throws SQLException;
 	public abstract ArrayList<?> getDatos();
 	

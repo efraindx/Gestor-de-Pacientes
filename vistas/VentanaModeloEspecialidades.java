@@ -29,6 +29,11 @@ public class VentanaModeloEspecialidades extends Ventana {
 	private JTable tblEspecialidades;
 	private static final long serialVersionUID = 1L;
 	private ModeloEspecialidades modelo;
+	private static VentanaModeloEspecialidades instancia;
+	
+	public static synchronized VentanaModeloEspecialidades getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+		return instancia == null ? instancia = new VentanaModeloEspecialidades() : instancia;
+	}
 	
 	public VentanaModeloEspecialidades() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
 		this.titulo = "Especialidades";
@@ -58,12 +63,14 @@ public class VentanaModeloEspecialidades extends Ventana {
 		btnAgregar.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(!"".equals(txtCodigo.getText()) & !"".equals(txtNombre.getText())) {
+				if(!"".equals(txtCodigo.getText()) && !"".equals(txtNombre.getText())) {
 					Especialidad especialidad = new Especialidad(txtCodigo.getText(), txtNombre.getText());
 					modelo.agregar(especialidad);
 				} else {
 					JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.");
 				}
+				txtCodigo.setText("");
+				txtNombre.setText("");
 			}
 		});
 		
@@ -77,8 +84,12 @@ public class VentanaModeloEspecialidades extends Ventana {
 									null,
 									"Está seguro que desea eliminar esta especialidad?\n\nNOTA: Se eliminará permanentemente.");
 					if (respuesta == JOptionPane.YES_OPTION) {
-						modelo.eliminar(tblEspecialidades
-								.getSelectedRow());
+						try {
+							modelo.eliminar(tblEspecialidades
+									.getSelectedRow());
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
 					}
 				} else {
 					JOptionPane.showMessageDialog(null,
@@ -105,12 +116,4 @@ public class VentanaModeloEspecialidades extends Ventana {
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
 	}
-	
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-			new VentanaModeloEspecialidades().setVisible(true);
-
-	}
-	
-	
-
 }

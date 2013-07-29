@@ -12,8 +12,13 @@ public class GestorXml {
 	private SAXBuilder constructor;
 	private Document documento;
 	private Element raíz;
+	private static GestorXml instancia;
 	
-	public GestorXml() throws JDOMException, IOException{
+	public static synchronized GestorXml getInstancia() throws JDOMException, IOException {
+		return instancia == null ? instancia = new GestorXml() : instancia;
+	}
+	
+	private GestorXml() throws JDOMException, IOException{
 		constructor = new SAXBuilder();
 		documento = constructor.build(new File("src/com/efrain/gestorpacientes/config.xml"));
 		raíz = documento.getRootElement();

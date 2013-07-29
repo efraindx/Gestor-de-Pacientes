@@ -1,7 +1,6 @@
 package com.efrain.gestorpacientes.vistas;
 
 import java.awt.Color;
-
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -10,9 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,7 +25,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.FocusManager;
 
 import org.jdom2.JDOMException;
 
@@ -42,9 +43,14 @@ public class VentanaModeloPersonas extends Ventana {
 	private JPasswordField txtContrase;
 	private ModeloPersonas modelo;
 	private static VentanaModeloPersonas instancia;
-	
-	public static synchronized VentanaModeloPersonas getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		return instancia == null ? instancia = new VentanaModeloPersonas() : instancia;
+	private JButton btnEliminar;
+
+	public static synchronized VentanaModeloPersonas getInstancia()
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException,
+			SQLException, JDOMException, IOException {
+		return instancia == null ? instancia = new VentanaModeloPersonas()
+				: instancia;
 	}
 
 	public VentanaModeloPersonas() throws ClassNotFoundException,
@@ -74,28 +80,31 @@ public class VentanaModeloPersonas extends Ventana {
 		lblBlanco.setPreferredSize(new Dimension(70, 10));
 		JLabel lblCorreo = new JLabel("Correo Electrónico:");
 		JLabel lblBlanco2 = new JLabel();
-		lblBlanco2.setPreferredSize(new Dimension(70,20));
-		
-		txtCorreo = new JTextField(18){
+		lblBlanco2.setPreferredSize(new Dimension(70, 20));
+
+		txtCorreo = new JTextField(18) {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				if(getText().isEmpty() && !(FocusManager.getCurrentKeyboardFocusManager().getFocusOwner() == this)){
-			        Graphics2D g2 = (Graphics2D)g.create();
-			        g2.setBackground(Color.gray);
-			        g2.setFont(getFont().deriveFont(Font.ITALIC));
-			        g2.drawString("ejemplo@[gmail|hotmail].com", 10, 15); 
-			        g2.dispose();
-			    }
+				if (getText().isEmpty()
+						&& !(FocusManager.getCurrentKeyboardFocusManager()
+								.getFocusOwner() == this)) {
+					Graphics2D g2 = (Graphics2D) g.create();
+					g2.setBackground(Color.gray);
+					g2.setFont(getFont().deriveFont(Font.ITALIC));
+					g2.drawString("ejemplo@[gmail|hotmail].com", 10, 15);
+					g2.dispose();
+				}
 			}
 		};
-		
+
 		comboRoles = new JComboBox<String>();
-		
+
 		txtUsuario = new JTextField(10);
 		txtContrase = new JPasswordField();
-		txtContrase.addActionListener(new ActionListener(){
+		txtContrase.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String contrase = new String(txtContrase.getPassword());
@@ -108,33 +117,35 @@ public class VentanaModeloPersonas extends Ventana {
 							.getSelectedIndex());
 					String usuario = txtUsuario.getText();
 					contrase = Encriptadora.encriptar(contrase);
+					String correo = txtCorreo.getText();
 					Persona objeto = new Persona(rol, nombre, apellido,
-							usuario, contrase);
+							usuario, contrase, correo);
 					try {
-						if("".equals(txtCorreo.getText())) {
-						int resp = JOptionPane.showConfirmDialog(null, "ATENCION:Está a punto de registrar un" +
-								" usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente" +
-								" enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
-							if(resp == JOptionPane.YES_OPTION)
+						if ("".equals(txtCorreo.getText())) {
+							int resp = JOptionPane
+									.showConfirmDialog(
+											null,
+											"ATENCION:Está a punto de registrar un"
+													+ " usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente"
+													+ " enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
+							if (resp == JOptionPane.YES_OPTION)
 								modelo.agregar(objeto);
+
 						} else {
 							modelo.agregar(objeto);
 						}
-						
+
 					} catch (ClassNotFoundException | SQLException
 							| JDOMException | IOException e) {
 						e.printStackTrace();
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Los campos con \"*\" son obligatorios.");
+					JOptionPane.showMessageDialog(null,
+							"Los campos con \"*\" son obligatorios.");
 				}
 
 			}
 		});
-
-		tblUsuarios = new JTable(modelo);
-		tblUsuarios
-				.setPreferredScrollableViewportSize(new Dimension(550, 350));
 
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
@@ -150,31 +161,67 @@ public class VentanaModeloPersonas extends Ventana {
 							.getSelectedIndex());
 					String usuario = txtUsuario.getText();
 					contrase = Encriptadora.encriptar(contrase);
+					String correo = txtCorreo.getText();
 					Persona objeto = new Persona(rol, nombre, apellido,
-							usuario, contrase);
+							usuario, contrase, correo);
 					try {
-						if("".equals(txtCorreo.getText())) {
-						int resp = JOptionPane.showConfirmDialog(null, "ATENCION:Está a punto de registrar un" +
-								" usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente" +
-								" enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
-							if(resp == JOptionPane.YES_OPTION)
-								modelo.agregar(objeto);
-						} else {
-							modelo.agregar(objeto);
+						if ("".equals(txtCorreo.getText())) {
+							if (modelo.usuarioExiste(usuario)) {
+								JOptionPane.showMessageDialog(null,
+										"Este usuario ya existe.");
+							} else {
+
+								int resp = JOptionPane
+										.showConfirmDialog(
+												null,
+												"ATENCION:Está a punto de registrar un"
+														+ " usuario\n que no tiene correo, es recomendable que tenga\n correo para posteriormente"
+														+ " enviarle su contraseña\n en caso de que la olvide. Agregar de todas formas?");
+
+								if (resp == JOptionPane.YES_OPTION) {
+									modelo.agregar(objeto);
+									txtCorreo = new JTextField(18) {
+										private static final long serialVersionUID = 1L;
+
+										@Override
+										protected void paintComponent(Graphics g) {
+											super.paintComponent(g);
+											if (getText().isEmpty()
+													&& !(FocusManager
+															.getCurrentKeyboardFocusManager()
+															.getFocusOwner() == this)) {
+												Graphics2D g2 = (Graphics2D) g
+														.create();
+												g2.setBackground(Color.gray);
+												g2.setFont(getFont()
+														.deriveFont(Font.ITALIC));
+												g2.drawString(
+														"ejemplo@[gmail|hotmail].com",
+														10, 15);
+												g2.dispose();
+											}
+										}
+									};
+									txtUsuario.setText("");
+									txtContrase.setText("");
+								}
+							}
 						}
-						
+
 					} catch (ClassNotFoundException | SQLException
 							| JDOMException | IOException e) {
 						e.printStackTrace();
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Los campos con \"*\" son obligatorios.");
+					JOptionPane.showMessageDialog(null,
+							"Los campos con \"*\" son obligatorios.");
 				}
 
 			}
 		});
 
-		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setEnabled(false);
 		btnEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -185,8 +232,7 @@ public class VentanaModeloPersonas extends Ventana {
 										null,
 										"Está seguro que desea eliminar este usuario?\n\nNOTA: Se eliminará permanentemente.");
 						if (respuesta == JOptionPane.YES_OPTION) {
-							modelo.eliminar(tblUsuarios
-									.getSelectedRow());
+							modelo.eliminar(tblUsuarios.getSelectedRow());
 						}
 					} catch (ClassNotFoundException | SQLException
 							| JDOMException | IOException e) {
@@ -198,9 +244,18 @@ public class VentanaModeloPersonas extends Ventana {
 				}
 			}
 		});
-		
+
+		tblUsuarios = new JTable(modelo);
+		tblUsuarios.setPreferredScrollableViewportSize(new Dimension(550, 350));
+		tblUsuarios.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnEliminar.setEnabled(true);
+			}
+		});
+
 		comboPersonas = getComboUsuarios();
-		comboPersonas.addActionListener(new ActionListener(){
+		comboPersonas.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -212,7 +267,7 @@ public class VentanaModeloPersonas extends Ventana {
 			}
 		});
 		comboRoles = getComboRoles();
-		comboRoles.addActionListener(new ActionListener(){
+		comboRoles.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -255,12 +310,12 @@ public class VentanaModeloPersonas extends Ventana {
 			SQLException, JDOMException, IOException {
 		return modelo.getRoles();
 	}
-	
+
 	@Override
 	public boolean esSalirAlCerrar() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;

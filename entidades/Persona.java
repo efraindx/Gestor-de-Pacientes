@@ -18,15 +18,6 @@ public class Persona {
 		this.usuario = usuario;
 		this.contrase = contrase;
 	}
-
-	public Persona(String rol, String nombre, String apellido, String usuario,
-			String contrase) {
-		this.rol = rol;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.usuario = usuario;
-		this.contrase = contrase;
-	}
 	
 	public Persona(String rol, String nombre, String apellido, String usuario,
 			String contrase, String correo) {

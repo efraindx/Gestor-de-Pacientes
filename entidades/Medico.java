@@ -13,6 +13,10 @@ public class Medico  {
 	private String cedula;
 	private String especialidad;
 	
+	public Medico() {
+		//JavaBean
+	}
+
 	public Medico(int id, String nombre, String apellido, ArrayList<String> telefonos,
 			String direccion, String cedula, String especialidad, String codigoEmpleado) {
 		this.id = id;
@@ -34,10 +38,7 @@ public class Medico  {
 		this.direccion = direccion;
 		this.cedula = cedula;
 		this.especialidad = especialidad;
-	}
-
-	public Medico() {
-		//
+		this.codigoEmpleado = codigoEmpleado;
 	}
 
 	public int getId() {

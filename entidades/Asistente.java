@@ -1,32 +1,39 @@
 package com.efrain.gestorpacientes.entidades;
 
+import java.util.ArrayList;
+
 public class Asistente {
 
 	private int id;
 	private String nombre;
 	private String apellido;
-	private String telefono;
+	private ArrayList<String> telefonos;
 	private String direccion;
 	private String cedula;
 	private String codigoEmpleado;
+	
+	public Asistente() {
+		//JavaBean
+	}
 
-	public Asistente(int id, String nombre, String apellido, String telefono,
+	public Asistente(int id, String nombre, String apellido, ArrayList<String> telefonos,
 			String direccion, String cedula, String codigoEmpleado) {
 		this.id = id;
 		this.nombre = nombre;
-		this.telefono = telefono;
+		this.telefonos = telefonos;
 		this.direccion = direccion;
 		this.cedula = cedula;
 		this.codigoEmpleado = codigoEmpleado;
 	}
 
-	public Asistente(String nombre, String apellido, String telefono,
+	public Asistente(String nombre, String apellido, ArrayList<String> telefonos,
 			String direccion, String cedula, String codigoEmpleado) {
-
-	}
-
-	public Asistente() {
-		
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefonos = telefonos;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.codigoEmpleado = codigoEmpleado;
 	}
 
 	public int getId() {
@@ -53,12 +60,12 @@ public class Asistente {
 		this.apellido = apellido;
 	}
 
-	public String getTelefono() {
-		return telefono;
+	public ArrayList<String> getTelefonos() {
+		return telefonos;
 	}
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+	public void setTelefonos(ArrayList<String> telefonos) {
+		this.telefonos = telefonos;
 	}
 
 	public String getDireccion() {

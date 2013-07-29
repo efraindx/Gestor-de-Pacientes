@@ -19,8 +19,9 @@ public class ModeloMedicos extends AbstractTableModel {
 	private static ModeloMedicos instancia;
 	private ArrayList<Medico> medicos;
 	private String[] encabezados = { "Cod.Empleado", "Nombre", "Apellido",
-			"Dirección", "Cédula", "Especialidad", };
+			"Dirección", "Cédula", "Especialidad" };
 	private Conexion conexion;
+	private Medico medicoActual;
 
 	public static synchronized ModeloMedicos getInstancia()
 			throws ClassNotFoundException, SQLException, JDOMException,
@@ -48,19 +49,22 @@ public class ModeloMedicos extends AbstractTableModel {
 
 	public void eliminar(int fila) throws ClassNotFoundException, SQLException,
 			JDOMException, IOException {
-		Medico medicoActual = medicos.get(fila);
+		medicoActual = medicos.get(fila);
 		conexion.eliminar(medicoActual.getId());
+		medicos.remove(fila);
+		fireTableRowsDeleted(fila, fila);
 	}
 
 	public void agregar(Object persona) throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
 		medicos.add((Medico) persona);
 		conexion.agregar(persona);
-	}  
+		fireTableDataChanged();
+	}
 
 	@Override
 	public Object getValueAt(int fila, int columna) {
-		Medico medicoActual = medicos.get(fila);
+		medicoActual = medicos.get(fila);
 		Object retorno = null;
 		switch (columna) {
 		case 0:
@@ -91,40 +95,36 @@ public class ModeloMedicos extends AbstractTableModel {
 		return retorno;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void setValueAt(Object objeto, int fila, int columna) {
-		Medico medicoActual = medicos.get(fila);
-		switch (columna) {
-		case 0:
-			medicoActual.setNombre((String) objeto);
-			break;
-
+	public void modificar(int id, int atributo, int fila, Object valor)
+			throws SQLException {
+		medicoActual = medicos.get(fila);
+		switch (atributo) {
 		case 1:
-			medicoActual.setApellido((String) objeto);
+			medicoActual.setEspecialidad(getEspecialidadMedico((int) valor));
+			valor = (int) valor + 1;
 			break;
 
 		case 2:
-			medicoActual.setTelefonos((ArrayList<String>) objeto);
+			medicoActual.setCodigoEmpleado((String) valor);
 			break;
 
 		case 3:
-			medicoActual.setDireccion((String) objeto);
+			medicoActual.setNombre((String) valor);
 			break;
 
 		case 4:
-			medicoActual.setCedula((String) objeto);
+			medicoActual.setApellido((String) valor);
 			break;
 
 		case 5:
-			medicoActual.setCodigoEmpleado((String) objeto);
+			medicoActual.setDireccion((String) valor);
 			break;
 
 		case 6:
-			medicoActual.setEspecialidad((String) objeto);
+			medicoActual.setCedula((String) valor);
 			break;
 		}
-		System.out.println("pullaste1");
+		conexion.modificar(id, atributo, valor);
 	}
 
 	@Override
@@ -136,7 +136,16 @@ public class ModeloMedicos extends AbstractTableModel {
 		return conexion.getEspecialidades();
 	}
 
+	public void setTelefonosPersona(int id, ArrayList<String> telefonos)
+			throws SQLException {
+		conexion.setTelefonosPersona(id, telefonos);
+	}
+
 	public ArrayList<Medico> getMedicos() {
 		return medicos;
+	}
+
+	public String getEspecialidadMedico(int pos) throws SQLException {
+		return conexion.getEspecialidades().getItemAt(pos);
 	}
 }

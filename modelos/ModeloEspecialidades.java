@@ -43,7 +43,7 @@ public class ModeloEspecialidades extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	public void eliminar(int fila) {
+	public void eliminar(int fila) throws SQLException {
 		especialidadActual = especialidades.get(fila);
 		especialidades.remove(fila);
 		conexion.eliminar(especialidadActual.getId());

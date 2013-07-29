@@ -20,6 +20,6 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 		}
 		
 		public static void main(String[] args) {
-			System.out.println(encriptar("123"));
+			System.out.println(encriptar("555"));
 		}
 }

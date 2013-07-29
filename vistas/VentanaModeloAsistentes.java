@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,48 +25,44 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Medico;
-import com.efrain.gestorpacientes.modelos.ModeloMedicos;
+import com.efrain.gestorpacientes.entidades.Asistente;
+import com.efrain.gestorpacientes.modelos.ModeloAsistentes;
 import com.efrain.gestorpacientes.modelos.ModeloTelefonos;
 import com.efrain.gestorpacientes.utilidades.Validador;
 
-public class VentanaModeloMedicos extends Ventana {
-
+public class VentanaModeloAsistentes extends Ventana {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private JTextField txtCod;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
 	private JTextField txtDi;
 	private JTextField txtTelefono;
 	private JTextField txtCe;
-	private JTable tblMedicos;
+	private JTable tblAsistentes;
 	private JTable tblTelefonos;
-	private JComboBox<String> comboEspecialidades;
 	private JScrollPane scrollTelefonos;
-	private ModeloMedicos modeloM;
+	private ModeloAsistentes modeloA;
 	private ModeloTelefonos modeloT;
 	private JButton btnCambios;
 	private JButton btnAgregarT;
 	private JButton btnEliminarT;
-	private JButton btnEliminarM;
-	private JButton btnAgregarM;
-	private Medico medicoActual;
-	private static VentanaModeloMedicos instancia;
-
-	private static final long serialVersionUID = 1L;
+	private JButton btnEliminarA;
+	private JButton btnAgregarA;
+	private Asistente asistenteActual;
+	private static VentanaModeloAsistentes instancia;
 	
-	public static synchronized VentanaModeloMedicos getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		return instancia == null ? instancia = new VentanaModeloMedicos() : instancia;
+	public static synchronized VentanaModeloAsistentes getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+		return instancia == null ? instancia = new VentanaModeloAsistentes() : instancia;
 	}
-
-	public VentanaModeloMedicos() throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException, SQLException, JDOMException,
-			IOException {
-		this.titulo = "Medicos";
-		this.anchura = 705;
+	
+	public VentanaModeloAsistentes() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+		this.titulo = "Mantenimiento de Asistentes";
 		this.altura = 585;
-		this.modeloM = ModeloMedicos.getInstancia();
-		this.modeloT = new ModeloTelefonos();
+		this.anchura = 705;
+		modeloT = new ModeloTelefonos();
+		modeloA = ModeloAsistentes.getInstancia();
 		prepararVentana(titulo, anchura, altura, null);
 	}
 
@@ -77,7 +72,7 @@ public class VentanaModeloMedicos extends Ventana {
 
 		panel = new JPanel(new FlowLayout());
 
-		JLabel lblTitulo = new JLabel("Mantenimiento de Médicos");
+		JLabel lblTitulo = new JLabel("Mantenimiento de Asistentes");
 		lblTitulo.setFont(new Font("Monotype Coursiva",
 				Font.BOLD + Font.ITALIC, 16));
 		lblTitulo.setPreferredSize(new Dimension(280, 50));
@@ -87,7 +82,6 @@ public class VentanaModeloMedicos extends Ventana {
 		JLabel lblDi = new JLabel("   Dirección:");
 		JLabel lblCe = new JLabel("*Cédula:");
 		JLabel lblTel = new JLabel("*Teléfono:");
-		JLabel lblEsp = new JLabel("   Especialidad:");
 
 		txtCod = new JTextField(10);
 		txtNombre = new JTextField(10);
@@ -102,6 +96,7 @@ public class VentanaModeloMedicos extends Ventana {
 				}
 			}
 		});
+		
 		txtTelefono = new JTextField(10);
 		txtTelefono.addKeyListener(new KeyAdapter() {
 			@Override
@@ -113,6 +108,7 @@ public class VentanaModeloMedicos extends Ventana {
 				}
 			}
 		});
+		
 		txtTelefono.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (txtTelefono.getText().length() == 12) {
@@ -147,10 +143,8 @@ public class VentanaModeloMedicos extends Ventana {
 			}
 		});
 
-		comboEspecialidades = modeloM.getEspecialidades();
-
-		btnAgregarM = new JButton("Agregar Medico");
-		btnAgregarM.addActionListener(new ActionListener() {
+		btnAgregarA = new JButton("Agregar Asistente");
+		btnAgregarA.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -161,8 +155,6 @@ public class VentanaModeloMedicos extends Ventana {
 						&& !"".equals(txtCe.getText())
 						&& modeloT.getTelefonos().size() != 0) {
 
-					String especialidad = comboEspecialidades
-							.getItemAt(comboEspecialidades.getSelectedIndex());
 					String codemp = txtCod.getText();
 					String nombre = txtNombre.getText();
 					String apellido = txtApellido.getText();
@@ -170,10 +162,10 @@ public class VentanaModeloMedicos extends Ventana {
 					String cedula = txtCe.getText();
 					if (Validador.cedulaEsValida(cedula)) {
 					ArrayList<String> telefonos = modeloT.getTelefonos();
-					Medico medico = new Medico(nombre, apellido, telefonos,
-							direccion, cedula, especialidad, codemp);
+					Asistente asistente = new Asistente(nombre, apellido, telefonos,
+							direccion, cedula, codemp);
 					try {
-						modeloM.agregar(medico);
+						modeloA.agregar(asistente);
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					} catch (SQLException e) {
@@ -194,29 +186,28 @@ public class VentanaModeloMedicos extends Ventana {
 			}
 		});
 
-		btnEliminarM = new JButton("Eliminar Medico");
-		btnEliminarM.setEnabled(false);
-		btnEliminarM.addActionListener(new ActionListener() {
+		btnEliminarA = new JButton("Eliminar Asistente");
+		btnEliminarA.setEnabled(false);
+		btnEliminarA.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (tblMedicos.getSelectedRow() != -1) {
+				if (tblAsistentes.getSelectedRow() != -1) {
 					try {
 						int respuesta = JOptionPane
 								.showConfirmDialog(
 										null,
-										"Está seguro que desea eliminar este medico?\n\nNOTA: Se eliminará permanentemente.");
+										"Está seguro que desea eliminar este asistente?\n\nNOTA: Se eliminará permanentemente.");
 						if (respuesta == JOptionPane.YES_OPTION) {
-							modeloM.eliminar(tblMedicos.getSelectedRow());
-							btnEliminarM.setEnabled(false);
+							modeloA.eliminar(tblAsistentes.getSelectedRow());
+							btnEliminarA.setEnabled(false);
 							actualizar();
 						}
-					} catch (ClassNotFoundException | SQLException
-							| JDOMException | IOException e) {
+					} catch (SQLException e) {
 						e.printStackTrace();
 					}
 				} else {
 					JOptionPane.showMessageDialog(null,
-							"Debe seleccionar un medico.");
+							"Debe seleccionar un asistente.");
 				}
 			}
 		});
@@ -272,24 +263,22 @@ public class VentanaModeloMedicos extends Ventana {
 			}
 		});
 
-		tblMedicos = new JTable(modeloM);
-		tblMedicos.setPreferredScrollableViewportSize(new Dimension(595, 350));
-		tblMedicos.addMouseListener(new MouseAdapter() {
+		tblAsistentes = new JTable(modeloA);
+		tblAsistentes.setPreferredScrollableViewportSize(new Dimension(595, 350));
+		tblAsistentes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				medicoActual = modeloM.getMedicos().get(
-						tblMedicos.getSelectedRow());
-				txtNombre.setText(medicoActual.getNombre());
-				txtApellido.setText(medicoActual.getApellido());
-				txtCod.setText(medicoActual.getCodigoEmpleado());
-				txtDi.setText(medicoActual.getDireccion());
-				txtCe.setText(medicoActual.getCedula());
-				comboEspecialidades.setSelectedItem(medicoActual
-						.getEspecialidad());
-				modeloT.setTelefonos(medicoActual.getTelefonos());
+				asistenteActual = modeloA.getAsistentes().get(
+						tblAsistentes.getSelectedRow());
+				txtNombre.setText(asistenteActual.getNombre());
+				txtApellido.setText(asistenteActual.getApellido());
+				txtCod.setText(asistenteActual.getCodigoEmpleado());
+				txtDi.setText(asistenteActual.getDireccion());
+				txtCe.setText(asistenteActual.getCedula());
+				modeloT.setTelefonos(asistenteActual.getTelefonos());
 				btnCambios.setEnabled(true);
-				btnEliminarM.setEnabled(true);
-				btnAgregarM.setEnabled(false);
+				btnEliminarA.setEnabled(true);
+				btnAgregarA.setEnabled(false);
 			}
 		});
 		tblTelefonos = new JTable(modeloT);
@@ -307,8 +296,8 @@ public class VentanaModeloMedicos extends Ventana {
 		btnCambios.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				medicoActual = modeloM.getMedicos().get(
-						tblMedicos.getSelectedRow());
+				asistenteActual = modeloA.getAsistentes().get(
+						tblAsistentes.getSelectedRow());
 				if (!"".equals(txtCod.getText())
 						&& !"".equals(txtCod.getText())
 						&& !"".equals(txtNombre.getText())
@@ -316,25 +305,22 @@ public class VentanaModeloMedicos extends Ventana {
 						&& !"".equals(txtCe.getText())
 						&& modeloT.getTelefonos().size() != 0) {
 					try {
-						int esp = comboEspecialidades.getSelectedIndex();
-						modeloM.modificar(medicoActual.getId(), 1,
-								tblMedicos.getSelectedRow(), esp);
 						String codigo_emp = txtCod.getText();
-						modeloM.modificar(medicoActual.getId(), 2,
-								tblMedicos.getSelectedRow(), codigo_emp);
+						modeloA.modificar(asistenteActual.getId(), 1,
+								tblAsistentes.getSelectedRow(), codigo_emp);
 						String nombre = txtNombre.getText();
-						modeloM.modificar(medicoActual.getId(), 3,
-								tblMedicos.getSelectedRow(), nombre);
+						modeloA.modificar(asistenteActual.getId(), 2,
+								tblAsistentes.getSelectedRow(), nombre);
 						String apellido = txtApellido.getText();
-						modeloM.modificar(medicoActual.getId(), 4,
-								tblMedicos.getSelectedRow(), apellido);
+						modeloA.modificar(asistenteActual.getId(), 3,
+								tblAsistentes.getSelectedRow(), apellido);
 						String dir = txtDi.getText();
-						modeloM.modificar(medicoActual.getId(), 5,
-								tblMedicos.getSelectedRow(), dir);
+						modeloA.modificar(asistenteActual.getId(), 4,
+								tblAsistentes.getSelectedRow(), dir);
 						String ced = txtCe.getText();
-						modeloM.modificar(medicoActual.getId(), 6,
-								tblMedicos.getSelectedRow(), ced);
-						modeloM.setTelefonosPersona(medicoActual.getId(), modeloT.getTelefonos());
+						modeloA.modificar(asistenteActual.getId(), 5,
+								tblAsistentes.getSelectedRow(), ced);
+						modeloA.setTelefonosPersona(asistenteActual.getId(), modeloT.getTelefonos());
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -344,12 +330,11 @@ public class VentanaModeloMedicos extends Ventana {
 				}
 				btnCambios.setEnabled(false);
 				btnAgregarT.setEnabled(false);
-				btnAgregarM.setEnabled(true);
+				btnAgregarA.setEnabled(true);
 				btnEliminarT.setEnabled(false);
-				btnEliminarM.setEnabled(false);
-				tblMedicos.clearSelection();
+				btnEliminarA.setEnabled(false);
+				tblAsistentes.clearSelection();
 				modeloT.setTelefonos(new ArrayList<String>());
-				comboEspecialidades.setSelectedIndex(0);
 				txtCod.setText("");
 				txtNombre.setText("");
 				txtApellido.setText("");
@@ -369,8 +354,6 @@ public class VentanaModeloMedicos extends Ventana {
 		pnlGrid.add(txtDi);
 		pnlGrid.add(lblCe);
 		pnlGrid.add(txtCe);
-		pnlGrid.add(lblEsp);
-		pnlGrid.add(comboEspecialidades);
 
 		JPanel pnlGridTel = new JPanel(new GridLayout(2, 1));
 		pnlGridTel.add(btnAgregarT);
@@ -382,45 +365,37 @@ public class VentanaModeloMedicos extends Ventana {
 		scrollTelefonos.setWheelScrollingEnabled(false);
 		panel.add(scrollTelefonos);
 		panel.add(pnlGridTel);
-		panel.add(btnAgregarM);
-		panel.add(btnEliminarM);
+		panel.add(btnAgregarA);
+		panel.add(btnEliminarA);
 		panel.add(btnCambios);
 		panel.add(lblTel);
 		panel.add(txtTelefono);
-		panel.add(new JScrollPane(tblMedicos));
+		panel.add(new JScrollPane(tblAsistentes));
 		return panel;
 	}
-
+	
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
 	}
-
-
 	
 	public void actualizar() {
 		btnCambios.setEnabled(false);
 		btnAgregarT.setEnabled(false);
-		btnAgregarM.setEnabled(true);
+		btnAgregarA.setEnabled(true);
 		btnEliminarT.setEnabled(false);
-		btnEliminarM.setEnabled(false);
-		tblMedicos.clearSelection();
+		btnEliminarA.setEnabled(false);
+		tblAsistentes.clearSelection();
 		modeloT.setTelefonos(new ArrayList<String>());
-		comboEspecialidades.setSelectedIndex(0);
 		txtCod.setText("");
 		txtNombre.setText("");
 		txtApellido.setText("");
 		txtCe.setText("");
 		txtDi.setText("");
 	}
-
-	public static void main(String[] args) {
-		try {
-			new VentanaModeloMedicos().setVisible(true);
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException
-				| SQLException | JDOMException | IOException e) {
-			e.printStackTrace();
-		}
+	
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+		new VentanaModeloAsistentes().setVisible(true);
 	}
+
 }

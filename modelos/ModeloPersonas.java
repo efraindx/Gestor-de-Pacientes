@@ -65,7 +65,6 @@ public class ModeloPersonas extends AbstractTableModel {
 	public Object getValueAt(int fila, int columna) {
 		String retorno = null;
 		Persona personaActual = personas.get(fila);
-
 		switch (columna) {
 		case 0:
 			retorno = personaActual.getNombre();
@@ -166,5 +165,15 @@ public class ModeloPersonas extends AbstractTableModel {
 	
 	public JComboBox<String> getPersonas() throws SQLException {
 		return conexion.getPersonas();
+	}
+	
+	public boolean usuarioExiste(String usuario) {
+		boolean retorno = false;
+		for (Persona p: personas) {
+			if(p.getUsuario().equals(usuario)) {
+				return true;
+			}
+		}
+		return retorno;
 	}
 }

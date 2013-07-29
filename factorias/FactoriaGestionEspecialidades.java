@@ -22,7 +22,7 @@ public class FactoriaGestionEspecialidades extends FactoriaGestion {
 		Especialidad especialidadActual = (Especialidad) persona;
 		try {
 			enunciado = conexion
-					.prepareStatement("INSERT INTO especialidades (codigo, nombre) VALUES (?,?)");
+					.prepareStatement("INSERT INTO especialidades (codigo, nombre_especialidad) VALUES (?,?)");
 			enunciado.setString(1, especialidadActual.getCodigo());
 			enunciado.setString(2, especialidadActual.getNombre());
 			enunciado.execute();
