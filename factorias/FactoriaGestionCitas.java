@@ -49,7 +49,8 @@ public class FactoriaGestionCitas extends FactoriaGestion {
 		try {
 			resultado = consulta.executeQuery("SELECT * FROM citas");
 			while (resultado.next()) {
-				Cita cita = new Cita(resultado.getString("paciente"),
+				Cita cita = new Cita(resultado.getInt("id"),
+						resultado.getString("paciente"),
 						resultado.getString("medico"),
 						resultado.getString("fecha"),
 						resultado.getString("hora"),
@@ -70,7 +71,7 @@ public class FactoriaGestionCitas extends FactoriaGestion {
 		case 1:
 			enunciado = conexion
 					.prepareStatement("UPDATE citas SET paciente = ? WHERE id = ?");
-			enunciado.setInt(1, (int) valor);
+			enunciado.setString(1, (String) valor);
 			break;
 
 		case 2:

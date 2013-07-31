@@ -124,7 +124,56 @@ public class Conexion {
 			enunciado.setString(2, t);
 			enunciado.execute();
 		}
-
+	}
+	
+	public JComboBox<String> getPacientes() throws SQLException {
+		retorno = new JComboBox<String>();
+		resultado = consulta.executeQuery("SELECT `nombre`, `apellido` FROM pacientes");
+		retorno.addItem("Selecciona");
+		while(resultado.next()) {
+			retorno.addItem(resultado.getString("nombre") + " " + resultado.getString("apellido"));
+		}
+		return retorno;
+	}
+	
+	public JComboBox<String> getMedicos() throws SQLException {
+		retorno = new JComboBox<String>();
+		resultado = consulta.executeQuery("SELECT `nombre`, `apellido` FROM medicos");
+		retorno.addItem("Selecciona");
+		while(resultado.next()) {
+			retorno.addItem(resultado.getString("nombre") + " " + resultado.getString("apellido"));
+		}
+		return retorno;
+	}
+	
+	public JComboBox<String> getPadecimientos() throws SQLException {
+		retorno = new JComboBox<String>();
+		resultado = consulta.executeQuery("SELECT nombre FROM padecimientos");
+		retorno.addItem("Selecciona");
+		while (resultado.next()) {
+			retorno.addItem(resultado.getString("nombre"));
+		}
+		return retorno;
+	}
+	
+	public JComboBox<String> getPruebas_Laboratorio() throws SQLException {
+		retorno = new JComboBox<String>();
+		resultado = consulta.executeQuery("SELECT nombre FROM pruebas_laboratorio");
+		retorno.addItem("Selecciona");
+		while (resultado.next()) {
+			retorno.addItem(resultado.getString("nombre"));
+		}
+		return retorno;
+	}
+	
+	public JComboBox<String> getResultados_Pruebas_Laboratorio() throws SQLException {
+		retorno = new JComboBox<String>();
+		resultado = consulta.executeQuery("SELECT resultado FROM `resultados_pruebas_laboratorio`");
+		retorno.addItem("Selecciona");
+		while (resultado.next()) {
+			retorno.addItem(resultado.getString("resultado"));
+		}
+		return retorno;
 	}
 
 	/*

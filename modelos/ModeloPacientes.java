@@ -125,7 +125,7 @@ public class ModeloPacientes extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object objeto, int fila, int columna) {
-		Paciente pacienteActual = pacientes.get(fila);
+		pacienteActual = pacientes.get(fila);
 		String valor = (String) objeto;
 		try {
 			switch (columna) {
