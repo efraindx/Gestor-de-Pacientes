@@ -117,7 +117,7 @@ public class VentanaModeloMedicos extends Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				if (txtTelefono.getText().length() == 12) {
 					String telefono = txtTelefono.getText();
-					if (modeloT.telefonoEsValido(telefono)) {
+					if (Validador.telefonoEsValido(telefono)) {
 						modeloT.agregar(telefono);
 						txtTelefono.setText("");
 						btnAgregarT.setEnabled(false);
@@ -228,7 +228,7 @@ public class VentanaModeloMedicos extends Ventana {
 			public void actionPerformed(ActionEvent arg0) {
 				if (txtTelefono.getText().length() == 12) {
 					String telefono = txtTelefono.getText();
-					if (modeloT.telefonoEsValido(telefono)) {
+					if (Validador.telefonoEsValido(telefono)) {
 						modeloT.agregar(telefono);
 						txtTelefono.setText("");
 						btnAgregarT.setEnabled(false);

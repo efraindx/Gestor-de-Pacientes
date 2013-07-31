@@ -335,4 +335,5 @@ public class VentanaLogin extends Ventana {
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
 	}
+
 }

@@ -65,8 +65,14 @@ public class ModeloEspecialidades extends AbstractTableModel {
 		return especialidades.size();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int fila, int columna) {
+		try {
+			especialidades = conexion.getDatos();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		especialidadActual = especialidades.get(fila);
 		String retorno = null;
 		switch (columna) {

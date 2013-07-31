@@ -14,8 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
@@ -65,6 +63,28 @@ public class VentanaPrincipal extends Ventana {
 		JPanel pnlDerecha = new JPanel(new GridLayout(6,1));
 		
 		JButton btnMPacientes = new JButton("Man. de Pacientes");
+		btnMPacientes.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					VentanaModeloPacientes.getInstancia().setVisible(true);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (UnsupportedLookAndFeelException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (JDOMException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		JButton btnMCitas = new JButton("Man. de Citas");
 		JButton btnMPadecimientos = new JButton("Man. de Padecimientos");
 		JButton btnMRecetas = new JButton("Man. de Recetas");
@@ -114,25 +134,18 @@ public class VentanaPrincipal extends Ventana {
 				try {
 					VentanaModeloEspecialidades.getInstancia().setVisible(true);
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (InstantiationException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (UnsupportedLookAndFeelException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (JDOMException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

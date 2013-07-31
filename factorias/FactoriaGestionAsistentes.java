@@ -13,7 +13,6 @@ public class FactoriaGestionAsistentes extends FactoriaGestion {
 
 	public FactoriaGestionAsistentes() throws JDOMException, IOException,
 			SQLException, ClassNotFoundException {
-		this.asistentes = new ArrayList<Asistente>();
 		iniciarComponentes();
 	}
 
@@ -62,6 +61,7 @@ public class FactoriaGestionAsistentes extends FactoriaGestion {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ArrayList getDatos() {
+		asistentes = new ArrayList<Asistente>();
 		try {
 			resultado = consulta.executeQuery("SELECT * FROM asistentes");
 			while (resultado.next()) {

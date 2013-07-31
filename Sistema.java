@@ -1,9 +1,18 @@
 package com.efrain.gestorpacientes;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
+import org.jdom2.JDOMException;
+
+import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPersonas;
+import com.efrain.gestorpacientes.vistas.VentanaLogin;
+
 public class Sistema {
-	public static void main(String[] args) {/*
+	public static void main(String[] args) {
 		try {
 			VentanaLogin.getInstancia(new AlgoritmoBusquedaPersonas())
 					.setVisible(true);
@@ -20,7 +29,7 @@ public class Sistema {
 							+ e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 		
 		Scanner lector = new Scanner(System.in);
 		String telefono = lector.nextLine();

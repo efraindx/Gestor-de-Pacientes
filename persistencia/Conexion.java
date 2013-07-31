@@ -34,12 +34,15 @@ public class Conexion {
 		return instancia == null ? instancia = new Conexion() : instancia;
 	}
 
-	public Conexion() throws ClassNotFoundException, JDOMException,
-			IOException, SQLException {
-		GestorXml gestorXml = GestorXml.getInstancia();
-		Class.forName(gestorXml.getClaseDriver());
-		conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
-		consulta = conexion.createStatement();
+	public Conexion() throws SQLException, JDOMException, IOException, ClassNotFoundException {
+		try {
+			GestorXml gestorXml = GestorXml.getInstancia();
+			Class.forName(gestorXml.getClaseDriver());
+			conexion = DriverManager.getConnection(gestorXml.getDirecciónBD());
+			consulta = conexion.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void agregar(Object persona) {
@@ -107,17 +110,21 @@ public class Conexion {
 		}
 		return telefonos;
 	}
-	
-	public void setTelefonosPersona(int id, ArrayList<String> telefonos) throws SQLException {
-		enunciado = conexion.prepareStatement("DELETE FROM telefonos where persona_id = " + id);
+
+	public void setTelefonosPersona(int id, ArrayList<String> telefonos)
+			throws SQLException {
+		enunciado = conexion
+				.prepareStatement("DELETE FROM telefonos where persona_id = "
+						+ id);
 		enunciado.execute();
-		enunciado = conexion.prepareStatement("INSERT INTO telefonos (persona_id, telefono) VALUES (?,?)");
-		for	(String t: telefonos) {
+		enunciado = conexion
+				.prepareStatement("INSERT INTO telefonos (persona_id, telefono) VALUES (?,?)");
+		for (String t : telefonos) {
 			enunciado.setInt(1, id);
 			enunciado.setString(2, t);
 			enunciado.execute();
 		}
-		
+
 	}
 
 	/*

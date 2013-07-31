@@ -36,7 +36,7 @@ public class FactoriaGestionEspecialidades extends FactoriaGestion {
 	public void eliminar(int id) {
 		try {
 			enunciado = conexion
-					.prepareStatement("DELETE FROM especialidades where id = ?");
+					.prepareStatement("DELETE FROM especialidades where id_esp = ?");
 			enunciado.setInt(1, id);
 			enunciado.execute();
 		} catch (SQLException e) {

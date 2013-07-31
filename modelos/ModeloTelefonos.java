@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
+import com.efrain.gestorpacientes.utilidades.Validador;
+
 public class ModeloTelefonos extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
@@ -49,7 +51,7 @@ public class ModeloTelefonos extends AbstractTableModel {
 		switch (columna) {
 		case 0:
 			if (valor2.length() == 12) {
-				if (telefonoEsValido(valor2)) {
+				if (Validador.telefonoEsValido(valor2)) {
 					telefonos.set(fila, valor2);
 				} else {
 					JOptionPane
@@ -57,7 +59,7 @@ public class ModeloTelefonos extends AbstractTableModel {
 									"Inserte un número correcto:\n*NNN-NNN-NNN ó \n*NNNNNNNNNN");
 				}
 			} else if (valor2.length() == 10) {
-				if	(telefonoEsValido(valor2)) {
+				if	(Validador.telefonoEsValido(valor2)) {
 				String cod = valor2.substring(0, 3);
 				String cod2 = valor2.substring(3, 6);
 				String cod3 = valor2.substring(6, 10);
@@ -99,33 +101,5 @@ public class ModeloTelefonos extends AbstractTableModel {
 	public void setTelefonos(ArrayList<String> telefonos) {
 		this.telefonos = telefonos;
 		fireTableDataChanged();
-	}
-
-	public boolean telefonoEsValido(String telefono) {
-		boolean retorno = false;
-		if (telefono.length() == 12) {
-			String cod = telefono.substring(3, 4);
-			String cod2 = telefono.substring(7, 8);
-			if (cod.equals("-") && cod2.equals("-")) {
-				retorno = true;
-			} else {
-				retorno = false;
-			}
-		} else if (telefono.length() == 10) {
-			String cod = telefono.substring(0, 3);
-			String cod2 = telefono.substring(3, 6);
-			String cod3 = telefono.substring(6, 10);
-			try {
-				Integer.parseInt(cod);
-				Integer.parseInt(cod2);
-				Integer.parseInt(cod3);
-				retorno = true;
-			} catch (Exception ex) {
-				retorno = false;
-			}
-		} else {
-			retorno = false;
-		}
-		return retorno;
 	}
 }

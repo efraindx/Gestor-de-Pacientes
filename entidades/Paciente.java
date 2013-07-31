@@ -5,6 +5,7 @@ public class Paciente  {
 	private int id;
 	private String nombre;
 	private String apellido;
+	private String sexo;
 	private String telefono;
 	private String direccion;
 	private String cedula;
@@ -13,18 +14,35 @@ public class Paciente  {
 	private String alergias;
 	private String foto;
 
-	public Paciente(int id, String nombre, String apellido, String telefono,
+	public Paciente(int id, String nombre, String apellido, String sexo, String telefono,
 			String direccion, String cedula, String fecha_nacimiento,
 			String fumador, String foto, String alergias) {
-		
-
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.setSexo(sexo);
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.fecha_nacimiento = fecha_nacimiento;
+		this.fumador = fumador;
+		this.foto = foto;
+		this.alergias = alergias;
 	}
 
-	public Paciente(String nombre, String apellido, String telefono,
+	public Paciente(String nombre, String apellido, String sexo, String telefono,
 			String direccion, String cedula, String fecha_nacimiento,
 			String fumador, String foto, String alergias) {
-	
-
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.setSexo(sexo);
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.fecha_nacimiento = fecha_nacimiento;
+		this.fumador = fumador;
+		this.foto = foto;
+		this.alergias = alergias;
 	}
 
 	public String getNombre() {
@@ -105,6 +123,14 @@ public class Paciente  {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 
 }
