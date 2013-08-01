@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.encriptación;
+package edu.itla.gestorpacientes.encriptación;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 

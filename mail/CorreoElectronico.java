@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.mail;
+package edu.itla.gestorpacientes.mail;
 
 import java.util.Properties;
 
@@ -12,8 +12,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.encriptación.Encriptadora;
+
+import edu.itla.gestorpacientes.encriptación.Encriptadora;
+import edu.itla.gestorpacientes.entidades.Persona;
 
 public class CorreoElectronico {
 	

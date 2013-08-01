@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.persistencia;
+package edu.itla.gestorpacientes.persistencia;
 
 import java.io.IOException;
 
@@ -14,8 +14,9 @@ import javax.swing.JComboBox;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.factorias.FactoriaGestion;
-import com.efrain.gestorpacientes.xml.GestorXml;
+
+import edu.itla.gestorpacientes.factorias.FactoriaGestion;
+import edu.itla.gestorpacientes.xml.GestorXml;
 
 public class Conexion {
 

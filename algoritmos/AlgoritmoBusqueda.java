@@ -1,6 +1,6 @@
-package com.efrain.gestorpacientes.algoritmos;
+package edu.itla.gestorpacientes.algoritmos;
 
-import com.efrain.gestorpacientes.entidades.Persona;
+import edu.itla.gestorpacientes.entidades.Persona;
 
 public interface AlgoritmoBusqueda {
 	public Object buscar(Persona persona);

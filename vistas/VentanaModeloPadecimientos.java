@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,8 +19,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Padecimiento;
-import com.efrain.gestorpacientes.modelos.ModeloPadecimientos;
+
+import edu.itla.gestorpacientes.entidades.Padecimiento;
+import edu.itla.gestorpacientes.modelos.ModeloPadecimientos;
 
 public class VentanaModeloPadecimientos extends Ventana {
 

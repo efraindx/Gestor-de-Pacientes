@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.algoritmos;
+package edu.itla.gestorpacientes.algoritmos;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -6,9 +6,10 @@ import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.encriptación.Encriptadora;
-import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.modelos.ModeloPersonas;
+
+import edu.itla.gestorpacientes.encriptación.Encriptadora;
+import edu.itla.gestorpacientes.entidades.Persona;
+import edu.itla.gestorpacientes.modelos.ModeloPersonas;
 
 public class AlgoritmoBusquedaPersonas implements AlgoritmoBusqueda {
 

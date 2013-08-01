@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.entidades;
+package edu.itla.gestorpacientes.entidades;
 
 public class Resultado_Prueba_Laboratorio {
 

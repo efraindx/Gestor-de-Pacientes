@@ -1,12 +1,15 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,8 +24,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Cita;
-import com.efrain.gestorpacientes.modelos.ModeloCitas;
+
+import edu.itla.gestorpacientes.entidades.Cita;
+import edu.itla.gestorpacientes.modelos.ModeloCitas;
 
 public class VentanaModeloCitas extends Ventana {
 
@@ -40,6 +44,10 @@ public class VentanaModeloCitas extends Ventana {
 	private JTextField txtMinutos;
 	private JTextArea txtCausa;
 	private JTable tblCitas;
+	private JButton btnAgregar;
+	private JButton btnEliminar;
+	private JButton btnCambios;
+	private Cita citaActual;
 
 	private static final long serialVersionUID = 1L;
 
@@ -70,7 +78,7 @@ public class VentanaModeloCitas extends Ventana {
 		JLabel lblBlanco2 = new JLabel();
 		lblBlanco2.setPreferredSize(new Dimension(100, 50));
 
-		JButton btnAgregar = new JButton("Agregar Cita");
+		btnAgregar = new JButton("Agregar Cita");
 		btnAgregar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -84,7 +92,7 @@ public class VentanaModeloCitas extends Ventana {
 						&& cmbAño.getSelectedIndex() != 0
 						&& !"".equals(txtCausa.getText())) {
 
-					String paciente = (String) cmbPacientes.getSelectedItem();
+					int idPaciente = cmbPacientes.getSelectedIndex();
 					String medico = (String) cmbMedicos.getSelectedItem();
 					String dia = (String) cmbDia.getSelectedItem();
 					int mes = (int) cmbMes.getSelectedIndex();
@@ -96,7 +104,7 @@ public class VentanaModeloCitas extends Ventana {
 					String hora = h + ":" + m + " " + t;
 					String causa = txtCausa.getText();
 
-					Cita cita = new Cita(paciente, medico, fecha, hora, causa);
+					Cita cita = new Cita(idPaciente, medico, fecha, hora, causa);
 					try {
 						modelo.agregar(cita);
 						cmbPacientes.setSelectedIndex(0);
@@ -106,6 +114,7 @@ public class VentanaModeloCitas extends Ventana {
 						cmbAño.setSelectedIndex(0);
 						txtHora.setText("");
 						txtMinutos.setText("");
+						cmbAP.setSelectedIndex(0);
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					} catch (SQLException e) {
@@ -123,7 +132,7 @@ public class VentanaModeloCitas extends Ventana {
 			}
 		});
 
-		JButton btnEliminar = new JButton("Eliminar Cita");
+		btnEliminar = new JButton("Eliminar Cita");
 		btnEliminar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -143,12 +152,102 @@ public class VentanaModeloCitas extends Ventana {
 					JOptionPane.showMessageDialog(null,
 							"Debe seleccionar una cita.");
 				}
+				cmbAP.setSelectedIndex(0);
+				cmbAño.setSelectedIndex(0);
+				cmbDia.setSelectedIndex(0);
+				cmbMedicos.setSelectedIndex(0);
+				cmbMes.setSelectedIndex(0);
+				txtCausa.setText("");
+				txtMinutos.setText("");
+				txtHora.setText("");
+				
+			}
+		});
+
+		btnCambios = new JButton("Guardar Cambios");
+		btnCambios.setEnabled(false);
+		btnCambios.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				citaActual = modelo.getCitas().get(tblCitas.getSelectedRow());
+				if (!"".equals(txtHora.getText())
+						&& !"".equals(txtMinutos.getText())
+						&& cmbPacientes.getSelectedIndex() != 0
+						&& cmbMedicos.getSelectedIndex() != 0
+						&& cmbDia.getSelectedIndex() != 0
+						&& cmbMes.getSelectedIndex() != 0
+						&& cmbAño.getSelectedIndex() != 0
+						&& !"".equals(txtCausa.getText())) {
+
+					int id = citaActual.getId();
+					int fila = tblCitas.getSelectedRow();
+
+					int idPaciente = cmbPacientes.getSelectedIndex();
+					try {
+						modelo.modificar(id, 1, fila, idPaciente);
+						String medico = (String) cmbMedicos.getSelectedItem();
+						modelo.modificar(id, 2, fila, medico);
+						String dia = (String) cmbDia.getSelectedItem();
+						int mes = (int) cmbMes.getSelectedIndex();
+						String año = (String) cmbAño.getSelectedItem();
+						String fecha = dia + "/" + mes + "/" + año;
+						modelo.modificar(idPaciente, 3, fila, fecha);
+						String h = txtHora.getText();
+						String m = txtMinutos.getText();
+						String t = (String) cmbAP.getSelectedItem();
+						String hora = h + ":" + m + " " + t;
+						modelo.modificar(idPaciente, 4, fila, hora);
+						String causa = txtCausa.getText();
+						modelo.modificar(idPaciente, 5, fila, causa);
+
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Los campos con \"*\" son obligatorios.");
+				}
+				btnCambios.setEnabled(false);
+				btnAgregar.setEnabled(true);
+				btnEliminar.setEnabled(false);
+				tblCitas.clearSelection();
+				txtHora.setText("");
+				txtMinutos.setText("");
+				cmbAño.setSelectedIndex(0);
+				cmbMes.setSelectedIndex(0);
+				cmbDia.setSelectedIndex(0);
+				cmbPacientes.setSelectedIndex(0);
+				cmbMedicos.setSelectedIndex(0);
+				cmbAP.setSelectedIndex(0);
+				txtCausa.setText("");
 			}
 		});
 
 		try {
 			tblCitas = new JTable(ModeloCitas.getInstancia());
 			tblCitas.setPreferredScrollableViewportSize(new Dimension(450, 180));
+			tblCitas.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					citaActual = modelo.getCitas().get(
+							tblCitas.getSelectedRow());
+					btnCambios.setEnabled(true);
+					btnEliminar.setEnabled(true);
+					btnAgregar.setEnabled(false);
+					cmbPacientes.setSelectedIndex(citaActual.getIdPaciente());
+					cmbMedicos.setSelectedItem(citaActual.getMedico());
+					String[] f = citaActual.getFecha().split("/");
+					cmbDia.setSelectedItem(f[0]);
+					cmbMes.setSelectedIndex(Integer.parseInt(f[1]));
+					cmbAño.setSelectedItem(f[2]);
+					String[] h = citaActual.getHora().split(":");
+					txtHora.setText(h[0]);
+					txtMinutos.setText(h[1].substring(0, 2));
+					cmbAP.setSelectedItem(h[1].substring(3, 5));
+					txtCausa.setText(citaActual.getCausa());
+				}
+			});
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (SQLException e1) {
@@ -199,9 +298,9 @@ public class VentanaModeloCitas extends Ventana {
 		panel.add(lblBlanco2);
 		panel.add(btnAgregar);
 		panel.add(btnEliminar);
+		panel.add(btnCambios);
 		panel.add(new JScrollPane(tblCitas));
 		return panel;
-
 	}
 
 	private JComboBox<String> getComboDia() {

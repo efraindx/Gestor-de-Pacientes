@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.modelos;
+package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,10 +10,11 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.encriptación.Encriptadora;
-import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.factorias.FactoriaGestionPersonas;
-import com.efrain.gestorpacientes.persistencia.Conexion;
+
+import edu.itla.gestorpacientes.encriptación.Encriptadora;
+import edu.itla.gestorpacientes.entidades.Persona;
+import edu.itla.gestorpacientes.factorias.FactoriaGestionPersonas;
+import edu.itla.gestorpacientes.persistencia.Conexion;
 
 public class ModeloPersonas extends AbstractTableModel {
 

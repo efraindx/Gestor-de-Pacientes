@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.modelos;
+package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
 
@@ -11,15 +11,16 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.factorias.FactoriaGestion;
-import com.efrain.gestorpacientes.factorias.FactoriaGestionPacientes;
-import com.efrain.gestorpacientes.factorias.FactoriaGestionRecetas;
-import com.efrain.gestorpacientes.entidades.Paciente;
-import com.efrain.gestorpacientes.entidades.Receta;
-import com.efrain.gestorpacientes.enums.Fumador;
-import com.efrain.gestorpacientes.enums.Sexo;
 
-import com.efrain.gestorpacientes.persistencia.Conexion;
+
+import edu.itla.gestorpacientes.entidades.Paciente;
+import edu.itla.gestorpacientes.entidades.Receta;
+import edu.itla.gestorpacientes.enums.Fumador;
+import edu.itla.gestorpacientes.enums.Sexo;
+import edu.itla.gestorpacientes.factorias.FactoriaGestion;
+import edu.itla.gestorpacientes.factorias.FactoriaGestionPacientes;
+import edu.itla.gestorpacientes.factorias.FactoriaGestionRecetas;
+import edu.itla.gestorpacientes.persistencia.Conexion;
 
 public class ModeloRecetas extends AbstractTableModel {
 

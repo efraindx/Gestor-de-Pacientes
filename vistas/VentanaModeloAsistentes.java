@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -25,10 +25,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Asistente;
-import com.efrain.gestorpacientes.modelos.ModeloAsistentes;
-import com.efrain.gestorpacientes.modelos.ModeloTelefonos;
-import com.efrain.gestorpacientes.utilidades.Validador;
+
+import edu.itla.gestorpacientes.entidades.Asistente;
+import edu.itla.gestorpacientes.modelos.ModeloAsistentes;
+import edu.itla.gestorpacientes.modelos.ModeloTelefonos;
+import edu.itla.gestorpacientes.utilidades.Validador;
 
 public class VentanaModeloAsistentes extends Ventana {
 	

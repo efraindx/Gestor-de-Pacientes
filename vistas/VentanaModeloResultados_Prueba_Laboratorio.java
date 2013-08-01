@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 
@@ -23,8 +23,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
-import com.efrain.gestorpacientes.modelos.ModeloResultados_Prueba_Laboratorio;
+
+import edu.itla.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
+import edu.itla.gestorpacientes.modelos.ModeloResultados_Prueba_Laboratorio;
 
 public class VentanaModeloResultados_Prueba_Laboratorio extends Ventana {
 

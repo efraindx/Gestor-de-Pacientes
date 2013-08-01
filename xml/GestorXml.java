@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.xml;
+package edu.itla.gestorpacientes.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class GestorXml {
 	
 	private GestorXml() throws JDOMException, IOException{
 		constructor = new SAXBuilder();
-		documento = constructor.build(new File("src/com/efrain/gestorpacientes/config.xml"));
+		documento = constructor.build(new File("src/edu/itla/gestorpacientes/config.xml"));
 		raíz = documento.getRootElement();
 	}
 	

@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,9 +28,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.encriptación.Encriptadora;
-import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.modelos.ModeloPersonas;
+
+import edu.itla.gestorpacientes.encriptación.Encriptadora;
+import edu.itla.gestorpacientes.entidades.Persona;
+import edu.itla.gestorpacientes.modelos.ModeloPersonas;
 
 public class VentanaModeloPersonas extends Ventana {
 

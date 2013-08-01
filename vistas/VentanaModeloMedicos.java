@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,10 +26,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Medico;
-import com.efrain.gestorpacientes.modelos.ModeloMedicos;
-import com.efrain.gestorpacientes.modelos.ModeloTelefonos;
-import com.efrain.gestorpacientes.utilidades.Validador;
+
+import edu.itla.gestorpacientes.entidades.Medico;
+import edu.itla.gestorpacientes.modelos.ModeloMedicos;
+import edu.itla.gestorpacientes.modelos.ModeloTelefonos;
+import edu.itla.gestorpacientes.utilidades.Validador;
 
 public class VentanaModeloMedicos extends Ventana {
 
@@ -355,6 +356,7 @@ public class VentanaModeloMedicos extends Ventana {
 				txtApellido.setText("");
 				txtCe.setText("");
 				txtDi.setText("");
+				
 			} 
 		});
 

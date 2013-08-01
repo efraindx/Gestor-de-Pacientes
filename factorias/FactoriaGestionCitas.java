@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.factorias;
+package edu.itla.gestorpacientes.factorias;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Cita;
+import edu.itla.gestorpacientes.entidades.Cita;
 
 public class FactoriaGestionCitas extends FactoriaGestion {
 
@@ -22,9 +22,9 @@ public class FactoriaGestionCitas extends FactoriaGestion {
 		Cita cita = (Cita) persona;
 		try {
 			enunciado = conexion
-					.prepareStatement("INSERT INTO citas (paciente, medico, fecha, hora, causa) "
-							+ "values (?,?,?,?,?)");
-			enunciado.setString(1, cita.getPaciente());
+					.prepareStatement("INSERT INTO citas (id_paciente, medico, fecha, hora, causa) "
+							+ "VALUES (?,?,?,?,?)");
+			enunciado.setInt(1, cita.getIdPaciente());
 			enunciado.setString(2, cita.getMedico());
 			enunciado.setString(3, cita.getFecha());
 			enunciado.setString(4, cita.getHora());
@@ -47,14 +47,25 @@ public class FactoriaGestionCitas extends FactoriaGestion {
 	public ArrayList getDatos() {
 		citas = new ArrayList<Cita>();
 		try {
+			consulta = conexion.createStatement();
 			resultado = consulta.executeQuery("SELECT * FROM citas");
 			while (resultado.next()) {
-				Cita cita = new Cita(resultado.getInt("id"),
-						resultado.getString("paciente"),
-						resultado.getString("medico"),
-						resultado.getString("fecha"),
-						resultado.getString("hora"),
-						resultado.getString("causa"));
+				int id = resultado.getInt("id");
+				int idPaciente = resultado.getInt("id_paciente");
+				String paciente = con.getPacientes().getItemAt(idPaciente);
+				String medico = resultado.getString("medico");
+				String fecha = resultado.getString("fecha");
+				String hora = resultado.getString("hora");
+				String causa = resultado.getString("causa");
+				Cita cita = new Cita();
+				cita.setId(id);
+				cita.setIdPaciente(idPaciente);
+				cita.setPaciente(paciente);
+				cita.setMedico(medico);
+				cita.setFecha(fecha);
+				cita.setHora(hora);
+				cita.setHora(hora);
+				cita.setCausa(causa);
 				citas.add(cita);
 			}
 		} catch (SQLException e) {
@@ -70,8 +81,8 @@ public class FactoriaGestionCitas extends FactoriaGestion {
 		switch (atributo) {
 		case 1:
 			enunciado = conexion
-					.prepareStatement("UPDATE citas SET paciente = ? WHERE id = ?");
-			enunciado.setString(1, (String) valor);
+					.prepareStatement("UPDATE citas SET id_paciente = ? WHERE id = ?");
+			enunciado.setInt(1, (int) valor);
 			break;
 
 		case 2:

@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,8 +22,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Receta;
-import com.efrain.gestorpacientes.modelos.ModeloRecetas;
+
+import edu.itla.gestorpacientes.entidades.Receta;
+import edu.itla.gestorpacientes.modelos.ModeloRecetas;
 
 public class VentanaModeloRecetas extends Ventana {
 

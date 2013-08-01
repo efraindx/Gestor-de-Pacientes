@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.factorias;
+package edu.itla.gestorpacientes.factorias;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.persistencia.Conexion;
+import edu.itla.gestorpacientes.persistencia.Conexion;
 
 public abstract class FactoriaGestion {
 	

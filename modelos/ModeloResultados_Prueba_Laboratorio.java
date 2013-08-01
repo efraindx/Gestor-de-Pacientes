@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.modelos;
+package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
 
@@ -10,11 +10,12 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.factorias.FactoriaGestion;
-import com.efrain.gestorpacientes.factorias.FactoriaGestion_Resultado_Pruebas_Laboratorio;
-import com.efrain.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
 
-import com.efrain.gestorpacientes.persistencia.Conexion;
+
+import edu.itla.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
+import edu.itla.gestorpacientes.factorias.FactoriaGestion;
+import edu.itla.gestorpacientes.factorias.FactoriaGestion_Resultado_Pruebas_Laboratorio;
+import edu.itla.gestorpacientes.persistencia.Conexion;
 
 public class ModeloResultados_Prueba_Laboratorio extends AbstractTableModel {
 

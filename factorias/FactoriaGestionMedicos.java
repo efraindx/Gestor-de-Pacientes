@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.factorias;
+package edu.itla.gestorpacientes.factorias;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Medico;
+import edu.itla.gestorpacientes.entidades.Medico;
 
 public class FactoriaGestionMedicos extends FactoriaGestion {
 

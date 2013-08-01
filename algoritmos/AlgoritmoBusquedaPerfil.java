@@ -1,8 +1,9 @@
-package com.efrain.gestorpacientes.algoritmos;
+package edu.itla.gestorpacientes.algoritmos;
 
 
-import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.enums.Rol;
+
+import edu.itla.gestorpacientes.entidades.Persona;
+import edu.itla.gestorpacientes.enums.Rol;
 
 public class AlgoritmoBusquedaPerfil implements AlgoritmoBusqueda {
 	

@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.enums;
+package edu.itla.gestorpacientes.enums;
 
 public enum Sexo {
 	MASCULINO, FEMENINO

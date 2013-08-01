@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.utilidades;
+package edu.itla.gestorpacientes.utilidades;
 
 public class Validador {
 	

@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.factorias;
+package edu.itla.gestorpacientes.factorias;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Receta;
+import edu.itla.gestorpacientes.entidades.Receta;
 
 public class FactoriaGestionRecetas extends FactoriaGestion {
 

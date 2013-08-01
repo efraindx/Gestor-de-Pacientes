@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.vistas;
+package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Color;
 
@@ -30,11 +30,12 @@ import javax.swing.border.MatteBorder;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusqueda;
-import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPerfil;
-import com.efrain.gestorpacientes.entidades.Persona;
-import com.efrain.gestorpacientes.enums.Rol;
-import com.efrain.gestorpacientes.mail.CorreoElectronico;
+
+import edu.itla.gestorpacientes.algoritmos.AlgoritmoBusqueda;
+import edu.itla.gestorpacientes.algoritmos.AlgoritmoBusquedaPerfil;
+import edu.itla.gestorpacientes.entidades.Persona;
+import edu.itla.gestorpacientes.enums.Rol;
+import edu.itla.gestorpacientes.mail.CorreoElectronico;
 
 public class VentanaLogin extends Ventana {
 

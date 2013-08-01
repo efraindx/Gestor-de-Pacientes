@@ -1,11 +1,11 @@
-package com.efrain.gestorpacientes.modelos;
+package edu.itla.gestorpacientes.modelos;
 
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
-import com.efrain.gestorpacientes.utilidades.Validador;
+import edu.itla.gestorpacientes.utilidades.Validador;
 
 public class ModeloTelefonos extends AbstractTableModel {
 

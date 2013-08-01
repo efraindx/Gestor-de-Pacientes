@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes.modelos;
+package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
 
@@ -10,9 +10,10 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.entidades.Cita;
-import com.efrain.gestorpacientes.persistencia.Conexion;
-import com.efrain.gestorpacientes.factorias.FactoriaGestionCitas;
+
+import edu.itla.gestorpacientes.entidades.Cita;
+import edu.itla.gestorpacientes.factorias.FactoriaGestionCitas;
+import edu.itla.gestorpacientes.persistencia.Conexion;
 
 public class ModeloCitas extends AbstractTableModel {
 
@@ -62,57 +63,31 @@ public class ModeloCitas extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	@Override
-	public void setValueAt(Object valor, int fila, int columna) {
+	public void modificar(int id, int atributo, int fila, Object valor)
+			throws SQLException {
 		citaActual = citas.get(fila);
-		switch (columna) {
-
-		case 0:
-			citaActual.setPaciente((String) valor);
-			try {
-				conexion.modificar(citaActual.getId(), 1, valor);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			break;
-
+		switch (atributo) {
 		case 1:
-			citaActual.setMedico((String) valor);
-			try {
-				conexion.modificar(citaActual.getId(), 2, valor);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			citaActual.setIdPaciente((int) valor);
 			break;
 
 		case 2:
-			citaActual.setFecha((String) valor);
-			try {
-				conexion.modificar(citaActual.getId(), 3, valor);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			citaActual.setMedico((String) valor);
 			break;
 
 		case 3:
-			citaActual.setHora((String) valor);
-			try {
-				conexion.modificar(citaActual.getId(), 4, valor);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			citaActual.setFecha((String) valor);
 			break;
 
 		case 4:
+			citaActual.setHora((String) valor);
+			break;
+
+		case 5:
 			citaActual.setCausa((String) valor);
-			try {
-				conexion.modificar(citaActual.getId(), 5, valor);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 			break;
 		}
-		
+		conexion.modificar(id, atributo, valor);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -155,18 +130,13 @@ public class ModeloCitas extends AbstractTableModel {
 		conexion.setTelefonosPersona(id, telefonos);
 	}
 
-	public ArrayList<Cita> getAsistentes() {
+	public ArrayList<Cita> getCitas() {
 		return citas;
 	}
 
 	@Override
 	public String getColumnName(int columna) {
 		return encabezados[columna];
-	}
-
-	@Override
-	public boolean isCellEditable(int arg0, int arg1) {
-		return true;
 	}
 
 	public JComboBox<String> getPacientes() throws SQLException {

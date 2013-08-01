@@ -1,4 +1,4 @@
-package com.efrain.gestorpacientes;
+package edu.itla.gestorpacientes;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,8 +8,9 @@ import javax.swing.JOptionPane;
 
 import org.jdom2.JDOMException;
 
-import com.efrain.gestorpacientes.algoritmos.AlgoritmoBusquedaPersonas;
-import com.efrain.gestorpacientes.vistas.VentanaLogin;
+
+import edu.itla.gestorpacientes.algoritmos.AlgoritmoBusquedaPersonas;
+import edu.itla.gestorpacientes.vistas.VentanaLogin;
 
 public class Sistema {
 	public static void main(String[] args) {
