@@ -3,12 +3,12 @@ package edu.itla.gestorpacientes.factorias;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.swing.JComboBox;
-
 import org.jdom2.JDOMException;
 
+import edu.itla.gestorpacientes.entidades.Paciente;
+import edu.itla.gestorpacientes.entidades.Padecimiento;
 import edu.itla.gestorpacientes.entidades.Receta;
+import edu.itla.gestorpacientes.utilidades.Almacen;
 
 public class FactoriaGestionRecetas extends FactoriaGestion {
 
@@ -26,8 +26,8 @@ public class FactoriaGestionRecetas extends FactoriaGestion {
 			enunciado = conexion
 					.prepareStatement("INSERT INTO recetas (id_paciente, id_padecimiento,"
 							+ "medicamentos) VALUES (?,?,?)");
-			enunciado.setInt(1, receta.getIdPaciente());
-			enunciado.setInt(2, receta.getIdPadecimiento());
+			enunciado.setInt(1, receta.getPaciente().getId());
+			enunciado.setInt(2, receta.getPadecimiento().getId());
 			enunciado.setString(3, receta.getMedicamentos());
 			enunciado.execute();
 		} catch (SQLException e) {
@@ -51,16 +51,16 @@ public class FactoriaGestionRecetas extends FactoriaGestion {
 			resultado = consulta.executeQuery("SELECT * FROM recetas");
 			while (resultado.next()) {
 				int id = resultado.getInt("id");
-				int idPaciente = resultado.getInt("id_paciente");
-				int idPadecimiento = resultado.getInt("id_padecimiento");
 				String medicamentos = resultado.getString("medicamentos");
 				Receta receta = new Receta();
-				receta.setIdPaciente(idPaciente);
-				receta.setIdPadecimiento(idPadecimiento);
 				receta.setId(id);
-				JComboBox<String> pacientes = con.getPacientes();
-				receta.setPaciente(pacientes.getItemAt(idPaciente));
-				receta.setPadecimiento(con.getPadecimientos().getItemAt(idPadecimiento));
+				int idPaciente = resultado.getInt("id_paciente");
+				Almacen almacen = new Almacen();
+				Paciente paciente = almacen.getItemPaciente(idPaciente);
+				int idPadecimiento = resultado.getInt("id_padecimiento");
+				Padecimiento padecimiento = almacen.getItemPadecimiento(idPadecimiento);
+				receta.setPaciente(paciente);
+				receta.setPadecimiento(padecimiento);
 				receta.setMedicamentos(medicamentos);
 				recetas.add(receta);
 			}
@@ -73,27 +73,30 @@ public class FactoriaGestionRecetas extends FactoriaGestion {
 	@Override
 	public void modificar(int id, int atributo, Object valor)
 			throws SQLException {
-
 		switch (atributo) {
 		case 1:
 			enunciado = conexion
 					.prepareStatement("UPDATE recetas SET id_paciente = ? WHERE id = ?");
 			enunciado.setInt(1, (int) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 2:
 			enunciado = conexion
 					.prepareStatement("UPDATE recetas SET id_padecimiento = ? WHERE id = ?");
 			enunciado.setInt(1, (int) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 3:
 			enunciado = conexion
 					.prepareStatement("UPDATE recetas SET medicamentos = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 		}
-		enunciado.setInt(2, id);
-		enunciado.execute();
 	}
 }

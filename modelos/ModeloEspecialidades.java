@@ -1,14 +1,12 @@
 package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
-
 
 import edu.itla.gestorpacientes.entidades.Especialidad;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionEspecialidades;
@@ -38,10 +36,12 @@ public class ModeloEspecialidades extends AbstractTableModel {
 		especialidades = conexion.getDatos();
 	}
 
-	public void agregar(Especialidad especialidad) {
-		conexion.agregar(especialidad);
+	@SuppressWarnings("unchecked")
+	public void agregar(Especialidad especialidad) throws SQLException {
 		especialidades.add(especialidad);
+		conexion.agregar(especialidad);
 		fireTableDataChanged();
+		especialidades = conexion.getDatos();
 	}
 
 	public void eliminar(int fila) throws SQLException {
@@ -66,12 +66,12 @@ public class ModeloEspecialidades extends AbstractTableModel {
 		return especialidades.size();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int fila, int columna) {
 		try {
-			especialidades = conexion.getDatos();
-		} catch (SQLException e) {
+			conexion.setFactoria(new FactoriaGestionEspecialidades());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
 			e.printStackTrace();
 		}
 		especialidadActual = especialidades.get(fila);

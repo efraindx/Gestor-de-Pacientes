@@ -3,43 +3,36 @@ package edu.itla.gestorpacientes.entidades;
 public class Cita {
 
 	private int id;
-	private String paciente;
-	private int idPaciente;
-	private String medico;
+	private Paciente paciente;
+	private Medico medico;
 	private String fecha;
 	private String hora;
 	private String causa;
+	private String observacion;
 
 	public Cita() {
 		//
 	}
 
-	public Cita(int idPaciente, String medico, String fecha, String hora,
-			String causa) {
-		this.setIdPaciente(idPaciente);
-		this.medico = medico;
-		this.fecha = fecha;
-		this.hora = hora;
-		this.causa = causa;
-	}
-
-	public Cita(String paciente, String medico, String fecha, String hora,
-			String causa) {
+	public Cita(Paciente paciente, Medico medico, String fecha, String hora,
+			String causa, String observacion) {
 		this.paciente = paciente;
 		this.medico = medico;
 		this.fecha = fecha;
 		this.hora = hora;
 		this.causa = causa;
+		this.observacion = observacion;
 	}
 
-	public Cita(int id, int idPaciente, String medico, String fecha,
-			String hora, String causa) {
+	public Cita(int id, Paciente paciente, Medico medico, String fecha,
+			String hora, String causa, String observacion) {
 		this.id = id;
-		this.idPaciente = idPaciente;
+		this.paciente = paciente;
 		this.medico = medico;
 		this.fecha = fecha;
 		this.hora = hora;
 		this.causa = causa;
+		this.observacion = observacion;
 	}
 
 	public int getId() {
@@ -50,19 +43,19 @@ public class Cita {
 		this.id = id;
 	}
 
-	public String getPaciente() {
+	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	public void setPaciente(String paciente) {
+	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
 
-	public String getMedico() {
+	public Medico getMedico() {
 		return medico;
 	}
 
-	public void setMedico(String medico) {
+	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}
 
@@ -90,11 +83,11 @@ public class Cita {
 		this.causa = causa;
 	}
 
-	public int getIdPaciente() {
-		return idPaciente;
+	public String getObservacion() {
+		return observacion;
 	}
 
-	public void setIdPaciente(int idPaciente) {
-		this.idPaciente = idPaciente;
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
 	}
 }

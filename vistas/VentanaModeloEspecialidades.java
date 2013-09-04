@@ -2,12 +2,14 @@ package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
-
 
 import edu.itla.gestorpacientes.entidades.Especialidad;
 import edu.itla.gestorpacientes.modelos.ModeloEspecialidades;
@@ -47,8 +48,9 @@ public class VentanaModeloEspecialidades extends Ventana {
 		this.titulo = "Especialidades";
 		this.anchura = 500;
 		this.altura = 500;
+		this.icono = "/edu/itla/gestorpacientes/imágenes/esp.png";
 		modelo = ModeloEspecialidades.getInstancia();
-		prepararVentana(titulo, anchura, altura, null);
+		prepararVentana(titulo, anchura, altura, icono);
 	}
 
 	@Override
@@ -58,15 +60,20 @@ public class VentanaModeloEspecialidades extends Ventana {
 		panel = new JPanel(new FlowLayout());
 		tblEspecialidades = new JTable(ModeloEspecialidades.getInstancia());
 		tblEspecialidades.setPreferredScrollableViewportSize(new Dimension(450,
-				300));
+				280));
 
 		txtCodigo = new JTextField(10);
 		txtNombre = new JTextField(10);
 
-		JLabel lblTitulo = new JLabel("Mantenimiento de Especialidades");
-		lblTitulo.setPreferredSize(new Dimension(380, 50));
+		JLabel lblTitulo = new JLabel("Mantenimiento de Especialidades",
+				new ImageIcon(getClass().getResource(
+						"/edu/itla/gestorpacientes/imágenes/esp.png")), 0);
+		lblTitulo.setFont(new Font("Baskerville Old Face", Font.BOLD + Font.ITALIC, 22));
+		lblTitulo.setPreferredSize(new Dimension(400, 50));
 		JLabel lblCodigo = new JLabel("Código:");
+		lblCodigo.setFont(new Font("Baskerville Old Face", Font.ITALIC, 16));
 		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setFont(new Font("Baskerville Old Face", Font.ITALIC, 16));
 
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
@@ -76,7 +83,11 @@ public class VentanaModeloEspecialidades extends Ventana {
 						&& !"".equals(txtNombre.getText())) {
 					Especialidad especialidad = new Especialidad(txtCodigo
 							.getText(), txtNombre.getText());
-					modelo.agregar(especialidad);
+					try {
+						modelo.agregar(especialidad);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"Todos los campos son obligatorios.");
@@ -122,13 +133,9 @@ public class VentanaModeloEspecialidades extends Ventana {
 		panel.add(new JScrollPane(tblEspecialidades));
 		return panel;
 	}
-
+	
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
-	}
-
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		new VentanaModeloEspecialidades().setVisible(true);
 	}
 }

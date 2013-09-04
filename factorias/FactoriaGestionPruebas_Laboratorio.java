@@ -48,7 +48,7 @@ public class FactoriaGestionPruebas_Laboratorio extends FactoriaGestion {
 			resultado = consulta.executeQuery("SELECT * FROM pruebas_laboratorio");
 			while (resultado.next()) {
 				Prueba_Laboratorio cita = new Prueba_Laboratorio(resultado.getInt("id"),
-						resultado.getString("codigo"), resultado.getString("nombre"));
+						resultado.getString("codigo"), resultado.getString("nombre_prueba"));
 				pruebas.add(cita);
 			}
 		} catch (SQLException e) {

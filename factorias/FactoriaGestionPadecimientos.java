@@ -66,15 +66,18 @@ public class FactoriaGestionPadecimientos extends FactoriaGestion {
 			enunciado = conexion
 					.prepareStatement("UPDATE padecimientos SET codigo = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 2:
 			enunciado = conexion
 					.prepareStatement("UPDATE padecimientos SET nombre = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 		}
-		enunciado.setInt(2, id);
-		enunciado.execute();
+		
 	}
 }

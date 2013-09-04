@@ -29,6 +29,7 @@ public class GestorXml {
 		return claseDriver;
 	}
 	
+	//Fachada XMl
 	public String getDirecciónBD() {
 		String dirBD = "jdbc:" 
 		+ getGestorBD()
@@ -39,27 +40,27 @@ public class GestorXml {
 		return dirBD;
 	}
 
-	public String getGestorBD() {
+	private String getGestorBD() {
 		String gestorBD = raíz.getChildText("gestor");
 		return gestorBD;
 	}
 	
-	public String getNombreBD() {
+	private String getNombreBD() {
 		String nombreBD = raíz.getChildText("nombre");
 		return nombreBD;
 	}
 	
-	public String getUbicaciónBD() {
+	private String getUbicaciónBD() {
 		String ubiBD = raíz.getChildText("ubicación");
 		return ubiBD;
 	}
 	
-	public String getUsuarioBD() {
+	private String getUsuarioBD() {
 		String usuarioBD = raíz.getChildText("usuario");
 		return usuarioBD;
 	}
 	
-	public String getPassBD() {
+	private String getPassBD() {
 		String passBD = raíz.getChildText("contraseña");
 		return passBD;
 	}

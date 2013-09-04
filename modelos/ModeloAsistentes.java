@@ -1,14 +1,12 @@
 package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
-
 
 import edu.itla.gestorpacientes.entidades.Asistente;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionAsistentes;
@@ -70,29 +68,39 @@ public class ModeloAsistentes extends AbstractTableModel {
 
 		case 1:
 			asistenteActual.setCodigoEmpleado((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 2:
 			asistenteActual.setNombre((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 3:
 			asistenteActual.setApellido((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 4:
 			asistenteActual.setDireccion((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 5:
 			asistenteActual.setCedula((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 		}
-		conexion.modificar(id, atributo, valor);
 	}
 
 	@Override
 	public Object getValueAt(int fila, int columna) {
+		try {
+			conexion.setFactoria(new FactoriaGestionAsistentes());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
+			e.printStackTrace();
+		}
 		asistenteActual = asistentes.get(fila);
 		String retorno = null;
 
@@ -119,7 +127,7 @@ public class ModeloAsistentes extends AbstractTableModel {
 		}
 		return retorno;
 	}
-	
+
 	public void setTelefonosPersona(int id, ArrayList<String> telefonos)
 			throws SQLException {
 		conexion.setTelefonosPersona(id, telefonos);
@@ -132,10 +140,5 @@ public class ModeloAsistentes extends AbstractTableModel {
 	@Override
 	public String getColumnName(int columna) {
 		return encabezados[columna];
-	}
-
-	@Override
-	public boolean isCellEditable(int arg0, int arg1) {
-		return true;
 	}
 }

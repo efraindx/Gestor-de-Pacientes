@@ -2,6 +2,7 @@ package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -20,34 +23,42 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import net.sf.jasperreports.engine.JRException;
+
 import org.jdom2.JDOMException;
 
-
+import edu.itla.gestorpacientes.documentación.Reportador;
+import edu.itla.gestorpacientes.entidades.Paciente;
+import edu.itla.gestorpacientes.entidades.Padecimiento;
 import edu.itla.gestorpacientes.entidades.Receta;
 import edu.itla.gestorpacientes.modelos.ModeloRecetas;
 
 public class VentanaModeloRecetas extends Ventana {
 
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> cmbPacientes;
-	private JComboBox<String> cmbPadecimientos;
+	private JComboBox<Paciente> cmbPacientes;
+	private JComboBox<Padecimiento> cmbPadecimientos;
 	private JTextArea txtMedicamentos;
 	private ModeloRecetas modelo;
 	private JTable tblRecetas;
 	private JButton btnAgregar;
 	private JButton btnEliminar;
 	private JButton btnCambios;
+	private JButton btnImprimir;
 	private Receta recetaActual;
+	private ArrayList<Receta> recetas;
 
 	public VentanaModeloRecetas() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException,
 			UnsupportedLookAndFeelException, SQLException, JDOMException,
 			IOException {
-		this.titulo = "";
-		this.anchura = 505;
-		this.altura = 500;
+		this.titulo = "Recetas";
+		this.anchura = 570;
+		this.altura = 515;
+		this.icono = "/edu/itla/gestorpacientes/imágenes/receta.png";
 		modelo = ModeloRecetas.getInstancia();
-		prepararVentana(titulo, anchura, altura, null);
+		recetas = modelo.getRecetas();
+		prepararVentana(titulo, anchura, altura, icono);
 	}
 
 	@Override
@@ -56,59 +67,67 @@ public class VentanaModeloRecetas extends Ventana {
 
 		panel = new JPanel(new FlowLayout());
 
-		JLabel lblTitulo = new JLabel("Mantenimiento de Recetas");
-		lblTitulo.setPreferredSize(new Dimension(355, 100));
-		JLabel lblPaciente = new JLabel("Paciente:");
-		JLabel lblPadecimiento = new JLabel("Padecimiento:");
+		JLabel lblTitulo = new JLabel("Mantenimiento de Recetas",
+				new ImageIcon(getClass().getResource(
+						"/edu/itla/gestorpacientes/imágenes/receta.png")), 0);
+		lblTitulo.setFont(new Font("Segoe UI Semibold",
+				Font.ITALIC + Font.BOLD, 18));
+		lblTitulo.setPreferredSize(new Dimension(300, 100));
+		JLabel lblPaciente = new JLabel("  Paciente:");
+		lblPaciente.setFont(new Font("Segoe UI Semibold", Font.ITALIC, 14));
+		JLabel lblPadecimiento = new JLabel("    Padecimiento:");
+		lblPadecimiento.setFont(new Font("Segoe UI Semibold", Font.ITALIC, 14));
 		JLabel lblMedicamentos = new JLabel("Medicamentos:");
+		lblMedicamentos.setFont(new Font("Segoe UI Semibold", Font.ITALIC, 14));
 		JLabel lblBlanco = new JLabel();
 		JLabel lblBlanco2 = new JLabel();
 		lblBlanco.setPreferredSize(new Dimension(57, 50));
-		lblBlanco2.setPreferredSize(new Dimension(160, 50));
+		lblBlanco2.setPreferredSize(new Dimension(120, 50));
 
 		tblRecetas = new JTable(ModeloRecetas.getInstancia());
+		tblRecetas.setPreferredScrollableViewportSize(new Dimension(500, 155));
 		tblRecetas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				recetaActual = modelo.getRecetas().get(
 						tblRecetas.getSelectedRow());
-				cmbPacientes.setSelectedIndex(recetaActual.getIdPaciente());
-				cmbPadecimientos.setSelectedIndex(recetaActual.getIdPadecimiento());
+				cmbPacientes.setSelectedItem(getItemPaciente(recetaActual
+						.getPaciente().getId()));
+				cmbPadecimientos
+						.setSelectedItem(getItemPadecimiento(recetaActual
+								.getPadecimiento().getId()));
 				txtMedicamentos.setText(recetaActual.getMedicamentos());
 				btnCambios.setEnabled(true);
 				btnEliminar.setEnabled(true);
 				btnAgregar.setEnabled(false);
+				btnImprimir.setEnabled(true);
+
 			}
 		});
 
-		btnAgregar = new JButton("Agregar");
+		btnAgregar = new JButton("Agregar Receta");
 		btnAgregar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!"".equals(txtMedicamentos.getText())
 						&& cmbPacientes.getSelectedIndex() != 0
 						&& cmbPadecimientos.getSelectedIndex() != 0) {
-
-					int paciente = cmbPacientes.getSelectedIndex();
-					int padecimiento = cmbPadecimientos.getSelectedIndex();
+					Paciente paciente = cmbPacientes.getItemAt(cmbPacientes
+							.getSelectedIndex());
+					Padecimiento padecimiento = cmbPadecimientos
+							.getItemAt(cmbPadecimientos.getSelectedIndex());
 					String medicamentos = txtMedicamentos.getText();
 
 					Receta receta = new Receta(paciente, padecimiento,
-							medicamentos );
-					try {
-						modelo.agregar(receta);
+							medicamentos);
+						try {
+							modelo.agregar(receta);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 						cmbPacientes.setSelectedIndex(0);
 						cmbPadecimientos.setSelectedIndex(0);
 						txtMedicamentos.setText("");
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					} catch (JDOMException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 
 				} else {
 					JOptionPane.showMessageDialog(null,
@@ -117,7 +136,7 @@ public class VentanaModeloRecetas extends Ventana {
 			}
 		});
 
-		btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar Receta");
 		btnEliminar.setEnabled(false);
 		btnEliminar.addActionListener(new ActionListener() {
 			@Override
@@ -138,6 +157,14 @@ public class VentanaModeloRecetas extends Ventana {
 					JOptionPane.showMessageDialog(null,
 							"Debe seleccionar una receta.");
 				}
+				btnCambios.setEnabled(false);
+				btnAgregar.setEnabled(true);
+				btnEliminar.setEnabled(false);
+				tblRecetas.clearSelection();
+				cmbPacientes.setSelectedIndex(0);
+				cmbPadecimientos.setSelectedIndex(0);
+				btnImprimir.setEnabled(false);
+				txtMedicamentos.setText("");
 			}
 		});
 
@@ -154,14 +181,14 @@ public class VentanaModeloRecetas extends Ventana {
 					try {
 						int id = recetaActual.getId();
 						int fila = tblRecetas.getSelectedRow();
-						
-						int paciente = cmbPacientes.getSelectedIndex();
+						Paciente paciente = cmbPacientes.getItemAt(cmbPacientes
+								.getSelectedIndex());
 						modelo.modificar(id, 1, fila, paciente);
-						int padecimiento = cmbPadecimientos.getSelectedIndex();
+						Padecimiento padecimiento = cmbPadecimientos
+								.getItemAt(cmbPadecimientos.getSelectedIndex());
 						modelo.modificar(id, 2, fila, padecimiento);
 						String medicamentos = txtMedicamentos.getText();
 						modelo.modificar(id, 3, fila, medicamentos);
-					
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -175,7 +202,42 @@ public class VentanaModeloRecetas extends Ventana {
 				tblRecetas.clearSelection();
 				cmbPacientes.setSelectedIndex(0);
 				cmbPadecimientos.setSelectedIndex(0);
+				btnImprimir.setEnabled(false);
 				txtMedicamentos.setText("");
+			}
+		});
+
+		btnImprimir = new JButton("Imprimir Receta");
+		btnImprimir.setEnabled(false);
+		btnImprimir.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Reportador re = Reportador.getInstancia();
+					recetas = modelo.getRecetas();
+					Receta recetaActual = recetas.get(tblRecetas
+							.getSelectedRow());
+					re.generarReceta(recetaActual.getId());
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (JDOMException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (JRException e1) {
+					e1.printStackTrace();
+				}
+				btnImprimir.setEnabled(false);
+				btnCambios.setEnabled(false);
+				btnAgregar.setEnabled(true);
+				btnEliminar.setEnabled(false);
+				tblRecetas.clearSelection();
+				cmbPacientes.setSelectedIndex(0);
+				cmbPadecimientos.setSelectedIndex(0);
+				txtMedicamentos.setText("");
+				tblRecetas.clearSelection();
 			}
 		});
 
@@ -184,11 +246,10 @@ public class VentanaModeloRecetas extends Ventana {
 
 		txtMedicamentos = new JTextArea(5, 20);
 
-		JPanel pnlGrid = new JPanel(new GridLayout(1, 6));
+		JPanel pnlGrid = new JPanel(new GridLayout(1, 4));
+		pnlGrid.setPreferredSize(new Dimension(477, 25));
 		pnlGrid.add(lblPaciente);
 		pnlGrid.add(cmbPacientes);
-		pnlGrid.add(new JLabel());
-		pnlGrid.add(new JLabel());
 		pnlGrid.add(lblPadecimiento);
 		pnlGrid.add(cmbPadecimientos);
 
@@ -201,16 +262,34 @@ public class VentanaModeloRecetas extends Ventana {
 		panel.add(btnAgregar);
 		panel.add(btnEliminar);
 		panel.add(btnCambios);
+		panel.add(btnImprimir);
 		panel.add(new JScrollPane(tblRecetas));
 
 		return panel;
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException,
-			UnsupportedLookAndFeelException, SQLException, JDOMException,
-			IOException {
-		new VentanaModeloRecetas().setVisible(true);
+	public Paciente getItemPaciente(int id) {
+		Paciente retorno = null;
+		for (int i = 0; i < cmbPacientes.getItemCount(); i++) {
+			if (cmbPacientes.getItemAt(i).getId() == id) {
+				retorno = cmbPacientes.getItemAt(i);
+			}
+		}
+		return retorno;
 	}
 
+	public Padecimiento getItemPadecimiento(int id) {
+		Padecimiento retorno = null;
+		for (int i = 0; i < cmbPadecimientos.getItemCount(); i++) {
+			if (cmbPadecimientos.getItemAt(i).getId() == id) {
+				retorno = cmbPadecimientos.getItemAt(i);
+			}
+		}
+		return retorno;
+	}
+
+	@Override
+	public boolean esDisponibleCambiarTamaño() {
+		return false;
+	}
 }

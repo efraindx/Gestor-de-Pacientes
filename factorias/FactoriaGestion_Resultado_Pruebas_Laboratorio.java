@@ -8,12 +8,14 @@ import org.jdom2.JDOMException;
 
 import edu.itla.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
 
-public class FactoriaGestion_Resultado_Pruebas_Laboratorio extends FactoriaGestion {
+public class FactoriaGestion_Resultado_Pruebas_Laboratorio extends
+		FactoriaGestion {
 
 	private ArrayList<Resultado_Prueba_Laboratorio> resultados;
 
-	public FactoriaGestion_Resultado_Pruebas_Laboratorio() throws JDOMException, IOException,
-			SQLException, ClassNotFoundException {
+	public FactoriaGestion_Resultado_Pruebas_Laboratorio()
+			throws JDOMException, IOException, SQLException,
+			ClassNotFoundException {
 		iniciarComponentes();
 	}
 
@@ -21,6 +23,8 @@ public class FactoriaGestion_Resultado_Pruebas_Laboratorio extends FactoriaGesti
 	public void agregar(Object persona) {
 		Resultado_Prueba_Laboratorio prueba = (Resultado_Prueba_Laboratorio) persona;
 		try {
+			System.out.println(prueba.getIdPrueba());
+			System.out.println(prueba.getIdPaciente());
 			enunciado = conexion
 					.prepareStatement("INSERT INTO resultados_pruebas_laboratorio (id_prueba_lab, id_paciente,"
 							+ "resultado) VALUES (?,?,?)");
@@ -35,8 +39,9 @@ public class FactoriaGestion_Resultado_Pruebas_Laboratorio extends FactoriaGesti
 
 	@Override
 	public void eliminar(int id) throws SQLException {
-		enunciado = conexion.prepareStatement("DELETE FROM resultados_pruebas_laboratorio WHERE id = "
-				+ id);
+		enunciado = conexion
+				.prepareStatement("DELETE FROM resultados_pruebas_laboratorio WHERE id = "
+						+ id);
 		enunciado.execute();
 	}
 
@@ -46,20 +51,15 @@ public class FactoriaGestion_Resultado_Pruebas_Laboratorio extends FactoriaGesti
 		resultados = new ArrayList<Resultado_Prueba_Laboratorio>();
 		try {
 			consulta = conexion.createStatement();
-			resultado = consulta.executeQuery("SELECT * FROM resultados_pruebas_laboratorio");
+			resultado = consulta
+					.executeQuery("SELECT r.`id`, CONCAT(nombre,' ',apellido) AS paciente, pr.`nombre_prueba`, "
+							+ "`resultado` FROM `resultados_pruebas_laboratorio` r JOIN `pruebas_laboratorio` pr "
+							+ "JOIN `pacientes` p WHERE r.`id_prueba_lab` = pr.id AND r.`id_paciente` = p.`id`");
 			while (resultado.next()) {
-				int id = resultado.getInt("id");
-				int id_prueba_lab = resultado.getInt("id_prueba_lab");
-				int id_paciente = resultado.getInt("id_paciente");
-				String result = resultado.getString("resultado");
-				Resultado_Prueba_Laboratorio resultadoP = new Resultado_Prueba_Laboratorio();
-				resultadoP.setIdPrueba(id_prueba_lab);
-				resultadoP.setIdPaciente(id_paciente);
-				resultadoP.setId(id);
-				resultadoP.setPaciente(con.getPacientes().getItemAt(id_paciente));
-				resultadoP.setPrueba(con.getPruebas_Laboratorio().getItemAt(id_prueba_lab));
-				resultadoP.setResultado(result);
-				resultados.add(resultadoP);
+				resultados.add(new Resultado_Prueba_Laboratorio(resultado
+						.getInt("id"), resultado.getString("paciente"),
+						resultado.getString("nombre_prueba"), resultado
+								.getString("resultado")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class FactoriaGestion_Resultado_Pruebas_Laboratorio extends FactoriaGesti
 					.prepareStatement("UPDATE resultados_pruebas_laboratorio SET id_paciente = ? WHERE id = ?");
 			enunciado.setInt(1, (int) valor);
 			break;
-			
+
 		case 3:
 			enunciado = conexion
 					.prepareStatement("UPDATE resultados_pruebas_laboratorio SET resultado = ? WHERE id = ?");

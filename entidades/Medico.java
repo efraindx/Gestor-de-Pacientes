@@ -2,23 +2,36 @@ package edu.itla.gestorpacientes.entidades;
 
 import java.util.ArrayList;
 
-public class Medico  {
+public class Medico {
 
 	private int id;
+	private int idEspecialidad;
 	private String codigoEmpleado;
 	private String nombre;
 	private String apellido;
 	private ArrayList<String> telefonos;
 	private String direccion;
 	private String cedula;
-	private String especialidad;
-	
+	private Especialidad especialidad;
+
 	public Medico() {
-		//JavaBean
+		// JavaBean
 	}
 
-	public Medico(int id, String nombre, String apellido, ArrayList<String> telefonos,
-			String direccion, String cedula, String especialidad, String codigoEmpleado) {
+	public Medico(String nombre, String apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
+
+	public Medico(int id, String nombre, String apellido) {
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
+
+	public Medico(int id, String nombre, String apellido,
+			ArrayList<String> telefonos, String direccion, String cedula,
+			Especialidad especialidad, String codigoEmpleado) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -30,11 +43,21 @@ public class Medico  {
 	}
 
 	public Medico(String nombre, String apellido, ArrayList<String> telefonos,
-			String direccion, String cedula, String especialidad,
-			String codigoEmpleado) {
+			String direccion, String cedula, String codigoEmpleado,
+			Especialidad especialidad) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.telefonos = telefonos;
+		this.direccion = direccion;
+		this.cedula = cedula;
+		this.especialidad = especialidad;
+		this.codigoEmpleado = codigoEmpleado;
+	}
+
+	public Medico(String nombre, String apellido, String direccion,
+			String cedula, String codigoEmpleado, Especialidad especialidad) {
+		this.nombre = nombre;
+		this.apellido = apellido;
 		this.direccion = direccion;
 		this.cedula = cedula;
 		this.especialidad = especialidad;
@@ -89,11 +112,11 @@ public class Medico  {
 		this.cedula = cedula;
 	}
 
-	public String getEspecialidad() {
+	public Especialidad getEspecialidad() {
 		return especialidad;
 	}
 
-	public void setEspecialidad(String especialidad) {
+	public void setEspecialidad(Especialidad especialidad) {
 		this.especialidad = especialidad;
 	}
 
@@ -103,5 +126,18 @@ public class Medico  {
 
 	public void setCodigoEmpleado(String codigoEmpleado) {
 		this.codigoEmpleado = codigoEmpleado;
+	}
+
+	public int getIdEspecialidad() {
+		return idEspecialidad;
+	}
+
+	public void setIdEspecialidad(int idEspecialidad) {
+		this.idEspecialidad = idEspecialidad;
+	}
+
+	@Override
+	public String toString() {
+		return nombre + " " + apellido;
 	}
 }

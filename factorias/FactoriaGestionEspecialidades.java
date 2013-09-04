@@ -22,7 +22,7 @@ public class FactoriaGestionEspecialidades extends FactoriaGestion {
 		Especialidad especialidadActual = (Especialidad) persona;
 		try {
 			enunciado = conexion
-					.prepareStatement("INSERT INTO especialidades (codigo, nombre_especialidad) VALUES (?,?)");
+					.prepareStatement("INSERT INTO especialidades (codigo, nombre) VALUES (?,?)");
 			enunciado.setString(1, especialidadActual.getCodigo());
 			enunciado.setString(2, especialidadActual.getNombre());
 			enunciado.execute();
@@ -36,7 +36,7 @@ public class FactoriaGestionEspecialidades extends FactoriaGestion {
 	public void eliminar(int id) {
 		try {
 			enunciado = conexion
-					.prepareStatement("DELETE FROM especialidades where id_esp = ?");
+					.prepareStatement("DELETE FROM especialidades where id = ?");
 			enunciado.setInt(1, id);
 			enunciado.execute();
 		} catch (SQLException e) {
@@ -50,18 +50,21 @@ public class FactoriaGestionEspecialidades extends FactoriaGestion {
 		switch (atributo) {
 		case 0:
 			enunciado = conexion
-					.prepareStatement("UPDATE especialidades set codigo = ? where id_esp = ?");
+					.prepareStatement("UPDATE especialidades set codigo = ? where id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 1:
 			enunciado = conexion
-					.prepareStatement("UPDATE especialidades set nombre_especialidad = ? where id_esp = ?");
+					.prepareStatement("UPDATE especialidades set nombre = ? where id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 		}
-		enunciado.setInt(2, id);
-		enunciado.execute();
+
 	}
 
 	@Override
@@ -70,9 +73,11 @@ public class FactoriaGestionEspecialidades extends FactoriaGestion {
 		try {
 			resultado = consulta.executeQuery("SELECT * FROM especialidades");
 			while (resultado.next()) {
-				especialidades.add(new Especialidad(resultado.getInt("id_esp"),
-						resultado.getString("codigo"), resultado
-								.getString("nombre_especialidad")));
+				if (!resultado.getString("nombre").equals("Ninguna")) {
+					especialidades.add(new Especialidad(resultado.getInt("id"),
+							resultado.getString("codigo"), resultado
+									.getString("nombre")));
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

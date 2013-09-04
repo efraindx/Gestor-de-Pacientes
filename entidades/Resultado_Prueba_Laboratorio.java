@@ -18,20 +18,6 @@ public class Resultado_Prueba_Laboratorio {
 		this.setIdPrueba(idPrueba);
 		this.resultado = resultado;
 	}
-	
-	public Resultado_Prueba_Laboratorio(int id, int idPaciente, int idPrueba, String resultado) {
-		this.id = id;
-		this.setIdPaciente(idPaciente);
-		this.setIdPrueba(idPrueba);
-		this.resultado = resultado;
-	}
-
-	public Resultado_Prueba_Laboratorio(String paciente, String prueba,
-			String resultado) {
-		this.paciente = paciente;
-		this.prueba = prueba;
-		this.resultado = resultado;
-	}
 
 	public Resultado_Prueba_Laboratorio(int id, String paciente, String prueba,
 			String resultado) {

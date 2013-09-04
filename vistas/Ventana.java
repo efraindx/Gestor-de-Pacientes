@@ -7,8 +7,6 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
@@ -50,10 +48,9 @@ public abstract class Ventana extends JFrame {
 			setResizable(false);
 		}
 
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setContentPane(getContenido());
 		setLocationRelativeTo(null);
-		UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
-		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	public abstract JPanel getContenido() throws ClassNotFoundException,

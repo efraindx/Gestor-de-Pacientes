@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-
+import edu.itla.gestorpacientes.entidades.Especialidad;
 import edu.itla.gestorpacientes.entidades.Medico;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionMedicos;
 import edu.itla.gestorpacientes.persistencia.Conexion;
@@ -31,7 +31,7 @@ public class ModeloMedicos extends AbstractTableModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ModeloMedicos() throws ClassNotFoundException, SQLException,
+	private ModeloMedicos() throws ClassNotFoundException, SQLException,
 			JDOMException, IOException {
 		conexion = Conexion.getInstancia();
 		conexion.setFactoria(new FactoriaGestionMedicos());
@@ -65,6 +65,12 @@ public class ModeloMedicos extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int fila, int columna) {
+		try {
+			conexion.setFactoria(new FactoriaGestionMedicos());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
+			e.printStackTrace();
+		}
 		medicoActual = medicos.get(fila);
 		Object retorno = null;
 		switch (columna) {
@@ -101,40 +107,42 @@ public class ModeloMedicos extends AbstractTableModel {
 		medicoActual = medicos.get(fila);
 		switch (atributo) {
 		case 1:
-			medicoActual.setEspecialidad(getEspecialidadMedico((int) valor));
-			valor = (int) valor + 1;
+			medicoActual.setEspecialidad(conexion
+					.getItemEspecialidad((int) valor));
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 2:
 			medicoActual.setCodigoEmpleado((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 3:
 			medicoActual.setNombre((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 4:
 			medicoActual.setApellido((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 5:
 			medicoActual.setDireccion((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 6:
 			medicoActual.setCedula((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 		}
-		conexion.modificar(id, atributo, valor);
+		fireTableDataChanged();
 	}
 
 	@Override
 	public String getColumnName(int columna) {
 		return encabezados[columna];
-	}
-
-	public JComboBox<String> getEspecialidades() throws SQLException {
-		return conexion.getEspecialidades();
 	}
 
 	public void setTelefonosPersona(int id, ArrayList<String> telefonos)
@@ -146,7 +154,12 @@ public class ModeloMedicos extends AbstractTableModel {
 		return medicos;
 	}
 
-	public String getEspecialidadMedico(int pos) throws SQLException {
-		return conexion.getEspecialidades().getItemAt(pos);
+	public void setMedicos(ArrayList<Medico> medicos) {
+		this.medicos = medicos;
+		fireTableDataChanged();
+	}
+
+	public JComboBox<Especialidad> getEspecialidades() throws SQLException {
+		return conexion.getEspecialidades();
 	}
 }
