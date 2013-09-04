@@ -30,21 +30,20 @@ public class FactoriaGestionAsistentes extends FactoriaGestion {
 			enunciado.setString(4, asistente.getDireccion());
 			enunciado.setString(5, asistente.getCedula());
 			enunciado.execute();
-
-			resultado = consulta.executeQuery("SELECT persona_id FROM personas WHERE nombre_persona LIKE '%"+asistente.getNombre()+"%'" +
-					"AND apellido_persona LIKE '%"+asistente.getApellido()+"%'");
-			resultado.next();
-			int id = resultado.getInt("persona_id");
-			asistente.setId(id);
-			enunciado = conexion.prepareStatement("UPDATE asistentes SET id = "+id+" WHERE nombre LIKE '%"+asistente.getNombre()+"%'" +
-					"AND apellido LIKE '%"+asistente.getApellido()+"%'");
-			enunciado.execute();
 			
+			resultado = consulta
+					.executeQuery("SELECT id FROM personas WHERE nombre = '"
+							+ asistente.getNombre()
+							+ "' AND apellido = '"
+							+ asistente.getApellido() + "'");
+			resultado.next();
+			int id = resultado.getInt("id");
+			asistente.setId(id);
 			enunciado = conexion
 					.prepareStatement("INSERT INTO telefonos (persona_id, telefono) VALUES (?,?)");
 			for (String telefono : asistente.getTelefonos()) {
 				enunciado.setInt(1, id);
-				enunciado.setString(2, telefono);
+				enunciado.setString(2, telefono); 
 				enunciado.execute();
 			}
 		} catch (SQLException e) {
@@ -96,33 +95,42 @@ public class FactoriaGestionAsistentes extends FactoriaGestion {
 			enunciado = conexion
 					.prepareStatement("UPDATE asistentes SET codigo_empleado = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 2:
 			enunciado = conexion
 					.prepareStatement("UPDATE asistentes SET nombre = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 3:
 			enunciado = conexion
 					.prepareStatement("UPDATE asistentes SET apellido = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 4:
 			enunciado = conexion
 					.prepareStatement("UPDATE asistentes SET direccion = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 
 		case 5:
 			enunciado = conexion
 					.prepareStatement("UPDATE asistentes SET cedula = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
+			enunciado.setInt(2, id);
+			enunciado.execute();
 			break;
 		}
-		enunciado.setInt(2, id);
-		enunciado.execute();
+		
 	}
 }

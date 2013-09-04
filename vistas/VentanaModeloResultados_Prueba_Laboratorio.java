@@ -1,7 +1,6 @@
 package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
-
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -24,13 +23,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jdom2.JDOMException;
 
 
+
+import edu.itla.gestorpacientes.entidades.Paciente;
 import edu.itla.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
 import edu.itla.gestorpacientes.modelos.ModeloResultados_Prueba_Laboratorio;
 
 public class VentanaModeloResultados_Prueba_Laboratorio extends Ventana {
 
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> cmbPacientes;
+	private JComboBox<Paciente> cmbPacientes;
 	private JComboBox<String> cmbResultadosPruebas_Laboratorio;
 	private JTextArea txtResultado;
 	private ModeloResultados_Prueba_Laboratorio modelo;

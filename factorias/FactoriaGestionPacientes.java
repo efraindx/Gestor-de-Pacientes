@@ -47,6 +47,7 @@ public class FactoriaGestionPacientes extends FactoriaGestion {
 		enunciado = conexion
 				.prepareStatement("DELETE FROM pacientes WHERE id = " + id);
 		enunciado.execute();
+		System.out.println(id);
 	}
 
 	@Override
@@ -109,7 +110,7 @@ public class FactoriaGestionPacientes extends FactoriaGestion {
 
 		case 9:
 			enunciado = conexion
-					.prepareStatement("UPDATE asistentes SET alergias = ? WHERE id = ?");
+					.prepareStatement("UPDATE pacientes SET alergias = ? WHERE id = ?");
 			enunciado.setString(1, (String) valor);
 			break;
 		}

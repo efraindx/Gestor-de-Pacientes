@@ -1,20 +1,14 @@
 package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-
-
 import edu.itla.gestorpacientes.entidades.Paciente;
-import edu.itla.gestorpacientes.enums.Fumador;
-import edu.itla.gestorpacientes.enums.Sexo;
 import edu.itla.gestorpacientes.factorias.FactoriaGestion;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionPacientes;
 import edu.itla.gestorpacientes.persistencia.Conexion;
@@ -25,10 +19,11 @@ public class ModeloPacientes extends AbstractTableModel {
 	private static ModeloPacientes instancia;
 	private ArrayList<Paciente> pacientes;
 	private String[] encabezados = { "Nombre", "Apellido", "Sexo", "Teléfono",
-			"Dirección", "Cédula", "Fec. Nac.", "Fumador", "Foto", "Alergias" };
+			"Dirección", "Cédula", "Fec. Nac.", "Fumador", "Alergias" };
 	private Conexion conexion;
 	private Paciente pacienteActual;
 	private FactoriaGestion factoria;
+	private boolean editable = true;
 
 	public static synchronized ModeloPacientes getInstancia()
 			throws ClassNotFoundException, SQLException, JDOMException,
@@ -62,19 +57,21 @@ public class ModeloPacientes extends AbstractTableModel {
 		fireTableRowsDeleted(fila, fila);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void agregar(Paciente paciente) throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
-		conexion.agregar(paciente);
 		pacientes.add(paciente);
+		conexion.agregar(paciente);
 		fireTableDataChanged();
+		pacientes = conexion.getDatos();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int fila, int columna) {
 		try {
-			pacientes = conexion.getDatos();
-		} catch (SQLException e) {
+			conexion.setFactoria(new FactoriaGestionPacientes());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
 			e.printStackTrace();
 		}
 		pacienteActual = pacientes.get(fila);
@@ -114,123 +111,69 @@ public class ModeloPacientes extends AbstractTableModel {
 			break;
 
 		case 8:
-			retorno = pacienteActual.getFoto();
-			break;
-
-		case 9:
 			retorno = pacienteActual.getAlergias();
 			break;
+			
 		}
 		return retorno;
 	}
 
-	@Override
-	public void setValueAt(Object objeto, int fila, int columna) {
+	public void modificar(int id, int atributo, int fila, Object valor)
+			throws SQLException {
 		pacienteActual = pacientes.get(fila);
-		String valor = (String) objeto;
-		try {
-			switch (columna) {
+		switch (atributo) {
 
-			case 0:
-				if (!"".equals(valor)) {
-				pacienteActual.setNombre(valor);
-				conexion.modificar(pacienteActual.getId(), 0, valor);
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 0:
+			pacienteActual.setNombre((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 1:
-				if (!"".equals(valor)) {
-				pacienteActual.setApellido(valor);
-				conexion.modificar(pacienteActual.getId(), 1, valor);
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 1:
+			pacienteActual.setApellido((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 2:
-				if (!"".equals(valor)) {
-					if (valor.equals(Sexo.FEMENINO.name()) || valor.equals(Sexo.MASCULINO.name())) { 
-						pacienteActual.setSexo(valor);
-						conexion.modificar(pacienteActual.getId(), 2, valor);
-					} else {
-						JOptionPane.showMessageDialog(null, "Debe ser uno de estos:\n-MASCULINO\n-FEMENINO");
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 2:
+			pacienteActual.setSexo((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 3:
-				if (!"".equals(valor)) {
-				pacienteActual.setTelefono(valor);
-				conexion.modificar(pacienteActual.getId(), 3, valor);
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio");
-				}
-				break;
+		case 3:
+			pacienteActual.setTelefono((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 4:
-				if (!"".equals(valor)) {
-				pacienteActual.setDireccion(valor);
-				conexion.modificar(pacienteActual.getId(), 4, valor);
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 4:
+			pacienteActual.setDireccion((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 5:
-				if (!"".equals(valor)) {
-				pacienteActual.setCedula(valor);
-				conexion.modificar(pacienteActual.getId(), 5, valor);
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 5:
+			pacienteActual.setCedula((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 6:
-				if (!"".equals(valor)) {
-				pacienteActual.setFecha_nacimiento(valor);
-				conexion.modificar(pacienteActual.getId(), 6, valor);
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 6:
+			pacienteActual.setFecha_nacimiento((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 7:
-				if (!"".equals(valor)) {
-					if (valor.equals(Fumador.SI.name()) || valor.equals(Fumador.NO.name())) {
-						pacienteActual.setFumador(valor);
-						conexion.modificar(pacienteActual.getId(), 7, valor);
-					} else {
-						JOptionPane.showMessageDialog(null, "Debe de ser uno de los siguientes:\n-SI\n-NO");
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Este campo es obligatorio.");
-				}
-				break;
+		case 7:
+			pacienteActual.setFumador((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 8:
-				if ("".equals(valor)) {
-					if (pacienteActual.getSexo().equals(Sexo.FEMENINO.name())) {
-						valor = "/com/efrain/gestorpacientes/imágenes/woman.png";
-					} else {
-						valor = "/com/efrain/gestorpacientes/imágenes/man.png";
-					}
-				} 
-				pacienteActual.setFoto(valor);
-				conexion.modificar(pacienteActual.getId(), 8, valor);
-				break;
+		case 8:
+			pacienteActual.setFoto((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 
-			case 9:
-				pacienteActual.setAlergias(valor);
-				conexion.modificar(pacienteActual.getId(), 9, valor);
-				break;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		case 9:
+			pacienteActual.setAlergias((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
 		}
+		fireTableDataChanged();
 	}
 
 	@Override
@@ -240,10 +183,34 @@ public class ModeloPacientes extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int arg0, int arg1) {
-		return true;
+		return editable;
 	}
 
 	public FactoriaGestion getFactoria() {
 		return factoria;
 	}
+
+	public void setEditable(boolean valor) {
+		this.editable = valor;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Paciente> getPacientes() throws SQLException {
+		return conexion.getDatos();
+	}
+
+	public ArrayList<Paciente> getListadoPacientes() throws SQLException {
+		return conexion.getListadoPacientes();
+	}
+
+	public void setPacientes(ArrayList<Paciente> pacientes) {
+		this.pacientes = pacientes;
+		fireTableDataChanged();
+	}
+
+	public ArrayList<String> getDatos(String columna, String tabla, int id)
+			throws SQLException {
+		return conexion.getDatos(columna, tabla, id);
+	}
+
 }

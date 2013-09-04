@@ -1,15 +1,19 @@
 package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
 import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
 
+
+
+
+import edu.itla.gestorpacientes.entidades.PruebaLaboratorio;
 import edu.itla.gestorpacientes.entidades.Prueba_Laboratorio;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionPruebas_Laboratorio;
 import edu.itla.gestorpacientes.persistencia.Conexion;
@@ -60,9 +64,12 @@ public class ModeloPruebas_Laboratorio extends AbstractTableModel {
 		fireTableRowsDeleted(fila, fila);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void agregar(Object persona) throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
 		pruebas.add((Prueba_Laboratorio) persona);
+		conexion.setFactoria(new FactoriaGestionPruebas_Laboratorio());
+		pruebas = conexion.getDatos();
 		conexion.agregar(persona);
 		fireTableDataChanged();
 	}
@@ -92,14 +99,8 @@ public class ModeloPruebas_Laboratorio extends AbstractTableModel {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int fila, int columna) {
-		try {
-			pruebas = conexion.getDatos();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		pruebaActual = pruebas.get(fila);
 		String retorno = null;
 
@@ -118,5 +119,9 @@ public class ModeloPruebas_Laboratorio extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return true;
+	}
+	
+	public JComboBox<PruebaLaboratorio> getPruebas_Laboratorio() throws SQLException {
+		return conexion.getPruebas_Laboratorio();
 	}
 }

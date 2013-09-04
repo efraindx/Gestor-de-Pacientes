@@ -13,6 +13,11 @@ public class Paciente  {
 	private String fumador;
 	private String alergias;
 	private String foto;
+	
+	public Paciente(String nombre, String apellido) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
 
 	public Paciente(int id, String nombre, String apellido, String sexo, String telefono,
 			String direccion, String cedula, String fecha_nacimiento,
@@ -20,8 +25,8 @@ public class Paciente  {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.telefono = telefono;
 		this.setSexo(sexo);
+		this.telefono = telefono;
 		this.direccion = direccion;
 		this.cedula = cedula;
 		this.fecha_nacimiento = fecha_nacimiento;
@@ -131,6 +136,11 @@ public class Paciente  {
 
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
+	}
+	
+	@Override
+	public String toString() {
+		return nombre + " " + apellido;
 	}
 
 }

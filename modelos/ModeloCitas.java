@@ -1,7 +1,6 @@
 package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -10,8 +9,9 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-
 import edu.itla.gestorpacientes.entidades.Cita;
+import edu.itla.gestorpacientes.entidades.Medico;
+import edu.itla.gestorpacientes.entidades.Paciente;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionCitas;
 import edu.itla.gestorpacientes.persistencia.Conexion;
 
@@ -20,8 +20,8 @@ public class ModeloCitas extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	private static ModeloCitas instancia;
 	private ArrayList<Cita> citas;
-	private String[] encabezados = { "Paciente", "Medico", "Fecha", "Hora",
-			"Causa", };
+	private String[] encabezados = { "Paciente", "Médico", "Fecha", "Hora",
+			"Causa", "Observación" };
 	private Conexion conexion;
 	private Cita citaActual;
 
@@ -56,11 +56,13 @@ public class ModeloCitas extends AbstractTableModel {
 		fireTableRowsDeleted(fila, fila);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void agregar(Object persona) throws ClassNotFoundException,
 			SQLException, JDOMException, IOException {
 		citas.add((Cita) persona);
 		conexion.agregar(persona);
 		fireTableDataChanged();
+		citas = conexion.getDatos();
 	}
 
 	public void modificar(int id, int atributo, int fila, Object valor)
@@ -68,38 +70,47 @@ public class ModeloCitas extends AbstractTableModel {
 		citaActual = citas.get(fila);
 		switch (atributo) {
 		case 1:
-			citaActual.setIdPaciente((int) valor);
+			citaActual.setPaciente((Paciente) valor);
+			conexion.modificar(id, atributo, citaActual.getPaciente().getId());
 			break;
 
 		case 2:
-			citaActual.setMedico((String) valor);
+			citaActual.setMedico((Medico) valor);
+			conexion.modificar(id, atributo, citaActual.getMedico().getId());
 			break;
 
 		case 3:
 			citaActual.setFecha((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 4:
 			citaActual.setHora((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 
 		case 5:
 			citaActual.setCausa((String) valor);
+			conexion.modificar(id, atributo, valor);
+			break;
+
+		case 6:
+			citaActual.setObservacion((String) valor);
+			conexion.modificar(id, atributo, valor);
 			break;
 		}
-		conexion.modificar(id, atributo, valor);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int fila, int columna) {
 		try {
-			citas = conexion.getDatos();
-		} catch (SQLException e) {
+			conexion.setFactoria(new FactoriaGestionCitas());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
 			e.printStackTrace();
 		}
 		citaActual = citas.get(fila);
-		String retorno = null;
+		Object retorno = null;
 
 		switch (columna) {
 		case 0:
@@ -121,6 +132,10 @@ public class ModeloCitas extends AbstractTableModel {
 		case 4:
 			retorno = citaActual.getCausa();
 			break;
+
+		case 5:
+			retorno = citaActual.getObservacion();
+			break;
 		}
 		return retorno;
 	}
@@ -139,11 +154,11 @@ public class ModeloCitas extends AbstractTableModel {
 		return encabezados[columna];
 	}
 
-	public JComboBox<String> getPacientes() throws SQLException {
+	public JComboBox<Paciente> getPacientes() throws SQLException {
 		return conexion.getPacientes();
 	}
 
-	public JComboBox<String> getMedicos() throws SQLException {
+	public JComboBox<Medico> getMedicos() throws SQLException {
 		return conexion.getMedicos();
 	}
 }

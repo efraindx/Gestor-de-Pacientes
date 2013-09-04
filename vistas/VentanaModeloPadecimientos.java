@@ -2,12 +2,14 @@ package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +21,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
 
-
 import edu.itla.gestorpacientes.entidades.Padecimiento;
 import edu.itla.gestorpacientes.modelos.ModeloPadecimientos;
 
@@ -29,27 +30,38 @@ public class VentanaModeloPadecimientos extends Ventana {
 	private JTextField txtCodigo;
 	private JTextField txtNombre;
 	private JTable tblPadecimientos;
+	private static VentanaModeloPadecimientos instancia;
+	
+	public static synchronized VentanaModeloPadecimientos getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, JDOMException, IOException, UnsupportedLookAndFeelException {
+		return instancia == null ? instancia = new VentanaModeloPadecimientos() : instancia;
+	}
 
 	private static final long serialVersionUID = 1L;
 
-	public VentanaModeloPadecimientos() throws ClassNotFoundException,
+	private VentanaModeloPadecimientos() throws ClassNotFoundException,
 			SQLException, JDOMException, IOException, InstantiationException,
 			IllegalAccessException, UnsupportedLookAndFeelException {
 		this.titulo = "";
 		this.anchura = 500;
 		this.altura = 420;
+		this.icono = "/edu/itla/gestorpacientes/imágenes/pade.png";
 		modelo = ModeloPadecimientos.getInstancia();
-		prepararVentana(titulo, anchura, altura, null);
+		prepararVentana(titulo, anchura, altura, icono);
 	}
 
 	@Override
 	public JPanel getContenido() {
 		panel = new JPanel(new FlowLayout());
 
-		JLabel lblTitulo = new JLabel("Mantenimiento de Padecimientos");
-		lblTitulo.setPreferredSize(new Dimension(350, 50));
-		JLabel lblCodigo = new JLabel("Codigo:");
+		JLabel lblTitulo = new JLabel("Mantenimiento de Padecimientos", new ImageIcon(
+				getClass().getResource(
+						"/edu/itla/gestorpacientes/imágenes/pade.png")), 0);
+		lblTitulo.setFont(new Font("Lucida Calligraphy", Font.BOLD + Font.ITALIC, 16));
+		lblTitulo.setPreferredSize(new Dimension(380, 50));
+		JLabel lblCodigo = new JLabel("Código:");
+		lblCodigo.setFont(new Font("Lucida Calligraphy", Font.ITALIC, 16));
 		JLabel lblNombre = new JLabel("Nombre:");
+		lblNombre.setFont(new Font("Lucida Calligraphy", Font.ITALIC, 16));
 		JLabel lblBlanco = new JLabel();
 		lblBlanco.setPreferredSize(new Dimension(150, 50));
 
@@ -59,7 +71,7 @@ public class VentanaModeloPadecimientos extends Ventana {
 		try {
 			tblPadecimientos = new JTable(ModeloPadecimientos.getInstancia());
 			tblPadecimientos.setPreferredScrollableViewportSize(new Dimension(
-					450, 180));
+					450, 200));
 		} catch (ClassNotFoundException e2) {
 			e2.printStackTrace();
 		} catch (SQLException e2) {
@@ -139,10 +151,9 @@ public class VentanaModeloPadecimientos extends Ventana {
 		panel.add(new JScrollPane(tblPadecimientos));
 		return panel;
 	}
-
-	public static void main(String[] args) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException, SQLException,
-			JDOMException, IOException, UnsupportedLookAndFeelException {
-		new VentanaModeloPadecimientos().setVisible(true);
+	
+	@Override
+	public boolean esDisponibleCambiarTamaño() {
+		return false;
 	}
 }

@@ -1,24 +1,18 @@
 package edu.itla.gestorpacientes.modelos;
 
 import java.io.IOException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-
-
 import edu.itla.gestorpacientes.entidades.Paciente;
+import edu.itla.gestorpacientes.entidades.Padecimiento;
 import edu.itla.gestorpacientes.entidades.Receta;
-import edu.itla.gestorpacientes.enums.Fumador;
-import edu.itla.gestorpacientes.enums.Sexo;
 import edu.itla.gestorpacientes.factorias.FactoriaGestion;
-import edu.itla.gestorpacientes.factorias.FactoriaGestionPacientes;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionRecetas;
 import edu.itla.gestorpacientes.persistencia.Conexion;
 
@@ -63,23 +57,24 @@ public class ModeloRecetas extends AbstractTableModel {
 		fireTableRowsDeleted(fila, fila);
 	}
 
-	public void agregar(Receta receta) throws ClassNotFoundException,
-			SQLException, JDOMException, IOException {
-		conexion.agregar(receta);
+	@SuppressWarnings("unchecked")
+	public void agregar(Receta receta) throws SQLException {
 		recetas.add(receta);
+		conexion.agregar(receta);
 		fireTableDataChanged();
+		recetas = conexion.getDatos();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int fila, int columna) {
 		try {
-			recetas = conexion.getDatos();
-		} catch (SQLException e) {
+			conexion.setFactoria(new FactoriaGestionRecetas());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
 			e.printStackTrace();
 		}
 		recetaActual = recetas.get(fila);
-		String retorno = null;
+		Object retorno = null;
 
 		switch (columna) {
 		case 0:
@@ -102,20 +97,24 @@ public class ModeloRecetas extends AbstractTableModel {
 		recetaActual = recetas.get(fila);
 		switch (atributo) {
 		case 1:
-			recetaActual.setIdPaciente((int)valor);
+			recetaActual.setPaciente((Paciente) valor);
+			conexion.modificar(id, atributo, recetaActual.getPaciente().getId());
 			break;
 
 		case 2:
-			recetaActual.setIdPadecimiento((int) valor);
+			recetaActual.setPadecimiento((Padecimiento) valor);
+			conexion.modificar(id, atributo, recetaActual.getPadecimiento()
+					.getId());
 			break;
 
 		case 3:
 			recetaActual.setMedicamentos((String) valor);
+			conexion.modificar(id, atributo, (String) valor);
 			break;
 		}
-		conexion.modificar(id, atributo, valor);
+		fireTableDataChanged();
 	}
-	
+
 	@Override
 	public String getColumnName(int columna) {
 		return encabezados[columna];
@@ -124,16 +123,16 @@ public class ModeloRecetas extends AbstractTableModel {
 	public FactoriaGestion getFactoria() {
 		return factoria;
 	}
-	
+
 	public ArrayList<Receta> getRecetas() {
 		return recetas;
 	}
-	
-	public JComboBox<String> getPacientes() throws SQLException {
+
+	public JComboBox<Paciente> getPacientes() throws SQLException {
 		return conexion.getPacientes();
 	}
-	
-	public JComboBox<String> getPadecimientos() throws SQLException {
+
+	public JComboBox<Padecimiento> getPadecimientos() throws SQLException {
 		return conexion.getPadecimientos();
 	}
 }

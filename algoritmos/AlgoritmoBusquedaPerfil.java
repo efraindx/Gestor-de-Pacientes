@@ -1,7 +1,5 @@
 package edu.itla.gestorpacientes.algoritmos;
 
-
-
 import edu.itla.gestorpacientes.entidades.Persona;
 import edu.itla.gestorpacientes.enums.Rol;
 

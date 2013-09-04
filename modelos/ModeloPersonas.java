@@ -10,7 +10,6 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jdom2.JDOMException;
 
-
 import edu.itla.gestorpacientes.encriptación.Encriptadora;
 import edu.itla.gestorpacientes.entidades.Persona;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionPersonas;
@@ -64,6 +63,12 @@ public class ModeloPersonas extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int fila, int columna) {
+		try {
+			conexion.setFactoria(new FactoriaGestionPersonas());
+		} catch (ClassNotFoundException | JDOMException | IOException
+				| SQLException e) {
+			e.printStackTrace();
+		}
 		String retorno = null;
 		Persona personaActual = personas.get(fila);
 		switch (columna) {
@@ -86,7 +91,7 @@ public class ModeloPersonas extends AbstractTableModel {
 		case 4:
 			retorno = Encriptadora.desencriptar(personaActual.getContrase());
 			break;
-			
+
 		case 5:
 			retorno = personaActual.getCorreo();
 			break;
@@ -95,9 +100,10 @@ public class ModeloPersonas extends AbstractTableModel {
 	}
 
 	public void agregar(Persona persona) throws ClassNotFoundException,
-			SQLException, JDOMException, IOException {
-		conexion.agregar(persona);
+			JDOMException, IOException, SQLException {
+		conexion.setFactoria(new FactoriaGestionPersonas());
 		personas.add(persona);
+		conexion.agregar(persona);
 		fireTableDataChanged();
 	}
 
@@ -116,21 +122,27 @@ public class ModeloPersonas extends AbstractTableModel {
 			String valor = (String) objeto;
 			switch (columna) {
 			case 0:
-				personaActual.setNombre(valor);
-				conexion.modificar(personaActual.getId(), 3, valor);
+				JOptionPane
+						.showMessageDialog(null,
+								"En este mantenimiento no puede modificar\nnombre y apellido de personas.");
 				break;
 
 			case 1:
-				personaActual.setApellido(valor);
-				conexion.modificar(personaActual.getId(), 4, valor);
+				JOptionPane
+						.showMessageDialog(null,
+								"En este mantenimiento no puede modificar\nnombre y apellido de personas.");
 				break;
 
 			case 2:
-				personaActual.setRol(valor);
-				if("ADMINISTRADOR".equals(valor) || "MEDICO".equals(valor) || "ASISTENTE".equals(valor)) {
+				if ("ADMINISTRADOR".equals(valor) || "MEDICO".equals(valor)
+						|| "ASISTENTE".equals(valor)) {
+					personaActual.setRol(valor);
 					conexion.modificar(personaActual.getId(), 5, valor);
 				} else {
-					JOptionPane.showMessageDialog(null, "Debe de ser uno de los siguientes valores:\n-ADMINISTRADOR\n-MEDICO\n-ASISTENTE\nTodo en mayúscula.");
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Debe de ser uno de los siguientes valores:\n-ADMINISTRADOR\n-MEDICO\n-ASISTENTE\nTodo en mayúscula.");
 				}
 				break;
 
@@ -141,9 +153,10 @@ public class ModeloPersonas extends AbstractTableModel {
 
 			case 4:
 				personaActual.setContrase(Encriptadora.encriptar(valor));
-				conexion.modificar(personaActual.getId(), 7, Encriptadora.encriptar(valor));
+				conexion.modificar(personaActual.getId(), 7,
+						Encriptadora.encriptar(valor));
 				break;
-				
+
 			case 5:
 				personaActual.setCorreo(valor);
 				conexion.modificar(personaActual.getId(), 8, valor);
@@ -151,7 +164,7 @@ public class ModeloPersonas extends AbstractTableModel {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	@Override
@@ -163,18 +176,22 @@ public class ModeloPersonas extends AbstractTableModel {
 			SQLException, JDOMException, IOException {
 		return conexion.getRoles();
 	}
-	
-	public JComboBox<String> getPersonas() throws SQLException {
-		return conexion.getPersonas();
+
+	public JComboBox<Persona> getComboPersonas() throws SQLException {
+		return conexion.getComboPersonas();
 	}
-	
+
 	public boolean usuarioExiste(String usuario) {
 		boolean retorno = false;
-		for (Persona p: personas) {
-			if(p.getUsuario().equals(usuario)) {
+		for (Persona p : personas) {
+			if (p.getUsuario().equals(usuario)) {
 				return true;
 			}
 		}
 		return retorno;
+	}
+
+	public ArrayList<Persona> getPersonas() throws SQLException {
+		return conexion.getPersonas();
 	}
 }

@@ -10,6 +10,10 @@ public class Persona {
 	private String contrase;
 	private String correo;
 	
+	public Persona() {
+		//
+	}
+	
 	public Persona(String usuario) {
 		this.usuario = usuario;
 	}
@@ -94,6 +98,11 @@ public class Persona {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
+	}
+
+	@Override
+	public String toString() {
+		return nombre + " " + apellido;
 	}
 
 }

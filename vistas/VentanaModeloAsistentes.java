@@ -14,17 +14,18 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jdom2.JDOMException;
-
 
 import edu.itla.gestorpacientes.entidades.Asistente;
 import edu.itla.gestorpacientes.modelos.ModeloAsistentes;
@@ -32,13 +33,13 @@ import edu.itla.gestorpacientes.modelos.ModeloTelefonos;
 import edu.itla.gestorpacientes.utilidades.Validador;
 
 public class VentanaModeloAsistentes extends Ventana {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTextField txtCod;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
-	private JTextField txtDi;
+	private JTextArea txtDi;
 	private JTextField txtTelefono;
 	private JTextField txtCe;
 	private JTable tblAsistentes;
@@ -53,18 +54,26 @@ public class VentanaModeloAsistentes extends Ventana {
 	private JButton btnAgregarA;
 	private Asistente asistenteActual;
 	private static VentanaModeloAsistentes instancia;
-	
-	public static synchronized VentanaModeloAsistentes getInstancia() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		return instancia == null ? instancia = new VentanaModeloAsistentes() : instancia;
+
+	public static synchronized VentanaModeloAsistentes getInstancia()
+			throws ClassNotFoundException, InstantiationException,
+			IllegalAccessException, UnsupportedLookAndFeelException,
+			SQLException, JDOMException, IOException {
+		return instancia == null ? instancia = new VentanaModeloAsistentes()
+				: instancia;
 	}
-	
-	public VentanaModeloAsistentes() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+
+	private VentanaModeloAsistentes() throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException, SQLException, JDOMException,
+			IOException {
 		this.titulo = "Mantenimiento de Asistentes";
 		this.altura = 585;
-		this.anchura = 705;
+		this.anchura = 850;
+		this.icono = "/edu/itla/gestorpacientes/imágenes/asis.png";
 		modeloT = new ModeloTelefonos();
 		modeloA = ModeloAsistentes.getInstancia();
-		prepararVentana(titulo, anchura, altura, null);
+		prepararVentana(titulo, anchura, altura, icono);
 	}
 
 	@Override
@@ -73,21 +82,29 @@ public class VentanaModeloAsistentes extends Ventana {
 
 		panel = new JPanel(new FlowLayout());
 
-		JLabel lblTitulo = new JLabel("Mantenimiento de Asistentes");
-		lblTitulo.setFont(new Font("Monotype Coursiva",
-				Font.BOLD + Font.ITALIC, 16));
-		lblTitulo.setPreferredSize(new Dimension(280, 50));
+		JLabel lblTitulo = new JLabel("Mantenimiento de Asistentes",
+				new ImageIcon(getClass().getResource(
+						"/edu/itla/gestorpacientes/imágenes/asis.png")), 0);
+		lblTitulo.setFont(new Font("Times New Roman", Font.BOLD + Font.ITALIC,
+				20));
+		lblTitulo.setPreferredSize(new Dimension(350, 50));
 		JLabel lblCod = new JLabel("*Código de empleado:");
+		lblCod.setFont(new Font("Times New Roman", Font.ITALIC, 14));
 		JLabel lblNombre = new JLabel("   *Nombre:");
+		lblNombre.setFont(new Font("Times New Roman", Font.ITALIC, 14));
 		JLabel lblApellido = new JLabel("*Apellido:");
+		lblApellido.setFont(new Font("Times New Roman", Font.ITALIC, 14));
 		JLabel lblDi = new JLabel("   Dirección:");
-		JLabel lblCe = new JLabel("*Cédula:");
+		lblDi.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		JLabel lblCe = new JLabel("   *Cédula:");
+		lblCe.setFont(new Font("Times New Roman", Font.ITALIC, 14));
 		JLabel lblTel = new JLabel("*Teléfono:");
+		lblTel.setFont(new Font("Times New Roman", Font.ITALIC, 14));
 
 		txtCod = new JTextField(10);
 		txtNombre = new JTextField(10);
 		txtApellido = new JTextField(10);
-		txtDi = new JTextField(10);
+		txtDi = new JTextArea(4, 14);
 		txtCe = new JTextField(10);
 		txtCe.addKeyListener(new KeyAdapter() {
 			@Override
@@ -97,7 +114,7 @@ public class VentanaModeloAsistentes extends Ventana {
 				}
 			}
 		});
-		
+
 		txtTelefono = new JTextField(10);
 		txtTelefono.addKeyListener(new KeyAdapter() {
 			@Override
@@ -109,7 +126,7 @@ public class VentanaModeloAsistentes extends Ventana {
 				}
 			}
 		});
-		
+
 		txtTelefono.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (txtTelefono.getText().length() == 12) {
@@ -162,23 +179,24 @@ public class VentanaModeloAsistentes extends Ventana {
 					String direccion = txtDi.getText();
 					String cedula = txtCe.getText();
 					if (Validador.cedulaEsValida(cedula)) {
-					ArrayList<String> telefonos = modeloT.getTelefonos();
-					Asistente asistente = new Asistente(nombre, apellido, telefonos,
-							direccion, cedula, codemp);
-					try {
-						modeloA.agregar(asistente);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					} catch (JDOMException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					actualizar();
+						ArrayList<String> telefonos = modeloT.getTelefonos();
+						Asistente asistente = new Asistente(nombre, apellido,
+								telefonos, direccion, cedula, codemp);
+						try {
+							modeloA.agregar(asistente);
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						} catch (JDOMException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						actualizar();
 					} else {
-						JOptionPane.showMessageDialog(null, "Inserte una cédula correcta.\nNNN-NNNNNNN-N");
+						JOptionPane.showMessageDialog(null,
+								"Inserte una cédula correcta.\nNNN-NNNNNNN-N");
 					}
 				} else {
 					JOptionPane.showMessageDialog(null,
@@ -265,7 +283,8 @@ public class VentanaModeloAsistentes extends Ventana {
 		});
 
 		tblAsistentes = new JTable(modeloA);
-		tblAsistentes.setPreferredScrollableViewportSize(new Dimension(595, 350));
+		tblAsistentes
+				.setPreferredScrollableViewportSize(new Dimension(595, 300));
 		tblAsistentes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -306,6 +325,7 @@ public class VentanaModeloAsistentes extends Ventana {
 						&& !"".equals(txtCe.getText())
 						&& modeloT.getTelefonos().size() != 0) {
 					try {
+
 						String codigo_emp = txtCod.getText();
 						modeloA.modificar(asistenteActual.getId(), 1,
 								tblAsistentes.getSelectedRow(), codigo_emp);
@@ -321,7 +341,20 @@ public class VentanaModeloAsistentes extends Ventana {
 						String ced = txtCe.getText();
 						modeloA.modificar(asistenteActual.getId(), 5,
 								tblAsistentes.getSelectedRow(), ced);
-						modeloA.setTelefonosPersona(asistenteActual.getId(), modeloT.getTelefonos());
+						modeloA.setTelefonosPersona(asistenteActual.getId(),
+								modeloT.getTelefonos());
+						btnCambios.setEnabled(false);
+						btnAgregarT.setEnabled(false);
+						btnAgregarA.setEnabled(true);
+						btnEliminarT.setEnabled(false);
+						btnEliminarA.setEnabled(false);
+						tblAsistentes.clearSelection();
+						modeloT.setTelefonos(new ArrayList<String>());
+						txtCod.setText("");
+						txtNombre.setText("");
+						txtApellido.setText("");
+						txtCe.setText("");
+						txtDi.setText("");
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
@@ -329,30 +362,16 @@ public class VentanaModeloAsistentes extends Ventana {
 					JOptionPane.showMessageDialog(null,
 							"Los campos con \"*\" son obligatorios.");
 				}
-				btnCambios.setEnabled(false);
-				btnAgregarT.setEnabled(false);
-				btnAgregarA.setEnabled(true);
-				btnEliminarT.setEnabled(false);
-				btnEliminarA.setEnabled(false);
-				tblAsistentes.clearSelection();
-				modeloT.setTelefonos(new ArrayList<String>());
-				txtCod.setText("");
-				txtNombre.setText("");
-				txtApellido.setText("");
-				txtCe.setText("");
-				txtDi.setText("");
-			} 
+			}
 		});
 
-		JPanel pnlGrid = new JPanel(new GridLayout(3, 4));
+		JPanel pnlGrid = new JPanel(new GridLayout(2, 4));
 		pnlGrid.add(lblCod);
 		pnlGrid.add(txtCod);
 		pnlGrid.add(lblNombre);
 		pnlGrid.add(txtNombre);
 		pnlGrid.add(lblApellido);
 		pnlGrid.add(txtApellido);
-		pnlGrid.add(lblDi);
-		pnlGrid.add(txtDi);
 		pnlGrid.add(lblCe);
 		pnlGrid.add(txtCe);
 
@@ -366,6 +385,8 @@ public class VentanaModeloAsistentes extends Ventana {
 		scrollTelefonos.setWheelScrollingEnabled(false);
 		panel.add(scrollTelefonos);
 		panel.add(pnlGridTel);
+		panel.add(lblDi);
+		panel.add(new JScrollPane(txtDi));
 		panel.add(btnAgregarA);
 		panel.add(btnEliminarA);
 		panel.add(btnCambios);
@@ -374,12 +395,12 @@ public class VentanaModeloAsistentes extends Ventana {
 		panel.add(new JScrollPane(tblAsistentes));
 		return panel;
 	}
-	
+
 	@Override
 	public boolean esDisponibleCambiarTamaño() {
 		return false;
 	}
-	
+
 	public void actualizar() {
 		btnCambios.setEnabled(false);
 		btnAgregarT.setEnabled(false);
@@ -394,9 +415,4 @@ public class VentanaModeloAsistentes extends Ventana {
 		txtCe.setText("");
 		txtDi.setText("");
 	}
-	
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
-		new VentanaModeloAsistentes().setVisible(true);
-	}
-
 }

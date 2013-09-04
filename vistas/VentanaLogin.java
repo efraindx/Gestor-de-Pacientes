@@ -1,21 +1,20 @@
 package edu.itla.gestorpacientes.vistas;
 
 import java.awt.Color;
-
-
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+
 import java.sql.SQLException;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,7 +29,6 @@ import javax.swing.border.MatteBorder;
 
 import org.jdom2.JDOMException;
 
-
 import edu.itla.gestorpacientes.algoritmos.AlgoritmoBusqueda;
 import edu.itla.gestorpacientes.algoritmos.AlgoritmoBusquedaPerfil;
 import edu.itla.gestorpacientes.entidades.Persona;
@@ -40,34 +38,27 @@ import edu.itla.gestorpacientes.mail.CorreoElectronico;
 public class VentanaLogin extends Ventana {
 
 	private static final long serialVersionUID = 1L;
-	private static VentanaLogin instancia;
 	private JTextField txtUsuario;
 	private JPasswordField txtContraseña;
 	private AlgoritmoBusqueda algoritmoB;
 	private AlgoritmoBusquedaPerfil algoritmoBP;
-
-	public static synchronized VentanaLogin getInstancia(
-			AlgoritmoBusqueda algoritmo) {
-		try {
-			return instancia == null ? instancia = new VentanaLogin(algoritmo)
-					: instancia;
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException
-				| SQLException | JDOMException | IOException e) {
-			e.printStackTrace();
-		}
-		return instancia;
-	}
+	private VentanaPrincipal ventanaPrincipal;
+	private Persona personaActual;
+	private VentanaBusquedaPacientes ventanaBP;
 
 	public VentanaLogin(AlgoritmoBusqueda algoritmo)
 			throws ClassNotFoundException, InstantiationException,
-			IllegalAccessException, UnsupportedLookAndFeelException, SQLException, JDOMException, IOException {
+			IllegalAccessException, UnsupportedLookAndFeelException,
+			SQLException, JDOMException, IOException {
 		this.algoritmoB = algoritmo;
 		this.algoritmoBP = new AlgoritmoBusquedaPerfil();
-		this.icono = "/com/efrain/gestorpacientes/imágenes/iconoLogin.png";
+		this.icono = "/edu/itla/gestorpacientes/imágenes/iconoLogin.png";
 		this.anchura = 520;
 		this.altura = 300;
 		this.titulo = "ControlSoft v2.0";
+		UIManager.setLookAndFeel("com.nilo.plaf.nimrod.NimRODLookAndFeel");
+		SwingUtilities.updateComponentTreeUI(this);
+		ventanaBP = VentanaBusquedaPacientes.getInstancia();
 		prepararVentana(titulo, anchura, altura, icono);
 	}
 
@@ -81,12 +72,16 @@ public class VentanaLogin extends Ventana {
 		pnlPrueba.setPreferredSize(new Dimension(400, 25));
 
 		JLabel lblTitulo = new JLabel(new ImageIcon(getClass().getResource(
-				"/com/efrain/gestorpacientes/imágenes/login.png")));
+				"/edu/itla/gestorpacientes/imágenes/login.png")));
 		JLabel lblUsuario = new JLabel("Usuario:");
+		lblUsuario.setFont(new Font("Bodoni MT Black", Font.ITALIC + Font.BOLD,
+				18));
 		JLabel lblContraseña = new JLabel("Contraseña:");
-
+		lblContraseña.setFont(new Font("Bodoni MT Black", Font.ITALIC
+				+ Font.BOLD, 18));
 		JButton botonIniciar = new JButton("Iniciar Sesión");
 		botonIniciar.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Persona persona = (Persona) algoritmoB.buscar(new Persona(
@@ -96,8 +91,17 @@ public class VentanaLogin extends Ventana {
 					String perfil = (String) algoritmoBP.buscar(persona);
 					if (perfil.equals(Rol.ADMINISTRADOR.name())) {
 						try {
-							VentanaAdministrador.getInstancia()
-									.setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaAdmin.png",
+									"/edu/itla/gestorpacientes/imágenes/admin.png",
+									persona);
+							ventanaPrincipal.setVisible(true);
+							ventanaBP.getBotonHistorial().setVisible(true);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 100));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 140));
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -113,7 +117,19 @@ public class VentanaLogin extends Ventana {
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
-							VentanaPrincipal.getInstancia().setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaMe.png",
+									"/edu/itla/gestorpacientes/imágenes/fondo.png",
+									persona);
+							ventanaPrincipal.getBotonMUsuarios().setVisible(
+									false);
+							ventanaPrincipal.setVisible(true);
+							ventanaBP.getBotonHistorial().setVisible(true);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 100));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 160));
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -129,15 +145,43 @@ public class VentanaLogin extends Ventana {
 						}
 					} else {
 						try {
-							VentanaAsistente.getInstancia().setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaAsis.png",
+									"/edu/itla/gestorpacientes/imágenes/asistente.png",
+									persona);
+							ventanaPrincipal.getBotonMPacientes().setText(
+									"Litado de Pacientes");
+							ventanaPrincipal.getBotonMUsuarios().setVisible(
+									false);
+							ventanaPrincipal.getBtnMMedicos().setVisible(false);
+							ventanaPrincipal.getBtnMEspecialidades()
+									.setVisible(false);
+							ventanaPrincipal.getBtnMAsistentes().setVisible(
+									false);
+							ventanaPrincipal.getBtnEstadisticas().setVisible(
+									false);
+							ventanaPrincipal.getBtnMPLab().setVisible(false);
+							ventanaPrincipal.getBotonMPadecimientos()
+									.setVisible(false);
+							ventanaPrincipal.getBtnMRecetas().setVisible(false);
+							ventanaPrincipal.getBtnMRPLab().setVisible(false);
+							ventanaBP.getBotonHistorial().setVisible(false);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 80));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 80));
+							ventanaPrincipal.setVisible(true);
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
-								| UnsupportedLookAndFeelException e1) {
+								| UnsupportedLookAndFeelException
+								| SQLException | JDOMException | IOException e1) {
 							e1.printStackTrace();
 						}
 					}
+					txtContraseña.setText("");
 				} else {
 					JOptionPane.showMessageDialog(VentanaLogin.this,
 							"Usuario o Contraseña inválidos.");
@@ -159,6 +203,7 @@ public class VentanaLogin extends Ventana {
 
 		txtUsuario = new JTextField(10);
 		txtUsuario.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Persona persona = (Persona) algoritmoB.buscar(new Persona(
@@ -168,8 +213,17 @@ public class VentanaLogin extends Ventana {
 					String perfil = (String) algoritmoBP.buscar(persona);
 					if (perfil.equals(Rol.ADMINISTRADOR.name())) {
 						try {
-							VentanaAdministrador.getInstancia()
-									.setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaAdmin.png",
+									"/edu/itla/gestorpacientes/imágenes/admin.png",
+									persona);
+							ventanaPrincipal.setVisible(true);
+							ventanaBP.getBotonHistorial().setVisible(true);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 100));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 140));
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -185,7 +239,19 @@ public class VentanaLogin extends Ventana {
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
-							VentanaPrincipal.getInstancia().setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaMe.png",
+									"/edu/itla/gestorpacientes/imágenes/fondo.png",
+									persona);
+							ventanaPrincipal.getBotonMUsuarios().setVisible(
+									false);
+							ventanaPrincipal.setVisible(true);
+							ventanaBP.getBotonHistorial().setVisible(true);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 100));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 160));
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -201,15 +267,43 @@ public class VentanaLogin extends Ventana {
 						}
 					} else {
 						try {
-							VentanaAsistente.getInstancia().setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaAsis.png",
+									"/edu/itla/gestorpacientes/imágenes/asistente.png",
+									persona);
+							ventanaPrincipal.getBotonMPacientes().setText(
+									"Litado de Pacientes");
+							ventanaPrincipal.getBotonMUsuarios().setVisible(
+									false);
+							ventanaPrincipal.getBtnMMedicos().setVisible(false);
+							ventanaPrincipal.getBtnMEspecialidades()
+									.setVisible(false);
+							ventanaPrincipal.getBtnMAsistentes().setVisible(
+									false);
+							ventanaPrincipal.getBtnEstadisticas().setVisible(
+									false);
+							ventanaPrincipal.getBtnMPLab().setVisible(false);
+							ventanaPrincipal.getBotonMPadecimientos()
+									.setVisible(false);
+							ventanaPrincipal.getBtnMRecetas().setVisible(false);
+							ventanaPrincipal.getBtnMRPLab().setVisible(false);
+							ventanaBP.getBotonHistorial().setVisible(false);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 80));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 80));
+							ventanaPrincipal.setVisible(true);
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
-								| UnsupportedLookAndFeelException e1) {
+								| UnsupportedLookAndFeelException
+								| SQLException | JDOMException | IOException e1) {
 							e1.printStackTrace();
 						}
 					}
+					txtContraseña.setText("");
 				} else {
 					JOptionPane.showMessageDialog(VentanaLogin.this,
 							"Usuario o Contraseña inválidos.");
@@ -217,6 +311,7 @@ public class VentanaLogin extends Ventana {
 				}
 			}
 		});
+
 		txtContraseña = new JPasswordField(10);
 		txtContraseña.addActionListener(new ActionListener() {
 			@Override
@@ -228,8 +323,17 @@ public class VentanaLogin extends Ventana {
 					String perfil = (String) algoritmoBP.buscar(persona);
 					if (perfil.equals(Rol.ADMINISTRADOR.name())) {
 						try {
-							VentanaAdministrador.getInstancia()
-									.setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaAdmin.png",
+									"/edu/itla/gestorpacientes/imágenes/admin.png",
+									persona);
+							ventanaPrincipal.setVisible(true);
+							ventanaBP.getBotonHistorial().setVisible(true);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 100));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 140));
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -245,7 +349,19 @@ public class VentanaLogin extends Ventana {
 						}
 					} else if (perfil.equals(Rol.MEDICO.name())) {
 						try {
-							VentanaPrincipal.getInstancia().setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaMe.png",
+									"/edu/itla/gestorpacientes/imágenes/fondo.png",
+									persona);
+							ventanaPrincipal.getBotonMUsuarios().setVisible(
+									false);
+							ventanaPrincipal.setVisible(true);
+							ventanaBP.getBotonHistorial().setVisible(true);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 100));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 160));
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
@@ -261,15 +377,43 @@ public class VentanaLogin extends Ventana {
 						}
 					} else {
 						try {
-							VentanaAsistente.getInstancia().setVisible(true);
+							ventanaPrincipal = new VentanaPrincipal(
+									"/edu/itla/gestorpacientes/imágenes/iconoVentanaAsis.png",
+									"/edu/itla/gestorpacientes/imágenes/asistente.png",
+									persona);
+							ventanaPrincipal.getBotonMPacientes().setText(
+									"Litado de Pacientes");
+							ventanaPrincipal.getBotonMUsuarios().setVisible(
+									false);
+							ventanaPrincipal.getBtnMMedicos().setVisible(false);
+							ventanaPrincipal.getBtnMEspecialidades()
+									.setVisible(false);
+							ventanaPrincipal.getBtnMAsistentes().setVisible(
+									false);
+							ventanaPrincipal.getBtnEstadisticas().setVisible(
+									false);
+							ventanaPrincipal.getBtnMPLab().setVisible(false);
+							ventanaPrincipal.getBotonMPadecimientos()
+									.setVisible(false);
+							ventanaPrincipal.getBtnMRecetas().setVisible(false);
+							ventanaPrincipal.getBtnMRPLab().setVisible(false);
+							ventanaBP.getBotonHistorial().setVisible(false);
+							ventanaBP.getPnlGrid().setPreferredSize(
+									new Dimension(550, 80));
+							ventanaBP.getTblPacientes()
+									.setPreferredScrollableViewportSize(
+											new Dimension(700, 80));
+							ventanaPrincipal.setVisible(true);
 							VentanaLogin.this.dispose();
 						} catch (ClassNotFoundException
 								| InstantiationException
 								| IllegalAccessException
-								| UnsupportedLookAndFeelException e1) {
+								| UnsupportedLookAndFeelException
+								| SQLException | JDOMException | IOException e1) {
 							e1.printStackTrace();
 						}
 					}
+					txtContraseña.setText("");
 				} else {
 					JOptionPane.showMessageDialog(VentanaLogin.this,
 							"Usuario o Contraseña inválidos.");
@@ -277,6 +421,7 @@ public class VentanaLogin extends Ventana {
 				}
 			}
 		});
+
 		JTextField enlace = new JTextField("No puedes iniciar sesión?", 15);
 		enlace.setEditable(false);
 
@@ -287,30 +432,44 @@ public class VentanaLogin extends Ventana {
 		enlace.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				String usuario = JOptionPane.showInputDialog(null, "Indícanos tu usuario del sistema\npara enviarte un correo" +
-						" con tu contraseña\nUsuario:");
-				Persona p = (Persona) algoritmoB.buscar(new Persona(usuario));
-				if(p!= null & !"".equals(p.getCorreo()))	{
-					try {
-						Thread.sleep(3000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				String usuario = JOptionPane.showInputDialog(null,
+						"Indícanos tu usuario del sistema\npara enviarte un correo"
+								+ " con tu contraseña\nUsuario:");
+				if (usuario != null) {
+					Persona p = (Persona) algoritmoB
+							.buscar(new Persona(usuario));
+					if (p != null && !"".equals(p.getCorreo())) {
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						CorreoElectronico co = new CorreoElectronico();
+						try {
+							if (!p.getCorreo().equals(
+									"ejemplo@[gmail|hotmail].com")) {
+								co.EnviarCorreo(p);
+								JOptionPane
+										.showMessageDialog(null,
+												"Hemos enviado su contraseña a su correo.");
+							} else {
+								JOptionPane
+										.showMessageDialog(null,
+												"El usuario introducido no tiene correo o no existe.");
+							}
+						} catch (MessagingException e) {
+							JOptionPane.showMessageDialog(null,
+									"Ha ocurrido un error al enviar el correo, error: "
+											+ e.getMessage());
+						}
+
+					} else {
+						JOptionPane
+								.showMessageDialog(null,
+										"El usuario introducido no tiene correo o no existe.");
 					}
-					CorreoElectronico co = new CorreoElectronico();
-					try {
-						co.EnviarCorreo(p);
-					} catch (MessagingException e) {
-						JOptionPane.showMessageDialog(null, "Ha ocurrido un error al enviar el correo, error: " +
-						e.getMessage());
-					}
-					
-					JOptionPane.showMessageDialog(null, "Hemos enviado su contraseña a su correo.");
-				} else {
-					JOptionPane.showMessageDialog(null, "El usuario introducido no tiene correo o no existe.");
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				
-				
 			}
 		});
 
@@ -337,4 +496,11 @@ public class VentanaLogin extends Ventana {
 		return false;
 	}
 
+	public Persona getPersonaActual() {
+		return personaActual;
+	}
+
+	public void setPersonaActual(Persona personaActual) {
+		this.personaActual = personaActual;
+	}
 }

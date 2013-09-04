@@ -18,7 +18,7 @@ import edu.itla.gestorpacientes.entidades.Persona;
 
 public class CorreoElectronico {
 	
-	private String correo = "efrainreyes05@gmail.com";
+	private String correo = "controlsoftc@gmail.com";
 	private String pass = "losreyes";
 	private String asunto = "Recuperación de Contraseña";
 	private Properties props;
