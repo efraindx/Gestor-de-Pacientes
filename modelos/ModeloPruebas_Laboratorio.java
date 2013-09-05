@@ -12,8 +12,11 @@ import org.jdom2.JDOMException;
 
 
 
+<<<<<<< HEAD
 
 import edu.itla.gestorpacientes.entidades.PruebaLaboratorio;
+=======
+>>>>>>> 0e81271795098dcd517f9ad800b139479149f275
 import edu.itla.gestorpacientes.entidades.Prueba_Laboratorio;
 import edu.itla.gestorpacientes.factorias.FactoriaGestionPruebas_Laboratorio;
 import edu.itla.gestorpacientes.persistencia.Conexion;
@@ -121,7 +124,11 @@ public class ModeloPruebas_Laboratorio extends AbstractTableModel {
 		return true;
 	}
 	
+<<<<<<< HEAD
 	public JComboBox<PruebaLaboratorio> getPruebas_Laboratorio() throws SQLException {
+=======
+	public JComboBox<Prueba_Laboratorio> getPruebas_Laboratorio() throws SQLException {
+>>>>>>> 0e81271795098dcd517f9ad800b139479149f275
 		return conexion.getPruebas_Laboratorio();
 	}
 }

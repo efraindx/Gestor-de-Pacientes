@@ -25,7 +25,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jdom2.JDOMException;
 
 import edu.itla.gestorpacientes.entidades.Paciente;
+<<<<<<< HEAD
 import edu.itla.gestorpacientes.entidades.PruebaLaboratorio;
+=======
+import edu.itla.gestorpacientes.entidades.Prueba_Laboratorio;
+>>>>>>> 0e81271795098dcd517f9ad800b139479149f275
 import edu.itla.gestorpacientes.entidades.Resultado_Prueba_Laboratorio;
 import edu.itla.gestorpacientes.modelos.ModeloPruebas_Laboratorio;
 import edu.itla.gestorpacientes.modelos.ModeloResultados_Prueba_Laboratorio;
@@ -34,7 +38,11 @@ public class VentanaModeloResultados_Pruebas_Laboratorio extends Ventana {
 
 	private static final long serialVersionUID = 1L;
 	private JComboBox<Paciente> cmbPacientes;
+<<<<<<< HEAD
 	private JComboBox<PruebaLaboratorio> cmbPruebas_Laboratorio;
+=======
+	private JComboBox<Prueba_Laboratorio> cmbPruebas_Laboratorio;
+>>>>>>> 0e81271795098dcd517f9ad800b139479149f275
 	private JTextArea txtResultado;
 	private ModeloResultados_Prueba_Laboratorio modelo;
 	private ModeloPruebas_Laboratorio modeloP;
@@ -107,7 +115,11 @@ public class VentanaModeloResultados_Pruebas_Laboratorio extends Ventana {
 				if (!"".equals(txtResultado.getText())) {
 
 					Paciente paciente = cmbPacientes.getItemAt(cmbPacientes.getSelectedIndex());
+<<<<<<< HEAD
 					PruebaLaboratorio prueba = cmbPruebas_Laboratorio.getItemAt(cmbPruebas_Laboratorio.getSelectedIndex());
+=======
+					Prueba_Laboratorio prueba = cmbPruebas_Laboratorio.getItemAt(cmbPruebas_Laboratorio.getSelectedIndex());
+>>>>>>> 0e81271795098dcd517f9ad800b139479149f275
 					String resultado = txtResultado.getText();
 
 					Resultado_Prueba_Laboratorio result = new Resultado_Prueba_Laboratorio(
@@ -171,7 +183,11 @@ public class VentanaModeloResultados_Pruebas_Laboratorio extends Ventana {
 						int fila = tblResultados.getSelectedRow();
 
 						Paciente paciente = cmbPacientes.getItemAt(cmbPacientes.getSelectedIndex());
+<<<<<<< HEAD
 						PruebaLaboratorio prueba = cmbPruebas_Laboratorio.getItemAt(cmbPruebas_Laboratorio.getSelectedIndex());
+=======
+						Prueba_Laboratorio prueba = cmbPruebas_Laboratorio.getItemAt(cmbPruebas_Laboratorio.getSelectedIndex());
+>>>>>>> 0e81271795098dcd517f9ad800b139479149f275
 						
 						int idPrueba = prueba.getId();
 						modelo.modificar(id, 1, fila, idPrueba);
